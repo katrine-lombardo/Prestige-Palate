@@ -13,7 +13,7 @@ services:
 
   ghi:
     image: node:lts-bullseye
-    command: /bin/bash run.sh
+    command: /bin/bash npm run dev
     working_dir: /app
     volumes:
       - ./ghi:/app
