@@ -8,7 +8,7 @@ steps = [
             firstname VARCHAR(256),
             lastname VARCHAR(256),
             email VARCHAR(256),
-            hashed_password VARCHAR(256),
+            hashed_password VARCHAR(256)
         );
         """,
         # "Down" SQL statement
