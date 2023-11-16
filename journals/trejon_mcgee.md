@@ -1,7 +1,10 @@
+## Wed, Nov 16
+Features/issues that you worked on and who you worked with:
+- Collaborated with the entire group to set up migrations
+
 ## Wed, Nov 15
 Features/issues that you worked on and who you worked with:
 - Worked through DB Fiddle. Created photos table and under Schema SQL and created restuarant Queries under the Query SQL section.
-
 
 ## Tues, Nov 14
 Features/issues that you worked on and who you worked with:
