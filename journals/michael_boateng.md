@@ -1,14 +1,13 @@
 
-
 ## Wed, Nov 15
 Features/issues that you worked on and who you worked with:
--
+-Added tables for favorited restaurants in DB Fiddle
 
 A reflection on any design conversations that you had
--
+-Went over the API request bottlenecks with Bart and the team. We decided to be more strategic to limit the amount of requests made due to the proprietary nature of the Google services.  
 
 At least one ah-ha! moment:
--
+-Felt like I might've been a bit wrapped up in the front-end aspects too early on so for now I want to stay on track with everyone in getting the backend completed.
 
 
 ## Tues, Nov 14
