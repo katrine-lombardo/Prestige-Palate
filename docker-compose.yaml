@@ -1,45 +1,46 @@
 volumes:
     postgres-data:
-      external: true
+        external: true
     pg-admin:
-      external: true
+        external: true
 services:
-  postgres:
-      image: postgres:14.5-bullseye
-      volumes:
-          - postgres-data:/var/lib/postgresql/data
-      environment:
-          POSTGRES_PASSWORD: secret
-          POSTGRES_USER: user
-          POSTGRES_DB: prestige-palate
-      ports:
-          - 15432:5432
-  pg-admin:
-    image: dpage/pgadmin4
-    volumes:
-      - pg-admin:/var/lib/pgadmin
-    ports:
-      - 8082:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PGADMIN_DISABLE_POSTFIX: 1
-  fastapi:
-    environment:
-      CORS_HOST: http://localhost:5173
-      DATABASE_URL: postgresql://user:secret@postgres/prestige-palate
-    build:
-      context: api
-      dockerfile: Dockerfile.dev
-    ports:
-      - 8000:8000
-    volumes:
-      - ./api:/app
-  ghi:
-    image: node:lts-bullseye
-    command: /bin/bash run.sh
-    working_dir: /app
-    volumes:
-      - ./ghi:/app
-    ports:
-      - "5173:5173"
+    postgres:
+        image: postgres:14.5-bullseye
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: secret
+            POSTGRES_USER: user
+            POSTGRES_DB: prestige-palate
+        ports:
+            - 15432:5432
+    pg-admin:
+        image: dpage/pgadmin4
+        volumes:
+            - pg-admin:/var/lib/pgadmin
+        ports:
+            - 8082:80
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+            PGADMIN_DISABLE_POSTFIX: 1
+    fastapi:
+        environment:
+            CORS_HOST: http://localhost:5173
+            DATABASE_URL: postgresql://user:secret@postgres/prestige-palate
+            SIGNING_KEY: ${SIGNING_KEY}
+        build:
+            context: api
+            dockerfile: Dockerfile.dev
+        ports:
+            - 8000:8000
+        volumes:
+            - ./api:/app
+    ghi:
+        image: node:lts-bullseye
+        command: /bin/bash run.sh
+        working_dir: /app
+        volumes:
+            - ./ghi:/app
+        ports:
+            - "5173:5173"
