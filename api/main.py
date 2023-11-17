@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
 from fastapi import APIRouter
-from routers import accounts
+from routers import accounts, restaurants
 
 app = FastAPI()
 app.include_router(authenticator.router)
@@ -29,3 +29,7 @@ def launch_details():
             "min": "00",
         }
     }
+
+
+app.include_router(accounts.router, tags=["Accounts"])
+app.include_router(restaurants.router, tags=["Restaurants"])
