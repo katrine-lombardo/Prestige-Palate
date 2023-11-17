@@ -3,13 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
 from fastapi import APIRouter
-from routers import accounts, restaurants
-from routers import accounts, photos
+from routers import accounts, restaurants, photos, reviews
 
 app = FastAPI()
 app.include_router(authenticator.router)
-app.include_router(accounts.router)
-app.include_router(photos.router)
+app.include_router(accounts.router, tags=["Accounts"])
+app.include_router(photos.router, tags=["Photos"])
+app.include_router(reviews.router, tags=["Reviews"])
+app.include_router(restaurants.router, tags=["Restaurants"])
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,7 +32,3 @@ def launch_details():
             "min": "00",
         }
     }
-
-
-app.include_router(accounts.router, tags=["Accounts"])
-app.include_router(restaurants.router, tags=["Restaurants"])
