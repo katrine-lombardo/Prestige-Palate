@@ -70,7 +70,7 @@ class AccountQueries:
                     INSERT INTO accounts (firstname, last_name, username, email,
                     hashed_password)
                     VALUES (%s, %s, %s, %s, %s)
-                    RETURNING id, firstname, lastname, username,email,
+                    RETURNING id, firstname, lastname, username, email,
                     hashed_password
                     """,
                     params,

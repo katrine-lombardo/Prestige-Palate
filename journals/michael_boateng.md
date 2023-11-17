@@ -1,3 +1,12 @@
+## Thur, Nov 16
+Features/issues that you worked on and who you worked with:
+-Added authentication to our project with the entire team.  Added table migration files as well.
+
+A reflection on any design conversations that you had
+-Not so much design discussion today, we just focused on getting some tangible code in our project.
+
+At least one ah-ha! moment:
+-We'd been wrestling with a fastapi pool connection error all afternoon. Finding and fixing the infoBASE(which should have been DATABASE_URL) bug in our pool connection queries code at the end of the day was a great feeling!
 
 ## Wed, Nov 15
 Features/issues that you worked on and who you worked with:
