@@ -3,7 +3,7 @@ from psycopg_pool import ConnectionPool
 from pydantic import BaseModel
 
 
-pool = ConnectionPool(conninfo=os.environ.get("infoBASE_URL"))
+pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
 
 
 class DuplicateAccountError(ValueError):
