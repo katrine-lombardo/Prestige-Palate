@@ -33,12 +33,7 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-<<<<<<< HEAD
-
-@router.get("api/protected", response_model=bool)
-=======
 @router.get("/api/protected", response_model=bool)
->>>>>>> f8f8e118568bcf00c17c80c464c4e975647f47a1
 async def get_protected(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
