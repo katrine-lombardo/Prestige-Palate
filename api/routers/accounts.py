@@ -33,14 +33,10 @@ class HttpError(BaseModel):
 
 router = APIRouter()
 
-<<<<<<< HEAD
 
-@router.get("api/protected", response_model=bool)
-=======
 @router.get("/api/protected", response_model=bool)
->>>>>>> f8f8e118568bcf00c17c80c464c4e975647f47a1
 async def get_protected(
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_account_data),
 ):
     return True
 
@@ -48,7 +44,7 @@ async def get_protected(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data),
+    account: AccountOut = Depends(authenticator.get_account_data),
 ) -> AccountToken | None:
     if authenticator.cookie_name in request.cookies:
         return {
@@ -61,7 +57,7 @@ async def get_token(
 @router.get("/api/accounts", response_model=List[AccountOut])
 async def get_all_accounts(
     accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_account_data),
 ):
     return accounts.get_all_accounts()
 
@@ -73,7 +69,7 @@ async def create_account(
     response: Response,
     accounts: AccountQueries = Depends(),
 ):
-    hashed_password = authenticator.hash_password(info.password)
+    hashed_password = authenticator.get_hashed_password(info.password)
     try:
         account = accounts.create(info, hashed_password)
     except DuplicateAccountError:
@@ -90,7 +86,7 @@ async def create_account(
 async def get_account_by_id(
     account_id: int,
     accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_account_data),
 ):
     account = accounts.get_account_by_id(account_id)
     if not account:
@@ -108,7 +104,7 @@ async def update_account(
     response: Response,
     accounts: AccountQueries = Depends(),
 ):
-    hashed_password = authenticator.hashed_password(info.password)
+    hashed_password = authenticator.get_hashed_password(info.password)
     try:
         account = accounts.create(info, hashed_password)
     except DuplicateAccountError:
@@ -125,7 +121,7 @@ async def update_account(
 async def delete_account(
     account_id: int,
     accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_account_data),
 ):
     success = accounts.delete_account(account_id)
     if not success:
