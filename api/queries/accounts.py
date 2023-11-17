@@ -37,7 +37,7 @@ class AccountQueries:
                 cur.execute(
                     """
                     SELECT *
-                    FROM accounts
+                    FROM account
                     WHERE email = %s;
                     """,
                     [email],
