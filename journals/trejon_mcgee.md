@@ -1,4 +1,8 @@
-## Wed, Nov 16
+## Friday, Nov 17
+Features/issues that you worked on and who you worked with:
+- Worked on Photos.py Queries and Photos.py Routers
+
+## Thursday, Nov 16
 Features/issues that you worked on and who you worked with:
 - Collaborated with the entire group to set up migrations
 
