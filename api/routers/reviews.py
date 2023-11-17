@@ -1,5 +1,5 @@
-from api.queries.accounts import AccountOut
-from fastapi import APIRouter, Depends, HTTPException, status
+from queries.accounts import AccountOut
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from queries.reviews import ReviewIn, ReviewOut, ReviewQueries
 from authenticator import authenticator
 
@@ -19,7 +19,7 @@ async def get_reviews_for_restaurant(
 async def create_review(
     review: ReviewIn,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_current_user),
+    current_user: AccountOut = Depends(authenticator.get_account_data),
 ):
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
@@ -31,7 +31,7 @@ async def update_review(
     review_id: int,
     review_data: ReviewIn,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_current_user),
+    current_user: AccountOut = Depends(authenticator.get_account_data),
 ):
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
@@ -44,7 +44,7 @@ async def update_review(
 async def delete_review(
     review_id: int,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_current_user),
+    current_user: AccountOut = Depends(authenticator.get_account_data),
 ):
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)

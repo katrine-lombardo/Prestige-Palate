@@ -23,6 +23,14 @@ class ReviewOut(BaseModel):
     photo_id: Optional[int] = None
 
 
+class ReviewUpdate(BaseModel):
+    text: Optional[str] = None
+    restaurant_id: Optional[int] = None
+    rating: Optional[float] = None
+    user_icon: Optional[str] = None
+    photo_id: Optional[int] = None
+
+
 class ReviewQueries:
     def get_reviews_by_user(self, username: str) -> list[ReviewOut]:
         with pool.connection() as conn:
@@ -73,30 +81,30 @@ class ReviewQueries:
                 )
                 return ReviewOut(**cur.fetchone())
 
-    def update_review(
-        self, review_id: int, review_data: ReviewUpdate
-    ) -> ReviewOut:
-        set_clause = ", ".join(
-            [
-                f"{key} = %s"
-                for key in review_data.dict().keys()
-                if review_data.dict()[key] is not None
-            ]
-        )
-        values = list(review_data.dict().values()) + [review_id]
+    # def update_review(
+    #     self, review_id: int, review_data: ReviewUpdate
+    # ) -> ReviewOut:
+    #     set_clause = ", ".join(
+    #         [
+    #             f"{key} = %s"
+    #             for key in review_data.dict().keys()
+    #             if review_data.dict()[key] is not None
+    #         ]
+    #     )
+    #     values = list(review_data.dict().values()) + [review_id]
 
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    f"""
-                    UPDATE reviews
-                    SET {set_clause}
-                    WHERE id = %s
-                    RETURNING *;
-                    """,
-                    values,
-                )
-                return ReviewOut(**cur.fetchone())
+    #     with pool.connection() as conn:
+    #         with conn.cursor() as cur:
+    #             cur.execute(
+    #                 f"""
+    #                 UPDATE reviews
+    #                 SET {set_clause}
+    #                 WHERE id = %s
+    #                 RETURNING *;
+    #                 """,
+    #                 values,
+    #             )
+    #             return ReviewOut(**cur.fetchone())
 
     def get_reviews_for_restaurant(
         self, restaurant_id: int
@@ -114,4 +122,3 @@ class ReviewQueries:
                 for row in cur.fetchall():
                     reviews.append(ReviewOut(**row))
                 return reviews
-
