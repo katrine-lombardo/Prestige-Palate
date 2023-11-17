@@ -4,10 +4,12 @@ import os
 from authenticator import authenticator
 from fastapi import APIRouter
 from routers import accounts, restaurants
+from routers import accounts, photos
 
 app = FastAPI()
 app.include_router(authenticator.router)
 app.include_router(accounts.router)
+app.include_router(photos.router)
 
 app.add_middleware(
     CORSMiddleware,
