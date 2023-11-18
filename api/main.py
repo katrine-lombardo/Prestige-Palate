@@ -3,11 +3,17 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
 from fastapi import APIRouter
-from routers import accounts
+from routers import accounts, photos
+from dotenv import load_dotenv
+
+load_dotenv()
+print(os.environ)
+
 
 app = FastAPI()
 app.include_router(authenticator.router)
 app.include_router(accounts.router)
+app.include_router(photos.router)
 
 app.add_middleware(
     CORSMiddleware,
