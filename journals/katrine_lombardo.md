@@ -1,10 +1,26 @@
-#### Thurs, Nov 16
+#### Mon, Nov 20
 
 Features/issues that you worked on and who you worked with:
+* 
 
 A reflection on any design conversations that you had
+*
 
 At least one ah-ha! moment:
+*
+
+---
+
+#### Fri, Nov 17
+
+Features/issues that you worked on and who you worked with:
+* I created our restaurants.py files for queries and routers today. My team and I coded most of the backend and git merged all our edits. Now we are debugging and troubleshooting our code for naming convention inconsistencies and some minor issues with Authentication.
+
+A reflection on any design conversations that you had
+* Today was mostly a development/action day, where we implemented the ideas we've been discussing. After submitting our restaurants code however, I think we need to evaluate how our app will work with "favourited" or bookmarked items.
+
+At least one ah-ha! moment:
+* I really enjoyed the debugging process today where we helped each other connect our code into one consistent idea. It is fun to search for solutions and use creativity to trial and error different solutions.
 
 ---
 
