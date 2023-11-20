@@ -32,7 +32,7 @@ services:
         build:
             context: api
             dockerfile: Dockerfile.dev
-        ports:
+        ports: $$$
             - 8000:8000
         volumes:
             - ./api:/app

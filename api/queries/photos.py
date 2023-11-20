@@ -5,10 +5,12 @@ from pydantic import BaseModel
 
 pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
 
+
 class PhotoIn(BaseModel):
     user_id: int
     photo_url: str
     restaurant_id: int
+
 
 class PhotoOut(BaseModel):
     photo_id: int
@@ -16,6 +18,7 @@ class PhotoOut(BaseModel):
     photo_url: str
     upload_date: datetime
     restaurant_id: int
+
 
 class PhotoQueries:
     def create(self, data: PhotoIn) -> PhotoOut:
@@ -31,7 +34,6 @@ class PhotoQueries:
                 )
                 record = cur.fetchone()
                 return PhotoOut(**record)
-
 
     def delete(self, photo_id: int) -> bool:
         with pool.connection() as conn:

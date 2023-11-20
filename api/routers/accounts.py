@@ -1,7 +1,7 @@
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from pydantic import BaseModel
-from typing import Union, List
+from typing import Union, Optional
 from fastapi import (
     Depends,
     HTTPException,
@@ -46,9 +46,9 @@ async def get_protected(
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.get_account_data),
+    account: Account = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
-    if authenticator.cookie_name in request.cookies:
+    if account and authenticator.cookie_name in request.cookies:
         return {
             "access_token": request.cookies[authenticator.cookie_name],
             "type": "Bearer",
@@ -116,7 +116,6 @@ async def update_account(
     form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, accounts)
     return AccountToken(account=account, **token.dict())
-
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)
 async def delete_account(
