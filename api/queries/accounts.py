@@ -66,18 +66,18 @@ class AccountQueries:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 params = [
+                    info.username,
                     info.first_name,
                     info.last_name,
-                    info.username,
                     info.email,
                     hashed_password,
                 ]
                 cur.execute(
                     """
-                    INSERT INTO accounts (first_name, last_name, username, email,
+                    INSERT INTO accounts (username, first_name, last_name, email,
                     hashed_password)
                     VALUES (%s, %s, %s, %s, %s)
-                    RETURNING id, first_name, last_name, username, email,
+                    RETURNING id, username, first_name, last_name, email,
                     hashed_password
                     """,
                     params,
@@ -98,10 +98,10 @@ class AccountQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                            SELECT *
-                            FROM accounts
-                            ORDER BY username;
-                            """
+                        SELECT *
+                        FROM accounts
+                        ORDER BY username;
+                        """
                     )
                     accounts = []
                     for row in cur.fetchall():
@@ -155,19 +155,19 @@ class AccountQueries:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     params = [
+                        account_id,
+                        account.username,
                         account.first_name,
                         account.last_name,
-                        account.username,
                         account.email,
                         hashed_password,
-                        account_id,
                     ]
                     cur.execute(
                         """
                         UPDATE accounts
-                        SET first_name = %s
+                        SET username = %s
+                        , first_name = %s
                         , last_name = %s
-                        , username = %s
                         , email = %s
                         , hashed_password = %s
                         WHERE id = %s
