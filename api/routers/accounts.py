@@ -4,7 +4,7 @@ from fastapi import  (
     status,
     Response,
     APIRouter,
-    Request,,
+    Request,
 )
 from queries.accounts import (
     AccountIn,
@@ -12,7 +12,7 @@ from queries.accounts import (
     AccountOutWithPassword,
     AccountOutWithPassword,
     AccountQueries,
-    DuplicateAccountError,,
+    DuplicateAccountError,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
@@ -61,7 +61,6 @@ async def get_protected(
 async def get_token(
     request: Request,
     account: AccountOut = Depends(authenticator.try_get_current_account_data),
-,
 ) -> AccountToken | None:
     if authenticator.cookie_name in request.cookies:
         return {
