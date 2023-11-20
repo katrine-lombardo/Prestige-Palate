@@ -91,17 +91,6 @@ async def get_account_by_id(
     return account
 
 
-@router.get(
-    "/api/accounts",
-    response_model=Union[List[AccountOutWithPassword], Error],
-)
-async def get_all_accounts(
-    accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_getter),
-):
-    return accounts.get_all_accounts()
-
-
 @router.put("/api/accounts", response_model=Union[AccountToken, HttpError])
 async def update_account(
     info: AccountIn,

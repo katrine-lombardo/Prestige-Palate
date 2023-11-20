@@ -90,27 +90,6 @@ class AccountQueries:
                         record[column.name] = row[i]
                 return AccountOutWithPassword(**record)
 
-    def get_all_accounts(self) -> Union[Error, List[AccountOutWithPassword]]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute(
-                        """
-                        SELECT *
-                        FROM accounts
-                        ORDER BY username;
-                        """
-                    )
-                    accounts = []
-                    for row in cur.fetchall():
-                        record = {}
-                        for i, column in enumerate(cur.description):
-                            record[column.name] = row[i]
-                        accounts.append(AccountOutWithPassword(**record))
-                    return accounts
-        except Exception as e:
-            return {"message": "Could not get all account information"}
-
     def get_account_by_id(
         self, account_id: int
     ) -> Optional[AccountOutWithPassword]:
@@ -183,6 +162,7 @@ class AccountQueries:
                         return None
                     # return self.account_in_to_out(account_id, account)
         except Exception as e:
+            print(e)
             return {"message": "Could not update account details"}
 
     # def account_in_to_out(self, id: int, account: AccountIn):
