@@ -1,7 +1,10 @@
 import os
+from psycopg_pool import ConnectionPool
 from pydantic import BaseModel
-from queries.pool import pool
 from typing import List, Optional, Union
+
+
+pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
 
 
 class Error(BaseModel):
@@ -21,7 +24,7 @@ class AccountIn(BaseModel):
 
 
 class AccountOut(BaseModel):
-    id: int
+    id: str
     email: str
     username: str
     first_name: str
@@ -33,9 +36,7 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountQueries:
-    def get_account_by_email(
-        self, email: str
-    ) -> Union[AccountOutWithPassword, Error]:
+    def get_account_by_email(self, email: str) -> AccountOutWithPassword:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
@@ -54,45 +55,40 @@ class AccountQueries:
                             record[column.name] = row[i]
                     return AccountOutWithPassword(**record)
                 except Exception:
-                    print("exception")
                     return {
                         "message": "Could not get accounts record for this accounts email"
                     }
 
     def create_account(
-        self, account: AccountIn, hashed_password: str
-    ) -> Union[AccountOutWithPassword, Error]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as cur:
-                    params = [
-                        account.first_name,
-                        account.last_name,
-                        account.username,
-                        account.email,
-                        hashed_password,
-                    ]
-                    cur.execute(
-                        """
-                        INSERT INTO accounts (first_name, last_name, username, email,
-                        hashed_password)
-                        VALUES (%s, %s, %s, %s, %s)
-                        RETURNING id, first_name, last_name, username, email,
-                        hashed_password
-                        """,
-                        params,
-                    )
-                    row = cur.fetchone()
-                    if row is not None:
-                        record = {}
-                        for i, column in enumerate(cur.description):
-                            record[column.name] = row[i]
-                        return AccountOutWithPassword(**record)
-                    else:
-                        return None
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get create account"}
+        self, info: AccountIn, hashed_password: str
+    ) -> AccountOutWithPassword:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                params = [
+                    info.username,
+                    info.first_name,
+                    info.last_name,
+                    info.email,
+                    hashed_password,
+                ]
+                cur.execute(
+                    """
+                    INSERT INTO accounts (username, first_name, last_name, email,
+                    hashed_password)
+                    VALUES (%s, %s, %s, %s, %s)
+                    RETURNING id, username, first_name, last_name, email,
+                    hashed_password
+                    """,
+                    params,
+                )
+
+                record = None
+                row = cur.fetchone()
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                return AccountOutWithPassword(**record)
 
     def get_all_accounts(self) -> Union[Error, List[AccountOutWithPassword]]:
         try:
@@ -113,10 +109,11 @@ class AccountQueries:
                         accounts.append(AccountOutWithPassword(**record))
                     return accounts
         except Exception as e:
-            print(e)
             return {"message": "Could not get all account information"}
 
-    def get_account_by_id(self, account_id: int) -> Optional[AccountOutWithPassword]:
+    def get_account_by_id(
+        self, account_id: int
+    ) -> Optional[AccountOutWithPassword]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
@@ -155,19 +152,19 @@ class AccountQueries:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     params = [
+                        account_id,
+                        account.username,
                         account.first_name,
                         account.last_name,
-                        account.username,
                         account.email,
                         hashed_password,
-                        account_id,
                     ]
                     cur.execute(
                         """
                         UPDATE accounts
-                        SET first_name = %s
+                        SET username = %s
+                        , first_name = %s
                         , last_name = %s
-                        , username = %s
                         , email = %s
                         , hashed_password = %s
                         WHERE id = %s
@@ -186,7 +183,6 @@ class AccountQueries:
                         return None
                     # return self.account_in_to_out(account_id, account)
         except Exception as e:
-            print(e)
             return {"message": "Could not update account details"}
 
     # def account_in_to_out(self, id: int, account: AccountIn):
