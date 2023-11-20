@@ -102,12 +102,15 @@ async def get_all_accounts(
     return accounts.get_all_accounts()
 
 
-@router.put("/api/accounts", response_model=Union[AccountToken, HttpError])
+@router.put(
+    "/api/accounts/{account_id}", response_model=Union[AccountToken, HttpError]
+)
 async def update_account(
     info: AccountIn,
     request: Request,
     response: Response,
     accounts: AccountQueries = Depends(),
+    account_data: dict = Depends(authenticator.get_account_getter),
 ):
     hashed_password = authenticator.get_hashed_password(info.password)
     try:
