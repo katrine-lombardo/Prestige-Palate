@@ -162,7 +162,6 @@ class AccountQueries:
                         return None
                     # return self.account_in_to_out(account_id, account)
         except Exception as e:
-            print(e)
             return {"message": "Could not update account details"}
 
     # def account_in_to_out(self, id: int, account: AccountIn):
