@@ -98,7 +98,7 @@ class AccountQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    accounts = cur.execute(
+                    cur.execute(
                         """
                         SELECT *
                         FROM accounts
@@ -116,7 +116,7 @@ class AccountQueries:
             print(e)
             return {"message": "Could not get all account information"}
 
-    def get_account_by_id(self, account_id: int) -> AccountOutWithPassword:
+    def get_account_by_id(self, account_id: int) -> Optional[AccountOutWithPassword]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
