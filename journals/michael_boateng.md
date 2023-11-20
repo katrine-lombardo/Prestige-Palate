@@ -1,3 +1,13 @@
+## Fri, Nov 17
+Features/issues that you worked on and who you worked with:
+-I worked with Trey on Queries/Routers for a feature where users can store photos.
+
+A reflection on any design conversations that you had
+-Trey has experience with Amazon S3 cloud storage so we went in that direction.  Lots to learn there.
+
+At least one ah-ha! moment:
+-We had some git trouble with git pull/push on the same branch so I learned more about git stash to git pull, then git stash pop and resolving merge conflicts before pushing.
+
 ## Thur, Nov 16
 Features/issues that you worked on and who you worked with:
 -Added authentication to our project with the entire team.  Added table migration files as well.
