@@ -9,14 +9,15 @@ from fastapi import (
 from queries.accounts import (
     AccountIn,
     AccountOut,
+    AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
-    Error
+    Error,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from pydantic import BaseModel
-from typing import Union
+from typing import Union, List
 
 
 class AccountForm(BaseModel):
