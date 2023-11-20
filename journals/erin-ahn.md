@@ -1,3 +1,13 @@
+## Fri, Nov 17
+Features/issues that you worked on and who you worked with:
+- Queries and Router for Accounts
+
+A reflection on any design conversations that you had
+-Focused on coding in our project.
+
+At least one ah-ha! moment:
+- Everyone has different ways to code/understanding the code (even looking at the routers and queries), so it was helpful to talk to each other. One thing I would like to double check is how updating accounts would look different since updating hashed password may be different. Also would like to circle back to make sure everyone has error statements accordingly.
+
 ## Thur, Nov 16
 Features/issues that you worked on and who you worked with:
 -Added authentication to our project with the entire team.  Added table migration files as well.
