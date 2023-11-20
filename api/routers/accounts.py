@@ -12,7 +12,6 @@ from queries.accounts import (
     AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
-    Error,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
@@ -32,6 +31,9 @@ class AccountToken(Token):
 class HttpError(BaseModel):
     detail: str
 
+
+class Error(BaseModel):
+    message: str
 
 router = APIRouter()
 
@@ -76,36 +78,6 @@ async def create_account(
     return AccountToken(account=account, **token.dict())
 
 
-@router.get(
-    "/api/accounts", response_model=Union[Error, List[AccountOutWithPassword]]
-)
-async def get_all_accounts(
-    accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_data),
-):
-    return accounts.get_all_accounts()
-
-
-@router.post("/api/accounts", response_model=Union[AccountToken, HttpError])
-async def create_account(
-    info: AccountIn,
-    request: Request,
-    response: Response,
-    accounts: AccountQueries = Depends(),
-):
-    hashed_password = authenticator.get_hashed_password(info.password)
-    try:
-        account = accounts.create_account(info, hashed_password)
-    except DuplicateAccountError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot create an account with those credentials",
-        )
-    form = AccountForm(username=info.email, password=info.password)
-    token = await authenticator.login(response, request, form, accounts)
-    return AccountToken(account=account, **token.dict())
-
-
 @router.get("/api/accounts/{account_id}", response_model=AccountOut)
 async def get_account_by_id(
     account_id: int,
@@ -116,6 +88,16 @@ async def get_account_by_id(
     if account is None:
         response.status_code = 404
     return account
+
+
+@router.get(
+    "/api/accounts", response_model=Union[Error, List[AccountOutWithPassword]]
+)
+async def get_all_accounts(
+    accounts: AccountQueries = Depends(),
+    account_data: dict = Depends(authenticator.get_account_data),
+):
+    return accounts.get_all_accounts()
 
 
 @router.put("/api/accounts", response_model=Union[AccountToken, HttpError])
