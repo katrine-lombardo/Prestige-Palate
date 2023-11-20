@@ -7,7 +7,7 @@ from routers import accounts, photos
 from dotenv import load_dotenv
 
 load_dotenv()
-print(os.environ)
+# print(os.environ) # Commented out to prevent logging environment variables
 
 
 app = FastAPI()

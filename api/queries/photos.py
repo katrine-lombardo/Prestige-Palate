@@ -1,0 +1,125 @@
+import os
+from psycopg_pool import ConnectionPool
+from pydantic import BaseModel, HttpUrl
+from datetime import datetime
+from typing import Optional, List
+
+
+pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
+
+class PhotoIn(BaseModel):
+    user_id: int
+    restaurant_id: int
+
+class PhotoOut(BaseModel):
+    photo_id: int
+    user_id: int
+    photo_url: HttpUrl
+    restaurant_id: int
+    upload_date: datetime
+
+class PhotoQueries:
+    def insert_photo(self, photo_data: PhotoIn, photo_url: str) -> PhotoOut:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                try:    # Preparing the parameters
+                    # Set the upload_date to the current time
+                    upload_date = datetime.now()
+                    params = [
+                        photo_data.user_id,
+                        photo_url,
+                        photo_data.restaurant_id,
+                        upload_date
+                    ]
+                    # SQL Query to insert the photo
+                    insert_query = """
+                    INSERT INTO photos (user_id, photo_url, restaurant_id, upload_date)
+                    VALUES (%s, %s, %s, %s)
+                    RETURNING photo_id, user_id, photo_url, restaurant_id, upload_date;
+                    """
+                    cur.execute(insert_query, params)
+
+                    # Fetching and returning the inserted record
+                    record = None
+                    row = cur.fetchone()
+                    if row:
+                        record = {}
+                        for i, column in enumerate(cur.description):
+                            record[column.name] = row[i]
+                        return PhotoOut(**record)
+                    else:
+                        raise Exception("Failed to insert photo record.")
+                except Exception as e:
+                    print(f"Exception occurred: {e}")
+                    raise
+
+    def show_photo_by_id(self, photo_id: int) -> Optional[PhotoOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT * FROM photos WHERE photo_id = %s;",
+                    [photo_id]
+                )
+                row = cur.fetchone()
+                if row:
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    return PhotoOut(**record)
+                else:
+                    return None  # Photo not found
+
+    def show_photos_by_user(self, user_id: int) -> List[PhotoOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT * FROM photos WHERE user_id = %s;",
+                    [user_id]
+                )
+                photos = []
+                for row in cur.fetchall():
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    photos.append(PhotoOut(**record))
+                return photos
+
+    def show_photos_by_restaurant(self, restaurant_id: int) -> List[PhotoOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT * FROM photos WHERE restaurant_id = %s;",
+                    [restaurant_id]
+                )
+                photos = []
+                for row in cur.fetchall():
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    photos.append(PhotoOut(**record))
+                return photos
+
+    def delete_photo(self, photo_id: int) -> dict:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                try:
+                    # SQL Query to delete the photo
+                    delete_query = """
+                    DELETE FROM photos
+                    WHERE photo_id = %s
+                    RETURNING photo_id;  # Returns the id of the deleted photo
+                    """
+                    cur.execute(delete_query, [photo_id])
+
+                    # Check if the photo was deleted
+                    deleted_photo_id = cur.fetchone()
+                    if deleted_photo_id:
+                        conn.commit()
+                        return {"message": "Photo deleted successfully", "photo_id": deleted_photo_id[0]}
+                    else:
+                        raise Exception("Photo not found or could not be deleted.")
+
+                except Exception as e:
+                    conn.rollback()
+                    print(f"Exception occurred: {e}")
+                    raise
