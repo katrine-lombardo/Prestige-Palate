@@ -10,7 +10,6 @@ app.include_router(accounts.router, tags=["Accounts"])
 app.include_router(photos.router, tags=["Photos"])
 app.include_router(reviews.router, tags=["Reviews"])
 app.include_router(restaurants.router, tags=["Restaurants"])
-app.include_router(reviews.router)
 
 app.add_middleware(
     CORSMiddleware,

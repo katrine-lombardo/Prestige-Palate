@@ -10,10 +10,10 @@ from fastapi import (
 from queries.reviews import ReviewIn, ReviewOut, ReviewQueries
 from authenticator import authenticator
 
-review_router = APIRouter()
+router = APIRouter()
 
 
-@review_router.get(
+@router.get(
     "/api/restaurants/{restaurant_id}/reviews", response_model=list[ReviewOut]
 )
 async def get_reviews_for_restaurant(
@@ -22,7 +22,7 @@ async def get_reviews_for_restaurant(
     return reviews.get_reviews_for_restaurant(restaurant_id)
 
 
-@review_router.get(
+@router.get(
     "/api/accounts/{account_id}/reviews/{review_id}",
     response_model=list[ReviewOut],
 )
@@ -32,7 +32,7 @@ async def get_reviews_by_account(
     return reviews.get_reviews_for_restaurant(account_id)
 
 
-@review_router.post(
+@router.post(
     "/api/restaurants/{restaurant_id}/reviews", response_model=ReviewOut
 )
 async def create_review(
@@ -48,7 +48,7 @@ async def create_review(
     return reviews.create_review(review, current_user.username)
 
 
-@review_router.put(
+@router.put(
     "/api/accounts/{account_id}/reviews/{review_id}", response_model=ReviewOut
 )
 async def update_review(
@@ -62,7 +62,7 @@ async def update_review(
     return reviews.update_review(review_id, review_data)
 
 
-@review_router.delete(
+@router.delete(
     "/api/accounts/{account_id}/reviews/{review_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
