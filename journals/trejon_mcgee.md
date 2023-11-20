@@ -1,3 +1,7 @@
+## Monday, Nov 20
+Features/issues that you worked on and who you worked with:
+- Was able to successfully upload photos to an S3 bucket and merge the photos.router.py file to the main branch. 
+
 ## Friday, Nov 17
 Features/issues that you worked on and who you worked with:
 - Worked on Photos.py Queries and Photos.py Routers
