@@ -3,9 +3,7 @@ from psycopg_pool import ConnectionPool
 from pydantic import BaseModel
 from typing import List, Optional, Union
 
-
 pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
-
 
 class Error(BaseModel):
     message: str
@@ -89,6 +87,27 @@ class AccountQueries:
                     for i, column in enumerate(cur.description):
                         record[column.name] = row[i]
                 return AccountOutWithPassword(**record)
+
+    def get_all_accounts(self) -> Union[Error, List[AccountOutWithPassword]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT *
+                        FROM accounts
+                        ORDER BY username;
+                        """
+                    )
+                    accounts = []
+                    for row in cur.fetchall():
+                        record = {}
+                        for i, column in enumerate(cur.description):
+                            record[column.name] = row[i]
+                        accounts.append(AccountOutWithPassword(**record))
+                    return accounts
+        except Exception as e:
+            return {"message": "Could not get all account information"}
 
     def get_account_by_id(
         self, account_id: int
