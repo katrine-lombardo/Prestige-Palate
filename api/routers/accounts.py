@@ -13,8 +13,10 @@ from fastapi import (
 from queries.accounts import (
     AccountIn,
     AccountOut,
+    AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
+    Error,
 )
 
 
@@ -54,7 +56,9 @@ async def get_token(
         }
 
 
-@router.get("/api/accounts", response_model=List[AccountOut])
+@router.get(
+    "/api/accounts", response_model=Union[Error, List[AccountOutWithPassword]]
+)
 async def get_all_accounts(
     accounts: AccountQueries = Depends(),
     account_data: dict = Depends(authenticator.get_account_data),
@@ -62,7 +66,7 @@ async def get_all_accounts(
     return accounts.get_all_accounts()
 
 
-@router.post("/api/accounts", response_model=AccountToken | HttpError)
+@router.post("/api/accounts", response_model=Union[AccountToken, HttpError])
 async def create_account(
     info: AccountIn,
     request: Request,
@@ -71,7 +75,7 @@ async def create_account(
 ):
     hashed_password = authenticator.get_hashed_password(info.password)
     try:
-        account = accounts.create(info, hashed_password)
+        account = accounts.create_account(info, hashed_password)
     except DuplicateAccountError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -85,19 +89,16 @@ async def create_account(
 @router.get("/api/accounts/{account_id}", response_model=AccountOut)
 async def get_account_by_id(
     account_id: int,
+    response: Response,
     accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_data),
-):
+) -> AccountOut:
     account = accounts.get_account_by_id(account_id)
-    if not account:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Account not found",
-        )
+    if account is None:
+        response.status_code = 404
     return account
 
 
-@router.put("/api/accounts", response_model=AccountToken | HttpError)
+@router.put("/api/accounts", response_model=Union[AccountToken, HttpError])
 async def update_account(
     info: AccountIn,
     request: Request,
@@ -106,11 +107,11 @@ async def update_account(
 ):
     hashed_password = authenticator.get_hashed_password(info.password)
     try:
-        account = accounts.create(info, hashed_password)
+        account = accounts.update_account(info, hashed_password)
     except DuplicateAccountError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot create an account with those credentials",
+            detail="Could not update account",
         )
     form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, accounts)
@@ -121,12 +122,5 @@ async def update_account(
 async def delete_account(
     account_id: int,
     accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_data),
-):
-    success = accounts.delete_account(account_id)
-    if not success:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Account not found",
-        )
-    return True
+) -> bool:
+    return accounts.delete_account(account_id)
