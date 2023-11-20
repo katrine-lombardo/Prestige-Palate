@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from psycopg_pool import ConnectionPool
+from queries.pool import pool
 from datetime import datetime
 
 
@@ -81,30 +81,30 @@ class ReviewQueries:
                 )
                 return ReviewOut(**cur.fetchone())
 
-    # def update_review(
-    #     self, review_id: int, review_data: ReviewUpdate
-    # ) -> ReviewOut:
-    #     set_clause = ", ".join(
-    #         [
-    #             f"{key} = %s"
-    #             for key in review_data.dict().keys()
-    #             if review_data.dict()[key] is not None
-    #         ]
-    #     )
-    #     values = list(review_data.dict().values()) + [review_id]
+    def update_review(
+        self, review_id: int, review_data: ReviewUpdate
+    ) -> ReviewOut:
+        set_clause = ", ".join(
+            [
+                f"{key} = %s"
+                for key in review_data.dict().keys()
+                if review_data.dict()[key] is not None
+            ]
+        )
+        values = list(review_data.dict().values()) + [review_id]
 
-    #     with pool.connection() as conn:
-    #         with conn.cursor() as cur:
-    #             cur.execute(
-    #                 f"""
-    #                 UPDATE reviews
-    #                 SET {set_clause}
-    #                 WHERE id = %s
-    #                 RETURNING *;
-    #                 """,
-    #                 values,
-    #             )
-    #             return ReviewOut(**cur.fetchone())
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    f"""
+                    UPDATE reviews
+                    SET {set_clause}
+                    WHERE id = %s
+                    RETURNING *;
+                    """,
+                    values,
+                )
+                return ReviewOut(**cur.fetchone())
 
     def get_reviews_for_restaurant(
         self, restaurant_id: int
