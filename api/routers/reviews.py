@@ -1,5 +1,12 @@
 from queries.accounts import AccountOut
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+    Response,
+    Request,
+)
 from queries.reviews import ReviewIn, ReviewOut, ReviewQueries
 from authenticator import authenticator
 
@@ -15,23 +22,40 @@ async def get_reviews_for_restaurant(
     return reviews.get_reviews_for_restaurant(restaurant_id)
 
 
-@review_router.post("/api/reviews", response_model=ReviewOut)
+@review_router.get(
+    "/api/accounts/{account_id}/reviews/{review_id}",
+    response_model=list[ReviewOut],
+)
+async def get_reviews_by_account(
+    account_id: int, reviews: ReviewQueries = Depends()
+):
+    return reviews.get_reviews_for_restaurant(account_id)
+
+
+@review_router.post(
+    "/api/restaurants/{restaurant_id}/reviews", response_model=ReviewOut
+)
 async def create_review(
     review: ReviewIn,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_account_data),
+    current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
     if not current_user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Cannot create a review with these credentials",
+        )
     return reviews.create_review(review, current_user.username)
 
 
-@review_router.put("/api/reviews/{review_id}", response_model=ReviewOut)
+@review_router.put(
+    "/api/accounts/{account_id}/reviews/{review_id}", response_model=ReviewOut
+)
 async def update_review(
     review_id: int,
     review_data: ReviewIn,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_account_data),
+    current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
@@ -39,12 +63,13 @@ async def update_review(
 
 
 @review_router.delete(
-    "/api/reviews/{review_id}", status_code=status.HTTP_204_NO_CONTENT
+    "/api/accounts/{account_id}/reviews/{review_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_review(
     review_id: int,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_account_data),
+    current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
