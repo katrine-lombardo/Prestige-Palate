@@ -55,7 +55,6 @@ class AccountQueries:
                             record[column.name] = row[i]
                     return AccountOutWithPassword(**record)
                 except Exception:
-                    print("exception")
                     return {
                         "message": "Could not get accounts record for this accounts email"
                     }
@@ -89,7 +88,6 @@ class AccountQueries:
                     record = {}
                     for i, column in enumerate(cur.description):
                         record[column.name] = row[i]
-                print(record)
                 return AccountOutWithPassword(**record)
 
     def get_all_accounts(self) -> Union[Error, List[AccountOutWithPassword]]:
@@ -111,7 +109,6 @@ class AccountQueries:
                         accounts.append(AccountOutWithPassword(**record))
                     return accounts
         except Exception as e:
-            print(e)
             return {"message": "Could not get all account information"}
 
     def get_account_by_id(
@@ -186,7 +183,6 @@ class AccountQueries:
                         return None
                     # return self.account_in_to_out(account_id, account)
         except Exception as e:
-            print(e)
             return {"message": "Could not update account details"}
 
     # def account_in_to_out(self, id: int, account: AccountIn):
