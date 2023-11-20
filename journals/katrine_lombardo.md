@@ -1,4 +1,4 @@
-#### Mon, Nov 20
+#### Tues, Nov 21
 
 Features/issues that you worked on and who you worked with:
 * 
@@ -8,6 +8,19 @@ A reflection on any design conversations that you had
 
 At least one ah-ha! moment:
 *
+
+---
+
+#### Mon, Nov 20
+
+Features/issues that you worked on and who you worked with:
+* I worked with Yaosheng to debug and merge the reviews routers and queries.
+
+A reflection on any design conversations that you had
+* We learned a lot about git merging pains and the importance of communication when making changes within the main branch. We are finally clean on main, which will allow us to further debug the code we have written.
+
+At least one ah-ha! moment:
+* Michael discovered why our YAML was behaving strangely with shutting down the FastAPI container when the server isn't yet registered with the database. We added his suggested code and now finally we are all able to work on the same clean code.
 
 ---
 
