@@ -1,3 +1,13 @@
+## Mon, Nov 20
+Features/issues that you worked on and who you worked with:
+-I worked with Trey to make more queries/routers then switched over to restaurants to start learning how to code the google api requests for fastapi.
+
+A reflection on any design conversations that you had
+-At first I was thinking to crud out the endpoints with seed data or a create, but realized that we might as well get the api interaction going.
+
+At least one ah-ha! moment:
+-A journey of a thousand git pushes begins with a single git pull. 
+
 ## Fri, Nov 17
 Features/issues that you worked on and who you worked with:
 -I worked with Trey on Queries/Routers for a feature where users can store photos.
