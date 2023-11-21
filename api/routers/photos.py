@@ -49,13 +49,17 @@ async def upload_photo(
 # Define a GET endpoint to retrieve a photo by photo ID
 @router.get("/photos/{photo_id}", response_model=PhotoOut)
 async def get_photo_by_id(photo_id: int):
-    # Fetch the PhotoOut object from your database or wherever it's stored
-    photo = PhotoQueries.show_photo_by_id(photo_id)
+    try:
+        # Fetch the PhotoOut object from your database or wherever it's stored
+        photo = PhotoQueries().show_photo_by_id(photo_id)
 
-    if photo:
-        return photo
-    else:
-        raise HTTPException(status_code=404, detail="Photo not found")
+        if photo:
+            return photo
+        else:
+            raise HTTPException(status_code=404, detail="Photo not found")
+    except Exception as e:
+        print(f"Exception occurred: {e}")
+        raise
 
 
 # Define a GET endpoint to retrieve photos by user ID

@@ -65,17 +65,27 @@ class PhotoQueries:
     def show_photo_by_id(self, photo_id: int) -> Optional[PhotoOut]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(
-                    "SELECT * FROM photos WHERE photo_id = %s;", [photo_id]
-                )
-                row = cur.fetchone()
-                if row:
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                    return PhotoOut(**record)
-                else:
-                    return None  # Photo not found
+                try:
+                    # SQL Query to fetch photo by ID
+                    select_query = """
+                    SELECT photo_id, user_id, photo_url, restaurant_id, upload_date
+                    FROM photos
+                    WHERE photo_id = %s;
+                    """
+                    cur.execute(select_query, [photo_id])
+
+                    # Fetching and returning the photo record
+                    row = cur.fetchone()
+                    if row:
+                        record = {}
+                        for i, column in enumerate(cur.description):
+                            record[column.name] = row[i]
+                        return PhotoOut(**record)
+                    else:
+                        return None  # Photo not found
+                except Exception as e:
+                    print(f"Exception occurred: {e}")
+                    raise
 
     def show_photos_by_user(self, user_id: int) -> List[PhotoOut]:
         with pool.connection() as conn:
