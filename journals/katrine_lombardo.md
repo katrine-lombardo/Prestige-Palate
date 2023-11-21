@@ -1,4 +1,4 @@
-#### Tues, Nov 21
+#### Wed, Nov 22
 
 Features/issues that you worked on and who you worked with:
 * 
@@ -8,6 +8,19 @@ A reflection on any design conversations that you had
 
 At least one ah-ha! moment:
 *
+
+---
+
+#### Tues, Nov 21
+
+Features/issues that you worked on and who you worked with:
+* To be able to test the Review routers and queries, I need to have Accounts and Restaurants set up. I worked with Michael to get my API key working correctly, and unfortunately I wasted far too much time looking in the wrong place for what could be going wrong. It turned out that I had not configured my API key correctly. I'm disappointed that I spent so long this week not being able to work on my own tasks, and not asking the right questions to resolve the painfully simply issues.
+
+A reflection on any design conversations that you had
+* We are still considering the best way to store restaurant data for favourited restaurants, and at the minute our closest guess is to populate a separate Favourites table with information that we cache from searches.
+
+At least one ah-ha! moment:
+* When I discovered that my API key was set up incorrectly, I facepalmed and made sure to document the configuration instructions so nobody else will have to flounder the same way I did today.
 
 ---
 
