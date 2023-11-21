@@ -1,3 +1,13 @@
+## Mon, Nov 20
+Features/issues that you worked on and who you worked with:
+- Continuing Queries and Router for Accounts
+
+A reflection on any design conversations that you had
+-Focused on coding in our project.
+
+At least one ah-ha! moment:
+- How token and authenticator.py works
+
 ## Fri, Nov 17
 Features/issues that you worked on and who you worked with:
 - Queries and Router for Accounts
