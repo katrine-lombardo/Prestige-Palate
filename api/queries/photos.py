@@ -3,9 +3,12 @@ from psycopg_pool import ConnectionPool
 from pydantic import BaseModel, HttpUrl
 from datetime import datetime
 from typing import Optional, List
+import boto3
 
 
 pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
+
+BUCKET_NAME = "prestigepalate"
 
 
 class PhotoIn(BaseModel):
@@ -116,32 +119,45 @@ class PhotoQueries:
                     photos.append(PhotoOut(**record))
                 return photos
 
-    def delete_photo(self, photo_id: int) -> dict:
+    def delete_photo(self, photo_id: int):
+        s3 = boto3.client("s3")
+        
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 try:
-                    # SQL Query to delete the photo
-                    delete_query = """
-                    DELETE FROM photos
-                    WHERE photo_id = %s
-                    RETURNING photo_id;  # Returns the id of the deleted photo
+                    # Check if the photo exists before deleting and get the necessary information
+                    exists_query = """
+                        SELECT photo_id, photo_url FROM photos WHERE photo_id = %s;
                     """
-                    cur.execute(delete_query, [photo_id])
+                    cur.execute(exists_query, [photo_id])
+                    existing_photo = cur.fetchone()
 
-                    # Check if the photo was deleted
-                    deleted_photo_id = cur.fetchone()
-                    if deleted_photo_id:
-                        conn.commit()
+                    if existing_photo:
+                        # Extract photo_url from the tuple
+                        photo_url = existing_photo[1]
+
+                        # Split the S3 URL by '/'
+                        s3_url_parts = photo_url.split("/")
+
+                        # Join the parts that represent the S3 key (excluding the protocol and bucket name)
+                        s3_key = "/".join(s3_url_parts[3:])
+
+                        # Delete the photo from S3
+                        s3.delete_object(Bucket=BUCKET_NAME, Key=s3_key)
+
+                        # SQL Query to delete the photo
+                        delete_query = "DELETE FROM photos WHERE photo_id = %s RETURNING photo_id;"
+                        cur.execute(delete_query, [photo_id])
+
+                        # Fetching and returning the deleted photo_id
+                        deleted_photo_id = cur.fetchone()[0]
                         return {
                             "message": "Photo deleted successfully",
-                            "photo_id": deleted_photo_id[0],
+                            "photo_id": deleted_photo_id,
                         }
                     else:
-                        raise Exception(
-                            "Photo not found or could not be deleted."
-                        )
+                        raise Exception("Photo not found.")
 
                 except Exception as e:
-                    conn.rollback()
                     print(f"Exception occurred: {e}")
                     raise

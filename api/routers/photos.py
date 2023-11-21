@@ -82,7 +82,7 @@ async def get_photos_by_restaurant(restaurant_id: int):
 @router.delete("/photos/{photo_id}")
 async def delete_photo_by_id(photo_id: int):
     # Check if the photo exists before deleting
-    photo = PhotoQueries.show_photo_by_id(photo_id)
+    photo = PhotoQueries().show_photo_by_id(photo_id)
     s3 = boto3.client("s3")
 
     if photo:
@@ -96,7 +96,7 @@ async def delete_photo_by_id(photo_id: int):
         s3.delete_object(Bucket=BUCKET_NAME, Key=s3_key)
 
         # Delete the photo from your database or wherever it's stored
-        PhotoQueries.delete_photo(photo_id)
+        PhotoQueries().delete_photo(photo_id)
 
         return {"message": "Photo deleted successfully"}
     else:
