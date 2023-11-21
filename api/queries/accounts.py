@@ -221,7 +221,6 @@ class AccountQueries:
                     edit_profile.username,
                     edit_profile.first_name,
                     edit_profile.last_name,
-                    edit_profile.email,
                     email,
                 ]
                 cur.execute(

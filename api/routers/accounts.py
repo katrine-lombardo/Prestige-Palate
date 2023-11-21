@@ -121,14 +121,14 @@ async def change_password(
     if not valid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Current password is not match.",
+            detail="Current password does not match.",
         )
 
     # Check new password and confirm password
     if change_password.new_password != change_password.confirm_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Passwords don't match.",
+            detail="Passwords do not match.",
         )
 
     # Change password
