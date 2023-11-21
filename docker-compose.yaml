@@ -30,6 +30,7 @@ services:
             CORS_HOST: http://localhost:5173
             DATABASE_URL: postgresql://user:secret@postgres/prestige-palate
             SIGNING_KEY: ${SIGNING_KEY}
+            GOOGLE_API_KEY: ${GOOGLE_API_KEY}
         build:
             context: api
             dockerfile: Dockerfile.dev
