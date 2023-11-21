@@ -12,6 +12,8 @@ from queries.accounts import (
     AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
+    ChangePassword,
+    EditProfile,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
@@ -102,27 +104,57 @@ async def get_all_accounts(
     return accounts.get_all_accounts()
 
 
-@router.put(
-    "/api/accounts/{account_id}", response_model=Union[AccountToken, HttpError]
-)
-async def update_account(
-    info: AccountIn,
-    request: Request,
-    response: Response,
-    accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_getter),
+@router.patch("/api/accounts/{account_id}/change-password/")
+async def change_password(
+    change_password: ChangePassword,
+    current_account_data: dict = Depends(
+        authenticator.try_get_current_account_data
+    ),
+    queries: AccountQueries = Depends(),
 ):
-    hashed_password = authenticator.get_hashed_password(info.password)
-    try:
-        account = accounts.update_account(info, hashed_password)
-    except DuplicateAccountError:
+    # Verify current password
+    print(current_account_data)
+    current_account_password = current_account_data["hashed_password"]
+    valid = authenticator.verify_password(
+        change_password.current_password, current_account_password
+    )
+    if not valid:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not update account",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Current password is not match.",
         )
-    form = AccountForm(username=info.username, password=info.password)
-    token = await authenticator.login(response, request, form, accounts)
-    return AccountToken(account=account, **token.dict())
+
+    # Check new password and confirm password
+    if change_password.new_password != change_password.confirm_password:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Passwords don't match.",
+        )
+
+    # Change password
+    hashed_password = authenticator.hash_password(change_password.new_password)
+    email = current_account_data["email"]
+    queries.change_password(hashed_password, email)
+    return {
+        "status_code": status.HTTP_200_OK,
+        "detail": "Password successfully updated.",
+    }
+
+
+@router.patch("/api/accounts/{account_id}/edit-profile/")
+async def edit_profile(
+    edit_profile: EditProfile,
+    current_account_data: dict = Depends(
+        authenticator.try_get_current_account_data
+    ),
+    queries: AccountQueries = Depends(),
+):
+    email = current_account_data["email"]
+    queries.edit_profile(email, edit_profile)
+    return {
+        "status_code": status.HTTP_200_OK,
+        "detail": "Account details updated successfully.",
+    }
 
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)

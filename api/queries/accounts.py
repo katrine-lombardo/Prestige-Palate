@@ -1,10 +1,7 @@
 import os
-from psycopg_pool import ConnectionPool
+from queries.pool import pool
 from pydantic import BaseModel
 from typing import List, Optional, Union
-
-
-pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
 
 
 class Error(BaseModel):
@@ -33,6 +30,18 @@ class AccountOut(BaseModel):
 
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
+
+
+class ChangePassword(BaseModel):
+    current_password: str
+    new_password: str
+    confirm_password: str
+
+
+class EditProfile(BaseModel):
+    username: str
+    first_name: str
+    last_name: str
 
 
 class AccountQueries:
@@ -188,3 +197,40 @@ class AccountQueries:
     # def account_in_to_out(self, id: int, account: AccountIn):
     #     old_data = account.dict()
     #     return AccountOut(id=id, **old_data)
+
+    def change_password(self, new_hashed_password, email: str):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                params = [
+                    new_hashed_password,
+                    email,
+                ]
+                cur.execute(
+                    """
+                    UPDATE accounts
+                    SET hashed_password = %s
+                    WHERE email = %s;
+                    """,
+                    params,
+                )
+
+    def edit_profile(self, email: str, edit_profile):
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                params = [
+                    edit_profile.username,
+                    edit_profile.first_name,
+                    edit_profile.last_name,
+                    edit_profile.email,
+                    email,
+                ]
+                cur.execute(
+                    """
+                    UPDATE accounts
+                    SET username = %s
+                    first_name = %s,
+                    last_name = %s,
+                    WHERE email = %s;
+                    """,
+                    params,
+                )
