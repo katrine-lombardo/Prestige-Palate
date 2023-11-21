@@ -74,7 +74,7 @@ async def get_photos_by_user(user_id: int):
     "/photos/restaurants/{restaurant_id}", response_model=list[PhotoOut]
 )
 async def get_photos_by_restaurant(restaurant_id: int):
-    photos = PhotoQueries.show_photos_by_restaurant(restaurant_id)
+    photos = PhotoQueries().show_photos_by_restaurant(restaurant_id)
     return photos
 
 
