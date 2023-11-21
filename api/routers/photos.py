@@ -65,7 +65,7 @@ async def get_photo_by_id(photo_id: int):
 # Define a GET endpoint to retrieve photos by user ID
 @router.get("/photos/users/{user_id}", response_model=list[PhotoOut])
 async def get_photos_by_user(user_id: int):
-    photos = PhotoQueries.show_photos_by_user(user_id)
+    photos = PhotoQueries().show_photos_by_user(user_id)
     return photos
 
 
