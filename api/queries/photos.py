@@ -7,9 +7,11 @@ from typing import Optional, List
 
 pool = ConnectionPool(conninfo=os.environ.get("DATABASE_URL"))
 
+
 class PhotoIn(BaseModel):
     user_id: int
     restaurant_id: int
+
 
 class PhotoOut(BaseModel):
     photo_id: int
@@ -18,18 +20,25 @@ class PhotoOut(BaseModel):
     restaurant_id: int
     upload_date: datetime
 
+
 class PhotoQueries:
     def insert_photo(self, photo_data: PhotoIn, photo_url: str) -> PhotoOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                try:    # Preparing the parameters
+                try:
+                    # Check if the user exists in the "accounts" table
+                    user_exists_query = "SELECT 1 FROM accounts WHERE id = %s;"
+                    cur.execute(user_exists_query, [photo_data.user_id])
+                    if not cur.fetchone():
+                        raise Exception("User does not exist.")
+
                     # Set the upload_date to the current time
                     upload_date = datetime.now()
                     params = [
                         photo_data.user_id,
                         photo_url,
                         photo_data.restaurant_id,
-                        upload_date
+                        upload_date,
                     ]
                     # SQL Query to insert the photo
                     insert_query = """
@@ -57,8 +66,7 @@ class PhotoQueries:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "SELECT * FROM photos WHERE photo_id = %s;",
-                    [photo_id]
+                    "SELECT * FROM photos WHERE photo_id = %s;", [photo_id]
                 )
                 row = cur.fetchone()
                 if row:
@@ -73,8 +81,7 @@ class PhotoQueries:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "SELECT * FROM photos WHERE user_id = %s;",
-                    [user_id]
+                    "SELECT * FROM photos WHERE user_id = %s;", [user_id]
                 )
                 photos = []
                 for row in cur.fetchall():
@@ -89,7 +96,7 @@ class PhotoQueries:
             with conn.cursor() as cur:
                 cur.execute(
                     "SELECT * FROM photos WHERE restaurant_id = %s;",
-                    [restaurant_id]
+                    [restaurant_id],
                 )
                 photos = []
                 for row in cur.fetchall():
@@ -115,9 +122,14 @@ class PhotoQueries:
                     deleted_photo_id = cur.fetchone()
                     if deleted_photo_id:
                         conn.commit()
-                        return {"message": "Photo deleted successfully", "photo_id": deleted_photo_id[0]}
+                        return {
+                            "message": "Photo deleted successfully",
+                            "photo_id": deleted_photo_id[0],
+                        }
                     else:
-                        raise Exception("Photo not found or could not be deleted.")
+                        raise Exception(
+                            "Photo not found or could not be deleted."
+                        )
 
                 except Exception as e:
                     conn.rollback()
