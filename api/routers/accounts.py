@@ -9,7 +9,6 @@ from fastapi import (
 from queries.accounts import (
     AccountIn,
     AccountOut,
-    AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
     ChangePassword,
