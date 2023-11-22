@@ -138,23 +138,23 @@ async def change_password(
     }
 
 
-@router.patch("/api/users/edit-profile/")
+@router.patch("/api/account/{account_id}/edit-profile/")
 async def edit_profile(
     edit_profile: EditProfile,
     current_user_data: dict = Depends(
         authenticator.try_get_current_account_data
     ),
-    queries: UserQueries = Depends(),
+    queries: AccountQueries = Depends(),
 ):
-    username = current_user_data["username"]
-    queries.edit_profile(username, edit_profile)
+    email = current_user_data["email"]
+    queries.edit_profile(email, edit_profile)
     return {
         "status_code": status.HTTP_200_OK,
         "detail": "User's profile successfully changed.",
     }
 
 
-@router.delete("/api/accounts/{account_id}", response_model=bool)
+@router.delete("/api/accounts/{account_id}/delete", response_model=bool)
 async def delete_account(
     account_id: int,
     accounts: AccountQueries = Depends(),
