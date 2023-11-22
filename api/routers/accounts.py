@@ -138,7 +138,7 @@ async def change_password(
     }
 
 
-@router.patch("/api/account/{account_id}/edit-profile/")
+@router.patch("/api/accounts/{account_id}/edit-profile")
 async def edit_profile(
     edit_profile: EditProfile,
     current_user_data: dict = Depends(
@@ -150,7 +150,7 @@ async def edit_profile(
     queries.edit_profile(email, edit_profile)
     return {
         "status_code": status.HTTP_200_OK,
-        "detail": "User's profile successfully changed.",
+        "detail": "Account details updated successfully.",
     }
 
 
