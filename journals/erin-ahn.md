@@ -1,3 +1,13 @@
+## Tues, Nov 21
+Features/issues that you worked on and who you worked with:
+- Continuing Queries and Router for Accounts. Now we have a working feature to update password for accounts and to update user information. 
+
+A reflection on any design conversations that you had
+-Focused on coding in our project.
+
+At least one ah-ha! moment:
+- Using current_account = queries.get_account_by_email(email) to retrieve the hashed password!
+
 ## Mon, Nov 20
 Features/issues that you worked on and who you worked with:
 - Continuing Queries and Router for Accounts
