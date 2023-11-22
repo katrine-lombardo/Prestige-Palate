@@ -1,5 +1,7 @@
 
 ## Tues, Nov 21
+Features/issues that you worked on and who you worked with:
+- I created our favorites.py files for queries and routers today.
 
 ## Mon, Nov 20
 Features/issues that you worked on and who you worked with:
