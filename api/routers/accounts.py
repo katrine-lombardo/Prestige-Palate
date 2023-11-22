@@ -53,12 +53,13 @@ async def get_token(
     request: Request,
     account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
-    if authenticator.cookie_name in request.cookies:
-        return {
-            "access_token": request.cookies[authenticator.cookie_name],
-            "type": "Bearer",
-            "account": account,
-        }
+    if not account or authenticator.cookie_name not in request.cookies:
+        return None
+    return {
+        "access_token": request.cookies[authenticator.cookie_name],
+        "type": "Bearer",
+        "account": account,
+    }
 
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
@@ -91,7 +92,6 @@ async def get_account_by_id(
     if account is None:
         response.status_code = 404
     return account
-
 
 @router.patch("/api/accounts/{account_id}/change-password/")
 async def change_password(
@@ -138,15 +138,15 @@ async def change_password(
     }
 
 
-@router.patch("/api/accounts/{account_id}/edit-profile")
+@router.patch("/api/accounts/{account_id}/edit-profile/")
 async def edit_profile(
     edit_profile: EditProfile,
-    current_user_data: dict = Depends(
+    current_account_data: dict = Depends(
         authenticator.try_get_current_account_data
     ),
     queries: AccountQueries = Depends(),
 ):
-    email = current_user_data["email"]
+    email = current_account_data["email"]
     queries.edit_profile(email, edit_profile)
     return {
         "status_code": status.HTTP_200_OK,
@@ -154,7 +154,7 @@ async def edit_profile(
     }
 
 
-@router.delete("/api/accounts/{account_id}/delete", response_model=bool)
+@router.delete("/api/accounts/{account_id}", response_model=bool)
 async def delete_account(
     account_id: int,
     accounts: AccountQueries = Depends(),

@@ -1,4 +1,3 @@
-import os
 from queries.pool import pool
 from pydantic import BaseModel
 from typing import List, Optional, Union

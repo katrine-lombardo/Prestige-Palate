@@ -36,4 +36,5 @@ class MyAuthenticator(Authenticator):
         pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
         return pwd_context.verify(plain_password, hashed_password)
 
+
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
