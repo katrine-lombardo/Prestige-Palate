@@ -30,7 +30,7 @@ class MyAuthenticator(Authenticator):
     def get_account_data_for_cookie(self, account: AccountOutWithPassword):
         # Return the username and the data for the cookie.
         # You must return TWO values from this method.
-        return account.username, AccountOut(**account.dict())
+        return account.email, AccountOut(**account.dict())
 
     def verify_password(self, plain_password, hashed_password):
         pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

@@ -99,7 +99,7 @@ async def get_account_by_id(
 )
 async def get_all_accounts(
     accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_getter),
+    account_data: dict = Depends(authenticator.try_get_current_account_data),
 ):
     return accounts.get_all_accounts()
 
@@ -112,28 +112,36 @@ async def change_password(
     ),
     queries: AccountQueries = Depends(),
 ):
+    if current_account_data is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not authenticated.",
+        )
+    email = current_account_data.get("email")
+    # Retrieve the hashed password from the database based on the email
+    current_account = queries.get_account_by_email(email)
+    if current_account is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found.",
+        )
     # Verify current password
-    print(current_account_data)
-    current_account_password = current_account_data["hashed_password"]
     valid = authenticator.verify_password(
-        change_password.current_password, current_account_password
+        change_password.current_password, current_account.hashed_password
     )
     if not valid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Current password does not match.",
+            detail="Incorrect current password.",
         )
-
     # Check new password and confirm password
     if change_password.new_password != change_password.confirm_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Passwords do not match.",
+            detail="Password confirmation does not match the new password.",
         )
-
     # Change password
     hashed_password = authenticator.hash_password(change_password.new_password)
-    email = current_account_data["email"]
     queries.change_password(hashed_password, email)
     return {
         "status_code": status.HTTP_200_OK,
