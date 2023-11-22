@@ -1,3 +1,7 @@
+## Wednesday, Nov 22
+Features/issues that you worked on and who you worked with:
+- As a group we went over the migration files in order to get each one configured properly moving forward.
+
 ## Tuesday, Nov 21
 Features/issues that you worked on and who you worked with:
 - Updated the Photos Routers/Queries and tested all functions successfully. 
