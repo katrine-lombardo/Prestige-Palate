@@ -4,9 +4,8 @@ steps = [
         """
         CREATE TABLE IF NOT EXISTS favorites (
             id SERIAL PRIMARY KEY,
-            user_id INTEGER NOT NULL REFERENCES accounts(id),
-            restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
-            UNIQUE(user_id, restaurant_id)
+            user_id INT NOT NULL REFERENCES accounts(id),
+            place_id VARCHAR(300) UNIQUE
         );
         """,
         # "Down" SQL statement

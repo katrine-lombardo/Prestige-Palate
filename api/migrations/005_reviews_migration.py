@@ -5,13 +5,10 @@ steps = [
         CREATE TABLE IF NOT EXISTS reviews (
             id SERIAL PRIMARY KEY,
             publish_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-            author INT REFERENCES accounts(id),
-            user_icon VARCHAR(128),
-            text TEXT,
-            restaurant_id INT REFERENCES restaurants(id),
-            rating FLOAT CHECK (rating >= 1 AND rating <= 5),
-            photo_id INT,
-            FOREIGN KEY (photo_id) REFERENCES photos(photo_id) ON DELETE CASCADE
+            username VARCHAR(256) NOT NULL REFERENCES accounts(username),
+            text TEXT NOT NULL,
+            place_id VARCHAR(300) UNIQUE,
+            rating FLOAT CHECK (rating >= 1 AND rating <= 5) NOT NULL
         );
         """,
         # "Down" SQL statement
