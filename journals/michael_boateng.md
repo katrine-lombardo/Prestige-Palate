@@ -1,3 +1,14 @@
+## Tues, Nov 21
+Features/issues that you worked on and who you worked with:
+-Setup the endpoints for restaurant list and details.  Worked with Katrine to figure out her API key access.  I forgot to document the steps I took to set up Google Places so we were chasing code rather than tweaking settings. 
+
+A reflection on any design conversations that you had
+-The table migrations for the restaurant seem to be in flux, we might need to consolidate them into a bigger table to handle all the logged in user interactions(review, rate, post photo, add favorite). None of these interactions depend on the other so I'm not sure how to modify them yet.
+
+At least one ah-ha! moment:
+-Always leave a note/annotate, it's easy to forget stuff. 
+
+
 ## Mon, Nov 20
 Features/issues that you worked on and who you worked with:
 -I worked with Trey to make more queries/routers then switched over to restaurants to start learning how to code the google api requests for fastapi.
