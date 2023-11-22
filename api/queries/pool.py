@@ -1,7 +1,6 @@
 import os
 from psycopg_pool import ConnectionPool
 
-<<<<<<< HEAD
 # Global instance of ConnectionPool for managing PostgreSQL connections.
 # This pool facilitates efficient database connection management by reusing
 # existing connections, thereby optimizing performance and resource utilization.
@@ -16,6 +15,4 @@ from psycopg_pool import ConnectionPool
 # are handled consistently and efficiently, leveraging the robustness and
 # scalability of the psycopg library.
 
-=======
->>>>>>> accounts
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
