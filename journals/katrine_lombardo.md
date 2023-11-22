@@ -1,4 +1,4 @@
-#### Wed, Nov 22
+#### Mon, Nov 27
 
 Features/issues that you worked on and who you worked with:
 * 
@@ -8,6 +8,19 @@ A reflection on any design conversations that you had
 
 At least one ah-ha! moment:
 *
+
+---
+
+#### Wed, Nov 22
+
+Features/issues that you worked on and who you worked with:
+* Today as a group we took a step back and looked at our data tables. Some things weren't quite adding up, so it was a great exercise to be able to clean up and demystify some of the confusion around how our app works. 
+
+A reflection on any design conversations that you had
+* We found that going back to our original wireframe really helped us through some design confusion we had, particularly around the relationship between reviews and photos. 
+
+At least one ah-ha! moment:
+* The last time we looked at our data as a team, we had a lot less code completed. It was enlightening to see how we were able to stitch together all our thoughts and work, and make everything flow more synergistically. 
 
 ---
 
