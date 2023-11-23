@@ -1,6 +1,7 @@
 ## Wednesday, Nov 22
 Features/issues that you worked on and who you worked with:
 - As a group we went over the migration files in order to get each one configured properly moving forward.
+- Created the setup for Browser Router. Created Nav.jsx, HomePage.jsx, and updated App.jsx in order to test functionality. 
 
 ## Tuesday, Nov 21
 Features/issues that you worked on and who you worked with:
