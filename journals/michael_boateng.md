@@ -1,3 +1,25 @@
+## Wed, Nov 22
+Features/issues that you worked on and who you worked with:
+-Discussed and reconfigured our database tables so they made more sense.
+
+A reflection on any design conversations that you had
+-We figured out that the restaurants table wasn't necessary for anything other than seed data(I might be able to use it for a best restaurants feature).  The photos table will have a foreign key to the reviews, since you can only post a photo while submitting a review(we don't have capability of uploading multiple photos though - do we want or need to?). All tables except restaurants will have a foreign key to accounts.
+
+At least one ah-ha! moment:
+-It was nice to get out of the coding forest and spend time contemplating the big picture with our tables. 
+
+
+## Tues, Nov 21
+Features/issues that you worked on and who you worked with:
+-Setup the endpoints for restaurant list and details.  Worked with Katrine to figure out her API key access.  I forgot to document the steps I took to set up Google Places so we were chasing code rather than tweaking settings. 
+
+A reflection on any design conversations that you had
+-The table migrations for the restaurant seem to be in flux, we might need to consolidate them into a bigger table to handle all the logged in user interactions(review, rate, post photo, add favorite). None of these interactions depend on the other so I'm not sure how to modify them yet.
+
+At least one ah-ha! moment:
+-Always leave a note/annotate, it's easy to forget stuff. 
+
+
 ## Mon, Nov 20
 Features/issues that you worked on and who you worked with:
 -I worked with Trey to make more queries/routers then switched over to restaurants to start learning how to code the google api requests for fastapi.

@@ -9,9 +9,10 @@ from fastapi import (
 from queries.accounts import (
     AccountIn,
     AccountOut,
-    AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
+    ChangePassword,
+    EditProfile,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
@@ -51,12 +52,13 @@ async def get_token(
     request: Request,
     account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
-    if authenticator.cookie_name in request.cookies:
-        return {
-            "access_token": request.cookies[authenticator.cookie_name],
-            "type": "Bearer",
-            "account": account,
-        }
+    if not account or authenticator.cookie_name not in request.cookies:
+        return None
+    return {
+        "access_token": request.cookies[authenticator.cookie_name],
+        "type": "Bearer",
+        "account": account,
+    }
 
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
@@ -90,28 +92,65 @@ async def get_account_by_id(
         response.status_code = 404
     return account
 
-
-@router.put(
-    "/api/accounts/{account_id}", response_model=Union[AccountToken, HttpError]
-)
-async def update_account(
-    info: AccountIn,
-    request: Request,
-    response: Response,
-    accounts: AccountQueries = Depends(),
-    account_data: dict = Depends(authenticator.get_account_getter),
+@router.patch("/api/accounts/{account_id}/change-password/")
+async def change_password(
+    change_password: ChangePassword,
+    current_account_data: dict = Depends(
+        authenticator.try_get_current_account_data
+    ),
+    queries: AccountQueries = Depends(),
 ):
-    hashed_password = authenticator.get_hashed_password(info.password)
-    try:
-        account = accounts.update_account(info, hashed_password)
-    except DuplicateAccountError:
+    if current_account_data is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not update account",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not authenticated.",
         )
-    form = AccountForm(username=info.username, password=info.password)
-    token = await authenticator.login(response, request, form, accounts)
-    return AccountToken(account=account, **token.dict())
+    email = current_account_data.get("email")
+    # Retrieve the hashed password from the database based on the email
+    current_account = queries.get_account_by_email(email)
+    if current_account is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found.",
+        )
+    # Verify current password
+    valid = authenticator.verify_password(
+        change_password.current_password, current_account.hashed_password
+    )
+    if not valid:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect current password.",
+        )
+    # Check new password and confirm password
+    if change_password.new_password != change_password.confirm_password:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Password confirmation does not match the new password.",
+        )
+    # Change password
+    hashed_password = authenticator.hash_password(change_password.new_password)
+    queries.change_password(hashed_password, email)
+    return {
+        "status_code": status.HTTP_200_OK,
+        "detail": "Password successfully updated.",
+    }
+
+
+@router.patch("/api/accounts/{account_id}/edit-profile/")
+async def edit_profile(
+    edit_profile: EditProfile,
+    current_account_data: dict = Depends(
+        authenticator.try_get_current_account_data
+    ),
+    queries: AccountQueries = Depends(),
+):
+    email = current_account_data["email"]
+    queries.edit_profile(email, edit_profile)
+    return {
+        "status_code": status.HTTP_200_OK,
+        "detail": "Account details updated successfully.",
+    }
 
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)

@@ -4,13 +4,16 @@ from pydantic import BaseModel
 
 api_key = os.getenv('GOOGLE_API_KEY')
 
+
 class LocationSearchIn(BaseModel):
     location: str
+
 
 class LocationSearchOut(BaseModel):
     location: str
     location_search_id: str
     viewport: dict
+
 
 def geocode_location_search(location: str, api_key: str) -> LocationSearchOut:
     base_url = "https://maps.googleapis.com/maps/api/geocode/json"
@@ -18,12 +21,9 @@ def geocode_location_search(location: str, api_key: str) -> LocationSearchOut:
         "address": location,
         "key": api_key
     }
-
     response = requests.get(base_url, params=params)
-
     if response.status_code == 200:
         data = response.json()
-
         if data.get("status") == "OK" and "results" in data:
             results = data["results"][0]
             location_id = results.get("place_id")

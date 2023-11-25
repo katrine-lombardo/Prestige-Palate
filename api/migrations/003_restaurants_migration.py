@@ -4,7 +4,7 @@ steps = [
         """
         CREATE TABLE IF NOT EXISTS restaurants (
             id SERIAL PRIMARY KEY,
-            google_place_id VARCHAR(300) UNIQUE
+            place_id VARCHAR(300) UNIQUE
         );
         """,
         # "Down" SQL statement
