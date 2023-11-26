@@ -8,14 +8,14 @@ from queries.pool import pool
 router = APIRouter()
 
 
-@router.post("/restaurants/{google_place_id}/favorite")
+@router.post("/restaurants/{place_id}/favorite")
 async def add_favorite(
-    google_place_id: str,
+    place_id: str,
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
     queries = FavoriteQueries(pool)
     try:
-        await queries.add_favorite(current_user.id, google_place_id)
+        await queries.add_favorite(current_user.id, place_id)
         return {"status": "success", "message": "Added to favorites"}
     except Exception as e:
         raise HTTPException(
