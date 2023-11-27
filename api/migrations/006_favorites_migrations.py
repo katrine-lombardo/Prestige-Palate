@@ -3,10 +3,10 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE IF NOT EXISTS favorites (
-            id SERIAL PRIMARY KEY,
-            user_id INTEGER NOT NULL REFERENCES accounts(id),
-            restaurant_id INTEGER NOT NULL REFERENCES restaurants(id),
-            UNIQUE(user_id, restaurant_id)
+            user_id INT NOT NULL,
+            place_id VARCHAR(300),
+            PRIMARY KEY (user_id, place_id),
+            FOREIGN KEY (user_id) REFERENCES accounts(id)
         );
         """,
         # "Down" SQL statement
