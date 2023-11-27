@@ -1,5 +1,5 @@
-from api.queries.accounts import AccountOut
-from api.queries.favorites import FavoriteQueries
+from queries.accounts import AccountOut
+from queries.favorites import FavoriteQueries
 from fastapi import APIRouter, Depends, HTTPException
 from authenticator import authenticator
 
