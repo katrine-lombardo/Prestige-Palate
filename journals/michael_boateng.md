@@ -1,3 +1,14 @@
+## Mon, Nov 27
+Features/issues that you worked on and who you worked with:
+-Backend -- Login with Erin and Favorites with Yaosheng.
+
+A reflection on any design conversations that you had
+-Noticed that the login form on FastApi has username, not sure how we can change it to email.  Async isn't playing nice with Favorites create/get and Restaurant search functions so we left them out.  
+
+At least one ah-ha! moment:
+-Since photos will be submitted with the review, we're moving some photo code inside the review post function.  Seems a bit dense/heady but looking forward to seeing how they play together eventually.
+
+
 ## Wed, Nov 22
 Features/issues that you worked on and who you worked with:
 -Discussed and reconfigured our database tables so they made more sense.
