@@ -1,4 +1,4 @@
-#### Mon, Nov 27
+#### Tues, Nov 28
 
 Features/issues that you worked on and who you worked with:
 * 
@@ -8,6 +8,19 @@ A reflection on any design conversations that you had
 
 At least one ah-ha! moment:
 *
+
+---
+
+#### Mon, Nov 27
+
+Features/issues that you worked on and who you worked with:
+* I am still working on the reviews queries and routers, and I'm feeling quite disheartened after spending over a week within the same code. I spent 6 hours yesterday getting the create function to work, but I'm not happy with the end result and I'm not sure how to get it up to par with the elegance of the code of my teammates.
+
+A reflection on any design conversations that you had
+* We made a breakthrough on an obstacle we've had, with not knowing how reviews and photos are submitted. We had a general idea of what we wanted to accomplish, but today we were finally able to describe it with code thanks to help from Phil.
+
+At least one ah-ha! moment:
+* Trey was generous enough to agree to work together to help each other out with getting unstuck. We both have particularly complicated chunks of backend code to work through, and I think having another pair of eyes on each others' code will be massively effective in getting this backend work behind us.
 
 ---
 
