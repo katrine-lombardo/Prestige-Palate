@@ -3,7 +3,7 @@ steps = [
         # "Up" SQL statement
         """
         CREATE TABLE IF NOT EXISTS reviews (
-            id SERIAL,
+            id SERIAL UNIQUE,
             username VARCHAR(256) NOT NULL REFERENCES accounts(username),
             place_id VARCHAR(300) NOT NULL,
             PRIMARY KEY (username, place_id),
