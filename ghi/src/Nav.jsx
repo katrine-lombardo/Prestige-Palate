@@ -1,6 +1,14 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import useToken from "@galvanize-inc/jwtdown-for-react";
+import React, { useState } from "react";
+
 
 function Nav() {
+    const { logout } = useToken();
+    const { token } = useAuthContext();
+    const { navigate } = useNavigate();
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -32,6 +40,20 @@ function Nav() {
                             Home
                         </NavLink>
                     </li>
+                    <div>
+                        {!token && (
+                            <button className="signIn" onClick={navigate("/signin")}>
+                                Sign In
+                            </button>
+                        )}
+                    </div>
+                    <div>
+                        {token && (
+                            <button className="signIn" onClick={logout}>
+                                Sign Out
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
