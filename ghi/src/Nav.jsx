@@ -7,7 +7,11 @@ import React, { useState } from "react";
 function Nav() {
     const { logout } = useToken();
     const { token } = useAuthContext();
+<<<<<<< HEAD
+    const navigate = useNavigate();
+=======
     const navigate  = useNavigate();
+>>>>>>> b90b146c310d3e2c2ebf0deeaf4b2522c9e1f735
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -42,7 +46,7 @@ function Nav() {
                     </li>
                     <div>
                         {!token && (
-                            <button className="signIn" onClick={navigate("/signin")}>
+                            <button className="signIn" onClick={navigate("/login")}>
                                 Sign In
                             </button>
                         )}
