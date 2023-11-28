@@ -1,51 +1,56 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Union
 from queries.pool import pool
 from datetime import datetime
 
 
+class Error(BaseModel):
+    message: str
+
+
 class ReviewIn(BaseModel):
+    place_id: str
     text: str
-    restaurant_id: int
     rating: float
-    user_icon: Optional[str] = None
-    photo_id: Optional[int] = None
 
 
 class ReviewOut(BaseModel):
     id: int
+    username: str
+    place_id: str
     publish_time: datetime
-    author: int
     text: str
-    restaurant_id: int
     rating: float
-    user_icon: Optional[str] = None
-    photo_id: Optional[int] = None
 
 
 class ReviewUpdate(BaseModel):
     text: Optional[str] = None
-    restaurant_id: Optional[int] = None
     rating: Optional[float] = None
-    user_icon: Optional[str] = None
-    photo_id: Optional[int] = None
 
 
 class ReviewQueries:
-    def get_reviews_by_user(self, username: str) -> list[ReviewOut]:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT * FROM reviews
-                    WHERE author = (SELECT id FROM accounts WHERE username = %s);
-                    """,
-                    [username],
-                )
-                reviews = []
-                for row in cur.fetchall():
-                    reviews.append(ReviewOut(**row))
-                return reviews
+    def get_reviews_by_account(self, username: str) -> List[ReviewOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT * FROM reviews
+                        WHERE username = (SELECT username FROM accounts WHERE username = %s);
+                        """,
+                        [username],
+                    )
+                    reviews = []
+                    for row in cur.fetchall():
+                        row_dict = {
+                            column.name: value
+                            for column, value in zip(cur.description, row)
+                        }
+                        reviews.append(ReviewOut(**row_dict))
+                    return reviews
+        except Exception as e:
+            print(e)
+            return Error(message=str(e))
 
     def delete_review(self, review_id: int) -> bool:
         with pool.connection() as conn:
@@ -60,63 +65,116 @@ class ReviewQueries:
                 return cur.rowcount > 0
 
     def create_review(
-        self, review: ReviewIn, author_username: str
-    ) -> ReviewOut:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    INSERT INTO reviews (author, user_icon, text, restaurant_id, rating, photo_id)
-                    VALUES ((SELECT id FROM accounts WHERE username = %s), %s, %s, %s, %s, %s)
-                    RETURNING *;
-                    """,
-                    [
-                        author_username,
-                        review.user_icon,
-                        review.text,
-                        review.restaurant_id,
-                        review.rating,
-                        review.photo_id,
-                    ],
-                )
-                return ReviewOut(**cur.fetchone())
+        self, review: ReviewIn, username: str
+    ) -> Union[ReviewOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                            INSERT INTO reviews (username, place_id, text, rating)
+                            VALUES (%s, %s, %s, %s)
+                            RETURNING *;
+                        """,
+                        [
+                            username,
+                            review.place_id,
+                            review.text,
+                            review.rating,
+                        ],
+                    )
+                    conn.commit()
+                    record = cur.fetchone()
+                    if record is None:
+                        return Error(message="No records found")
+                    else:
+                        review_data = {
+                            "id": record[0],
+                            "username": record[1],
+                            "place_id": record[2],
+                            "publish_time": record[3],
+                            "text": record[4],
+                            "rating": record[5],
+                        }
+                        return ReviewOut(**review_data)
+        except Exception as e:
+            print(e)
+            return Error(message="Failed to create review")
 
     def update_review(
         self, review_id: int, review_data: ReviewUpdate
-    ) -> ReviewOut:
-        set_clause = ", ".join(
-            [
-                f"{key} = %s"
-                for key in review_data.dict().keys()
-                if review_data.dict()[key] is not None
-            ]
-        )
-        values = list(review_data.dict().values()) + [review_id]
+    ) -> Union[ReviewOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    # Fetch the existing review
+                    cur.execute(
+                        """
+                        SELECT * FROM reviews
+                        WHERE id = %s;
+                        """,
+                        [review_id],
+                    )
+                    existing_record = cur.fetchone()
 
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    f"""
-                    UPDATE reviews
-                    SET {set_clause}
-                    WHERE id = %s
-                    RETURNING *;
-                    """,
-                    values,
-                )
-                return ReviewOut(**cur.fetchone())
+                    if existing_record is None:
+                        return Error(message="Review not found")
 
-    def get_reviews_for_restaurant(
-        self, restaurant_id: int
-    ) -> list[ReviewOut]:
+                    # Create a dictionary from the existing record
+                    existing_review = {
+                        column.name: value
+                        for column, value in zip(
+                            cur.description, existing_record
+                        )
+                    }
+
+                    # Update the existing review with the new data
+                    updated_review = {
+                        **existing_review,
+                        **review_data.dict(exclude_unset=True),
+                    }
+
+                    # Build the UPDATE query
+                    update_query = """
+                        UPDATE reviews
+                        SET username = %s, place_id = %s, text = %s, rating = %s
+                        WHERE id = %s
+                        RETURNING *;
+                    """
+
+                    # Execute the update query
+                    cur.execute(
+                        update_query,
+                        [
+                            updated_review["username"],
+                            updated_review["place_id"],
+                            updated_review["text"],
+                            updated_review["rating"],
+                            review_id,
+                        ],
+                    )
+
+                    # Fetch the updated record
+                    updated_record = cur.fetchone()
+
+                    if updated_record is not None:
+                        return ReviewOut(**updated_review)
+                    else:
+                        return Error(message="Failed to update review")
+
+        except Exception as e:
+            print(e)
+            return Error(message="Failed to update review")
+
+    def get_reviews_for_restaurant(self, place_id: str) -> list[ReviewOut]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
                     """
                     SELECT * FROM reviews
-                    WHERE restaurant_id = %s;
+                    WHERE place_id = %s;
                     """,
-                    [restaurant_id],
+                    [place_id],
                 )
                 reviews = []
                 for row in cur.fetchall():
