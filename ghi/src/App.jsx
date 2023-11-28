@@ -12,7 +12,7 @@ function App() {
             <Nav />
             <div className="container">
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
+                    <Route path="/home" element={<HomePage />} />
                     <Route path="/signup" element={<SignupForm />} />
                     <Route path="/login" element={<LoginForm />} />
                     <Route path="/logout" element={<LogoutButton />} />
