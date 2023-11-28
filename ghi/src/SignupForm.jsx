@@ -19,31 +19,37 @@ const SignupForm = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault();
+
         if (password !== passwordConfirmation) {
             setErrorMessage("Passwords do not match.");
             return;
         }
 
         try {
-            const response = await apiClient.post("/api/accounts", {
-                first_name: firstName,
-                last_name: lastName,
-                email: email,
-                password: password,
+            const response = await fetch("http://localhost:8000/api/accounts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    password: password,
+                }),
             });
 
-            if (response.data) {
+            const data = await response.json();
+
+            if (response.ok) {
                 await login(email, password);
                 navigate("/");
+            } else {
+                setErrorMessage(data.detail || "Failed to sign up.");
             }
         } catch (error) {
-            if (error.response) {
-                setErrorMessage(
-                    error.response.data.detail || "Failed to sign up."
-                );
-            } else {
-                setErrorMessage("Failed to sign up.");
-            }
+            console.error("Signup error:", error);
+            setErrorMessage("Failed to sign up.");
         }
     };
 
