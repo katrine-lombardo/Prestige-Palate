@@ -9,13 +9,13 @@ router = APIRouter()
 
 
 @router.post("/restaurants/{place_id}/favorite")
-async def add_favorite(
+def add_favorite(
     place_id: str,
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
-    queries = FavoriteQueries(pool)
+    queries = FavoriteQueries()
     try:
-        await queries.add_favorite(current_user.id, place_id)
+        queries.add_favorite(current_user['id'], place_id)
         return {"status": "success", "message": "Added to favorites"}
     except Exception as e:
         raise HTTPException(
@@ -24,12 +24,12 @@ async def add_favorite(
 
 
 @router.get("/user/favorites")
-async def list_favorites(
+def list_favorites(
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
-    queries = FavoriteQueries(pool)
+    queries = FavoriteQueries()
     try:
-        favorites = await queries.get_favorites(current_user.id)
+        favorites = queries.get_favorites(current_user['id'])
         return favorites
     except Exception as e:
         raise HTTPException(

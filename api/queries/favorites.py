@@ -1,23 +1,23 @@
 from pydantic import BaseModel
+from queries.pool import pool
 from typing import List
 
-
 class FavoriteQueries:
-    def __init__(self, db_pool):
-        self.db_pool = db_pool
+    def __init__(self):
+        self.pool = pool
 
-    async def add_favorite(self, user_id: int, place_id: str):
-        async with self.db_pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
+    def add_favorite(self, user_id: int, place_id: str):
+        with self.pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
                     "INSERT INTO favorites (user_id, place_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
                     (user_id, place_id),
                 )
 
-    async def get_favorites(self, user_id: int) -> List[dict]:
-        async with self.db_pool.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(
+    def get_favorites(self, user_id: int) -> List[dict]:
+        with self.pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
                     "SELECT place_id FROM favorites WHERE user_id = %s;",
                     (user_id,),
                 )

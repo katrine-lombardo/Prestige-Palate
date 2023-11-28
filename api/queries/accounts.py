@@ -44,7 +44,7 @@ class EditProfile(BaseModel):
 
 
 class AccountQueries:
-    def get_account_by_email(self, email: str) -> AccountOutWithPassword:
+    def get_account_by_email(self, email: str) -> Union[Error, AccountOutWithPassword]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
