@@ -7,7 +7,7 @@ import React, { useState } from "react";
 function Nav() {
     const { logout } = useToken();
     const { token } = useAuthContext();
-    const { navigate } = useNavigate();
+    const navigate  = useNavigate();
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,7 +34,7 @@ function Nav() {
                     <li className="nav-item">
                         <NavLink
                             className="nav-link"
-                            activeClassName="active"
+                            activeclassname="active"
                             to="/home"
                         >
                             Home
