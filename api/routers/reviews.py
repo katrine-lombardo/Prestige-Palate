@@ -6,7 +6,7 @@ from queries.reviews import (
     Error,
     ReviewUpdate,
 )
-from typing import List, Optional, Union, Annotated
+from typing import List, Union
 from fastapi import (
     APIRouter,
     Depends,

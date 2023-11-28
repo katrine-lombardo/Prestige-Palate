@@ -166,7 +166,7 @@ class ReviewQueries:
             print(e)
             return Error(message="Failed to update review")
 
-    def get_reviews_for_restaurant(self, place_id: str) -> list[ReviewOut]:
+    def get_app_reviews_for_restaurant(self, place_id: str) -> list[ReviewOut]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
