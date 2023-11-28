@@ -5,6 +5,7 @@ from authenticator import authenticator
 from routers import accounts, restaurants, photos, reviews, reviews, favorites
 
 app = FastAPI()
+
 app.include_router(authenticator.router)
 app.include_router(accounts.router, tags=["Accounts"])
 app.include_router(photos.router, tags=["Photos"])
