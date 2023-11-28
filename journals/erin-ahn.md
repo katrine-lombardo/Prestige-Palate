@@ -1,3 +1,14 @@
+## Mon, Nov 27
+Features/issues that you worked on and who you worked with:
+- Backend Login Token with Michael
+- Frontend Auth Independently.
+
+A reflection on any design conversations that you had
+- Login form on FastApi is using username instead of email currently. Still need to troubleshoot as we plan on using email instead. Need to ask Yaosheng re:LoginForm and SignupForm since it goes hand in hand with the front end auth.
+
+At least one ah-ha! moment:
+- Love working with the team and how supportive everyone is in the process in pushing through - we all have different strengths. Excited for deployment soon and trying to get clean code in.
+
 ## Tues, Nov 21
 Features/issues that you worked on and who you worked with:
 - Continuing Queries and Router for Accounts. Now we have a working feature to update password for accounts and to update user information. 
