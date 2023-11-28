@@ -1,6 +1,14 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import useToken from "@galvanize-inc/jwtdown-for-react";
+import React, { useState } from "react";
+
 
 function Nav() {
+    const { logout } = useToken();
+    const { token } = useAuthContext();
+    const { navigate } = useNavigate();
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -22,48 +30,30 @@ function Nav() {
                     className="collapse navbar-collapse"
                     id="navbarSupportedContent"
                 >
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <NavLink
-                                to="/home"
-                                className={({ isActive }) =>
-                                    isActive ? "nav-link active" : "nav-link"
-                                }
-                            >
-                                Home
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink
-                                to="/signup"
-                                className={({ isActive }) =>
-                                    isActive ? "nav-link active" : "nav-link"
-                                }
-                            >
-                                Signup
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink
-                                to="/login"
-                                className={({ isActive }) =>
-                                    isActive ? "nav-link active" : "nav-link"
-                                }
-                            >
-                                Login
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink
-                                to="/logout"
-                                className={({ isActive }) =>
-                                    isActive ? "nav-link active" : "nav-link"
-                                }
-                            >
-                                Logout
-                            </NavLink>
-                        </li>
-                    </ul>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                    <li className="nav-item">
+                        <NavLink
+                            className="nav-link"
+                            activeClassName="active"
+                            to="/home"
+                        >
+                            Home
+                        </NavLink>
+                    </li>
+                    <div>
+                        {!token && (
+                            <button className="signIn" onClick={navigate("/signin")}>
+                                Sign In
+                            </button>
+                        )}
+                    </div>
+                    <div>
+                        {token && (
+                            <button className="signIn" onClick={logout}>
+                                Sign Out
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </nav>
