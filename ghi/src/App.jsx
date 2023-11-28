@@ -4,6 +4,7 @@ import Nav from "./Nav";
 import HomePage from "./HomePage";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 function App() {
     return (
