@@ -1,4 +1,4 @@
-#### Tues, Nov 28
+#### Wed, Nov 29
 
 Features/issues that you worked on and who you worked with:
 * 
@@ -8,6 +8,19 @@ A reflection on any design conversations that you had
 
 At least one ah-ha! moment:
 *
+
+---
+
+#### Tues, Nov 28
+
+Features/issues that you worked on and who you worked with:
+* Trey massively helped me today with getting all the reviews functions working. We spent a significant amount of time banging our heads against the wall using AWS, and like Trey mentioned it feels like we took several steps back. It's disheartening when our other team members are all working in the frontend already, and I feel miles behind my teammates on coding progress.
+
+A reflection on any design conversations that you had
+* After seeing Bart's message in slack about a free alternative to AWS, we will be going in a different direction with our photo storage. This is exciting and will hopefully be a lot simpler as we go back and refactor our code.
+
+At least one ah-ha! moment:
+* I learned today that the VS Code liveshare persists beyond changing branches. My mistake unfortunately led to issues with our main branch. I am getting concerned about the health of our main branch, so I'm going to think on some best practices for keeping our main branch clean.
 
 ---
 
