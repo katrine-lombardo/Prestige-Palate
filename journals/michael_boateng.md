@@ -1,3 +1,13 @@
+## Tues, Nov 28
+Features/issues that you worked on and who you worked with:
+-Tried to move the Nav bar to the top based on Yaosheng's code. 
+
+A reflection on any design conversations that you had
+-The review with nested photo is pretty difficult, looks like Bart showed an alternative to S3 bucket so Trey may pivot to that option...also we decided to leave the async non-async code as is and move forward.  
+
+At least one ah-ha! moment:
+-Our connection pool isn't async and requests isn't either.  
+
 ## Mon, Nov 27
 Features/issues that you worked on and who you worked with:
 -Backend -- Login with Erin and Favorites with Yaosheng.
