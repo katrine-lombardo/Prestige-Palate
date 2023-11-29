@@ -9,6 +9,12 @@ const LoginForm = () => {
     const { login } = useToken();
     const navigate = useNavigate();
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     await login(username, password);
+    //     e.target.reset();
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -55,7 +61,7 @@ const LoginForm = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary" value="Login">
                         Login
                     </button>
                 </form>

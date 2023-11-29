@@ -9,10 +9,15 @@ import Sidebar from "./Sidebar";
 import EditProfile from "./EditProfile";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw error("VITE_APP_API_HOST was undefined.")
+}
+
 function App() {
     return (
         <BrowserRouter>
-            <AuthProvider>
+            <AuthProvider baseUrl={tokenUrl}>
                 <Nav />
                 <div className="container">
                     <Routes>
