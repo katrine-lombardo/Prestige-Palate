@@ -13,7 +13,10 @@ const HomePage = () => {
 
 
     const handleSearchResults = (results) => {
-        setRestaurants(results);
+        if (results.length > 0) {
+            console.log("Setting restaurants:", results);
+            setRestaurants(results);
+        }
     };
 
     return (

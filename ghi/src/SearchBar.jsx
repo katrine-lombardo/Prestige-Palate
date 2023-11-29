@@ -16,11 +16,13 @@ function SearchBar({ onSearch }) {
                 const response = await fetch(url);
 
 
-                console.log("Requesting URL:", response)
+              //  console.log("Requesting URL:", response)
+                console.log("Requesting URL:", url.toString());
+
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Search results:", data);
-                    onSearch(data.restaurants);
+                    console.log("Search results:", data.restaurants.places);
+                    onSearch(data.restaurants.places);
                 } else {
                     console.error("error search:", response.statusText)
                 }
