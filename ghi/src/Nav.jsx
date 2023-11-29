@@ -42,7 +42,7 @@ function Nav() {
                     </li>
                     <div>
                         {!token && (
-                            <button className="signIn" onClick={navigate("/login")}>
+                            <button className="signIn" onClick={() => navigate("/login")}>
                                 Sign In
                             </button>
                         )}
@@ -54,6 +54,7 @@ function Nav() {
                             </button>
                         )}
                     </div>
+
                 </div>
             </div>
         </nav>
