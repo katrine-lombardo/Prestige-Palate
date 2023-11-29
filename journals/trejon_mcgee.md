@@ -1,3 +1,15 @@
+## Wednesday, Nov 29
+Features/issues that you worked on and who you worked with:
+- Created CreateReviews.jsx and begin working on a review form to render on the front end. Successfully added the option to upload a photo using S3 presigned URLs. WIP as I need to incorporate dynamic data
+
+## Tuesday, Nov 28
+Features/issues that you worked on and who you worked with:
+- Continued working through Reviews.py Routers/Queries files
+
+## Monday, Nov 27
+Features/issues that you worked on and who you worked with:
+- Worked through the Reviews.py Routers/Queries files 
+
 ## Wednesday, Nov 22
 Features/issues that you worked on and who you worked with:
 - As a group we went over the migration files in order to get each one configured properly moving forward.
