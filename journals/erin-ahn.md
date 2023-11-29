@@ -1,3 +1,13 @@
+## Tues, Nov 28
+Features/issues that you worked on and who you worked with:
+- Completed Frontend Auth Independently - we'll also have to remember to incorporate it on other additional front end pages as needed.
+
+A reflection on any design conversations that you had
+- We have email being used for fastapi but it says username. We seeked Phil's help on this and learned it's part of the library so we won't be able to change it.
+
+At least one ah-ha! moment:
+- How neat it is to work with Context.
+
 ## Mon, Nov 27
 Features/issues that you worked on and who you worked with:
 - Backend Login Token with Michael
