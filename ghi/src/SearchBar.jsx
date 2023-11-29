@@ -5,7 +5,6 @@ function SearchBar({ onSearch }) {
 
     const handleSearch = async (event) => {
         event.preventDefault();
-        console.log("Search initiated for:", searchTerm);
         if (searchTerm) {
             const url = new URL('http://localhost:8000/restaurants');
             url.searchParams.append('location', searchTerm);
@@ -13,15 +12,12 @@ function SearchBar({ onSearch }) {
             try {
                 const response = await fetch(url);
 
-
-                console.log("Requesting URL:", url.toString());
-
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("Search results:", data.restaurants.places);
-                    onSearch(data.restaurants.places);
+                    const searchResults = data.restaurants.places.length > 0 ? data.restaurants.places : [];
+                    onSearch(searchResults);
                 } else {
-                    console.error("error search:", response.statusText)
+                    onSearch([]);
                 }
 
             } catch (error) {
