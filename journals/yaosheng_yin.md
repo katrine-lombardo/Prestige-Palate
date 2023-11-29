@@ -1,3 +1,14 @@
+## Tues, Nov 29
+Features/issues that you worked on and who you worked with:
+- I worked with Michael to debug for the search part, and make Homepage now displays search results
+
+## Tues, Nov 28
+Features/issues that you worked on and who you worked with:
+- modeified [LoginForm][LogoutButton][SignupForm] and merge it to main branch
+
+## Tues, Nov 27
+Features/issues that you worked on and who you worked with:
+- I created [LoginForm][LogoutButton][SignupForm] component
 
 ## Tues, Nov 21
 Features/issues that you worked on and who you worked with:
