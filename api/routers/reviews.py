@@ -2,9 +2,9 @@ from queries.accounts import AccountOut
 from queries.reviews import (
     ReviewIn,
     ReviewOut,
+    ReviewUpdate,
     ReviewQueries,
     Error,
-    ReviewUpdate,
 )
 from typing import List, Union
 from fastapi import (
@@ -12,7 +12,6 @@ from fastapi import (
     Depends,
     HTTPException,
     status,
-    Response,
 )
 from authenticator import authenticator
 import requests, os
@@ -21,7 +20,7 @@ router = APIRouter()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 
-@router.get("/api/restaurants/{place_id}/reviews")
+@router.get("/api/restaurants/{place_id}/googlereviews")
 async def get_google_reviews_for_restaurant(place_id: str):
     try:
         url = f"https://places.googleapis.com/v1/places/{place_id}"
@@ -43,22 +42,36 @@ async def get_google_reviews_for_restaurant(place_id: str):
                 detail=f"Request failed with status code {response.status_code}",
             )
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(
+            status_code=500, detail="Not a valid restaurant place id"
+        )
 
 
 @router.get(
     "/api/restaurants/{place_id}/reviews",
-    response_model=list[ReviewOut],
+    response_model=List[ReviewOut],
 )
 async def get_app_reviews_for_restaurant(
     place_id: str,
     reviews: ReviewQueries = Depends(),
 ):
-    return reviews.get_app_reviews_for_restaurant(place_id)
+    try:
+        success = reviews.get_app_reviews_for_restaurant(place_id)
+        if success:
+            return success
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Not a valid place_id",
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No reviews found for this restaurant",
+        )
 
 
 @router.get(
-    "/api/accounts/{username}/reviews/",
+    "/api/accounts/{username}/reviews",
     response_model=List[ReviewOut],
 )
 async def get_reviews_by_account(
@@ -66,35 +79,50 @@ async def get_reviews_by_account(
     reviews: ReviewQueries = Depends(),
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
-    if not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not authorized to see these reviews",
-        )
-    return reviews.get_reviews_by_account(username)
+    try:
+        if not current_user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User must be logged in to view app reviews",
+            )
+        success = reviews.get_reviews_by_account(username)
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No reviews found for this user",
+            )
+        return success
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.post(
-    "/api/restaurants/{place_id}/reviews/",
+    "/api/restaurants/{place_id}/reviews",
     response_model=Union[ReviewOut, Error],
 )
 async def create_review(
+    place_id: str,
     review: ReviewIn,
     reviews: ReviewQueries = Depends(),
     current_user: AccountOut = Depends(
         authenticator.try_get_current_account_data
     ),
 ):
-    if not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Cannot create a review with these credentials",
+    try:
+        if not current_user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Cannot create a review with these credentials",
+            )
+        return reviews.create_review(
+            place_id, review, current_user["username"]
         )
-    return reviews.create_review(review, current_user["username"])
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.put(
-    "/api/accounts/{account_id}/reviews/{review_id}", response_model=ReviewOut
+    "/api/accounts/{username}/reviews/{review_id}", response_model=ReviewOut
 )
 async def update_review(
     review_id: int,
@@ -107,11 +135,23 @@ async def update_review(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Cannot update this review with these credentials",
         )
-    return reviews.update_review(review_id, review_data)
+    try:
+        success = reviews.update_review(review_id, review_data)
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Review not found",
+            )
+        return success
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Review not found",
+        )
 
 
 @router.delete(
-    "/api/accounts/{account_id}/reviews/{review_id}",
+    "/api/accounts/{username}/reviews/{review_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_review(
@@ -120,10 +160,23 @@ async def delete_review(
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
     if not current_user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    success = reviews.delete_review(review_id)
-    if not success:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Review not found"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Cannot delete this review with those credentials",
         )
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    try:
+        success = reviews.delete_review(review_id)
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Review not found",
+            )
+        return {
+            "status_code": status.HTTP_204_NO_CONTENT,
+            "detail": "Review successfully deleted.",
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Review not found",
+        )
