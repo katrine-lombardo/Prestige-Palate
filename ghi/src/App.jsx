@@ -2,11 +2,11 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./Nav";
 import HomePage from "./HomePage";
-import SignupForm from "./SignupForm";
-import LoginForm from "./LoginForm";
-import LogoutButton from "./LogoutButton";
+import SignupForm from "./Accounts/SignupForm";
+import LoginForm from "./Accounts/LoginForm";
+import LogoutButton from "./Accounts/LogoutButton";
 import Sidebar from "./Sidebar";
-import EditProfile from "./EditProfile";
+import EditProfile from "./Accounts/EditProfile";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
