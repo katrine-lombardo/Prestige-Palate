@@ -6,9 +6,11 @@ const SignupForm = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [confirmationVisible, setConfirmationVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const { login } = useToken();
     const navigate = useNavigate();
@@ -17,14 +19,16 @@ const SignupForm = () => {
         setPasswordVisible(!passwordVisible);
     };
 
+    const toggleConfirmationVisibility = () => {
+        setConfirmationVisible(!confirmationVisible);
+    };
+
     const handleSignup = async (e) => {
         e.preventDefault();
-
         if (password !== passwordConfirmation) {
             setErrorMessage("Passwords do not match.");
             return;
         }
-
         try {
             const response = await fetch("http://localhost:8000/api/accounts", {
                 method: "POST",
@@ -32,15 +36,14 @@ const SignupForm = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    email: email,
+                    username: username,
+                    password: password,
                     first_name: firstName,
                     last_name: lastName,
-                    email: email,
-                    password: password,
                 }),
             });
-
             const data = await response.json();
-
             if (response.ok) {
                 await login(email, password);
                 navigate("/");
@@ -80,24 +83,31 @@ const SignupForm = () => {
                     required
                 />
                 <input
+                    type="text"
+                    placeholder="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <input
                     type={passwordVisible ? "text" : "password"}
                     placeholder="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button onClick={togglePasswordVisibility}>
+                <button type="button" onClick={togglePasswordVisibility}>
                     {passwordVisible ? "Hide" : "Show"}
                 </button>
                 <input
-                    type={passwordVisible ? "text" : "password"}
+                    type={confirmationVisible ? "text" : "password"}
                     placeholder="password confirmation"
                     value={passwordConfirmation}
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
                     required
                 />
-                <button onClick={togglePasswordVisibility}>
-                    {passwordVisible ? "Hide" : "Show"}
+                <button type="button" onClick={toggleConfirmationVisibility}>
+                    {confirmationVisible ? "Hide" : "Show"}
                 </button>
                 <button type="submit">Sign Up</button>
             </form>
