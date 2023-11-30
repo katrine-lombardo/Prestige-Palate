@@ -158,12 +158,3 @@ button:focus-visible {
     height: 40px;
     border-radius: 50%;
 }
-
-.search-results-container {
-  position: relative;
-  z-index: 1000;
-  background-color: #fff;
-  border: 1px solid red;
-  height: auto;
-  overflow-y: auto;
-}

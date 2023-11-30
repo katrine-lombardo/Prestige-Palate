@@ -22,8 +22,10 @@ function SearchBar({ onSearch }) {
                 if (response.ok) {
                     const data = await response.json();
                     console.log("Search results:", data.restaurants.places);
-                    onSearch(data.restaurants.places);
+                    const searchResults = data.restaurants.places.length > 0 ? data.restaurants.places : [];
+                    onSearch(searchResults);
                 } else {
+                    onSearch([]);
                     console.error("error search:", response.statusText)
                 }
 
