@@ -1,3 +1,13 @@
+## Wed, Nov 29
+Features/issues that you worked on and who you worked with:
+-Got the restaurant search working on the frontend with Yaosheng.
+
+A reflection on any design conversations that you had
+-Not much design conversation was had, we just worked on fixing the front end console errors(Erin had a good fix for one of them through switching REACT_APP_API_HOST to VITE_APP_API_HOST in our .env files), finding the right syntax to key into Google Places API response and then mapping it to the homepage.
+
+At least one ah-ha! moment:
+-The default Vite text font was white, so after changing the background to white we eventually figured out to switch the font to black.
+
 ## Tues, Nov 28
 Features/issues that you worked on and who you worked with:
 -Tried to move the Nav bar to the top based on Yaosheng's code. 
