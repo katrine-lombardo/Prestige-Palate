@@ -32,7 +32,7 @@ const EditProfile = () => {
             if (!response.ok) {
                 throw new Error(
                     data.detail ||
-                        "An error occurred while updating the profile."
+                    "An error occurred while updating the profile."
                 );
             }
 

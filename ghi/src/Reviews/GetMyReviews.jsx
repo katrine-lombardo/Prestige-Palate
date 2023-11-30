@@ -9,12 +9,17 @@ const GetMyReviews = () => {
     console.log("token: ", token)
 
     const fetchReviews = async () => {
+
+    }
+
+    const fetchMyReviews = async () => {
         if (!username) {
-            console.log("User is not logged in");
+            console.log("Cannot fetch username, or User is not logged in");
             return;
         }
-        const url = `http://localhost:8000/api/accounts/${username}/reviews`;
+
         try {
+            const url = `http://localhost:8000/api/accounts/${username}/reviews`;
             const response = await fetch(url, {
                 method: "GET",
                 headers: {
@@ -24,24 +29,27 @@ const GetMyReviews = () => {
                 },
                 body: JSON.stringify({
                     username: username,
-                    first_name: firstName,
-                    last_name: lastName,
                 }),
             });
+            console.log("response: ", response.json())
 
             const data = await response.json();
             setReviews(data.reviews);
+            console.log("data: ", data.reviews)
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(
+                    data.detail ||
+                    "An error occurred while fetching reviews."
+                );
             }
         } catch (error) {
             console.error("Error fetching reviews:", error);
         }
-    };
+    }
 
     useEffect(() => {
-        fetchReviews();
+        fetchMyReviews();
     }, [username]);
 
     if (!username) {
