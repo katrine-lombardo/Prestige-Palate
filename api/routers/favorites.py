@@ -8,7 +8,7 @@ from queries.pool import pool
 router = APIRouter()
 
 
-@router.post("/restaurants/{place_id}/favorite")
+@router.post("/api/restaurants/{place_id}/favorite")
 def add_favorite(
     place_id: str,
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
@@ -23,7 +23,7 @@ def add_favorite(
         )
 
 
-@router.get("/user/favorites")
+@router.get("/api/user/favorites")
 def list_favorites(
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
