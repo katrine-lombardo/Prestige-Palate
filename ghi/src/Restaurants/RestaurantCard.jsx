@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const RestaurantCard = ({ restaurant }) => {
-    // You can add more props as needed, like onAddToFavorites callback if you want to handle it here
 
     return (
         <div className="restaurant-card">
@@ -11,7 +10,6 @@ const RestaurantCard = ({ restaurant }) => {
                 <p>{restaurant.formattedAddress}</p>
                 <p>Rating: {restaurant.rating}</p>
             </Link>
-            {/* Additional restaurant details can be added here */}
         </div>
     );
 };

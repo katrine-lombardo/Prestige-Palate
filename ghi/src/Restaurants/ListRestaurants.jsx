@@ -8,8 +8,6 @@ const ListRestaurants = () => {
 
     useEffect(() => {
         const fetchRestaurants = async () => {
-            // Fetch restaurants based on the criteria you want (e.g., all restaurants, search results, or favorites)
-            // This is just a placeholder URL, adjust it according to your API endpoint
             const response = await fetch('http://localhost:8000/restaurants', {
                 headers: {
                     Authorization: `Bearer ${token}`

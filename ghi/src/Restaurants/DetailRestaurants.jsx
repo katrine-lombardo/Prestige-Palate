@@ -50,7 +50,6 @@ const DetailRestaurant = () => {
             const data = await response.json();
             if (data.status === 'success') {
                 alert('Added to favorites!');
-                // Optionally update the local state or re-fetch the favorites
             } else {
                 throw new Error(data.message);
             }
