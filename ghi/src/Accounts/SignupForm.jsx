@@ -61,7 +61,7 @@ const SignupForm = () => {
 
     return (
         <div className="card text-bg-light mb-3">
-            <h2 className="card-header">Sign Up</h2>
+            <h5 className="card-header">Sign Up</h5>
             <div className="card-body">
                 {errorMessage && (
                     <p className="alert alert-danger mb-3" role="alert">
@@ -153,7 +153,7 @@ const SignupForm = () => {
                             {confirmationVisible ? "Hide Confirmation" : "Show Confirmation"}
                         </button>
                     </div>
-                    <button type="submit">Sign Up</button>
+                    <button type="submit" className="btn btn-primary" value="Signup">Sign Up</button>
                 </form>
                 <p>
                     Already have an account?{" "}
