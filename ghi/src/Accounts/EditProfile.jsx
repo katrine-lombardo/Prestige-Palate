@@ -21,9 +21,7 @@ const EditProfile = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    username: email,
-                    first_name: firstName,
-                    last_name: lastName,
+                    account: account
                 }),
             });
 
