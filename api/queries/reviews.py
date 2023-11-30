@@ -15,6 +15,7 @@ class DuplicateReviewError(ValueError):
 class ReviewIn(BaseModel):
     text: str
     rating: float
+    photo_url: str
 
 
 class ReviewOut(BaseModel):
@@ -24,6 +25,7 @@ class ReviewOut(BaseModel):
     publish_time: datetime
     text: str
     rating: float
+    photo_url: Optional[str]
 
 
 class ReviewUpdate(BaseModel):
@@ -79,8 +81,8 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                            INSERT INTO reviews (username, place_id, text, rating)
-                            VALUES (%s, %s, %s, %s)
+                            INSERT INTO reviews (username, place_id, text, rating, photo_url)
+                            VALUES (%s, %s, %s, %s, %s)
                             RETURNING *;
                         """,
                         [
@@ -88,10 +90,12 @@ class ReviewQueries:
                             place_id,
                             review.text,
                             review.rating,
+                            review.photo_url,
                         ],
                     )
                     conn.commit()
                     record = cur.fetchone()
+                    print("record: ", record)
                     if record is None:
                         return ValueError("No records found")
                     else:
@@ -102,7 +106,9 @@ class ReviewQueries:
                             "publish_time": record[3],
                             "text": record[4],
                             "rating": record[5],
+                            "photo_url": record[6],
                         }
+                        print("review data: ", review_data)
                         return ReviewOut(**review_data)
         except DuplicateReviewError:
             return ValueError("Review already exists for this restaurant")
