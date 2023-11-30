@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function SearchResults({ results }) {
     const places = results || [];
@@ -8,12 +9,14 @@ function SearchResults({ results }) {
         <div>
             {hasResults ? (
                 results.map((place, index) => (
-                    <div key={index}>
-                        <h3>{place.displayName.text}</h3>
-                        <p>{place.formattedAddress}</p>
-                        <p>Rating: {place.rating}</p>
-                        {/* Add other restaurant details here */}
-                    </div>
+                    <Link to={`/restaurants/${place.id}`} key={index} className="search-result-item">
+                        <div>
+                            <h3>{place.displayName.text}</h3>
+                            <p>{place.formattedAddress}</p>
+                            <p>Rating: {place.rating}</p>
+                            {/* Add other restaurant details here */}
+                        </div>
+                    </Link>
                 ))
             ) : (
                 <div>No restaurants found.</div>

@@ -7,7 +7,9 @@ import LoginForm from "./Accounts/LoginForm";
 import LogoutButton from "./Accounts/LogoutButton";
 import Sidebar from "./Sidebar";
 import EditProfile from "./Accounts/EditProfile";
+import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -27,6 +29,7 @@ function App() {
                         <Route path="/logout" element={<LogoutButton />} />
                         <Route path="/sidebar" element={<Sidebar />} />
                         <Route path="/editprofile" element={<EditProfile />} />
+                        <Route path="/restaurants/:id" element={<DetailRestaurant />} />
                     </Routes>
                 </div>
             </AuthProvider>
