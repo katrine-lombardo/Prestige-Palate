@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
-import { Link } from 'react-router-dom';
+import RestaurantCard from './RestaurantCard';
 
 const FavoriteRestaurants = () => {
     const [favorites, setFavorites] = useState([]);
@@ -78,14 +78,8 @@ const FavoriteRestaurants = () => {
                 />
             </div>
             {sortedAndFilteredFavorites().length > 0 ? (
-                sortedAndFilteredFavorites().map(favorite => (
-                    <div key={favorite.place_id} className="favorite-restaurant-item">
-                        <Link to={`/restaurants/${favorite.place_id}`}>
-                            <h3>{favorite.name}</h3>
-                            <p>City: {favorite.city}</p>
-                            {/* Additional restaurant details */}
-                        </Link>
-                    </div>
+                sortedAndFilteredFavorites().map((favorite) => (
+                    <RestaurantCard key={favorite.place_id} restaurant={favorite} />
                 ))
             ) : (
                 <p>You have no favorite restaurants.</p>
