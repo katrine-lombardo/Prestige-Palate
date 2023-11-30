@@ -33,13 +33,33 @@ const DetailRestaurant = () => {
         }
     };
 
-    const addToFavorites = () => {
+    const addToFavorites = async () => {
         if (!token) {
             promptLogin("Only logged-in users can add to favorites.");
             return;
         }
-        // If logged in, add to favorites
+
+        try {
+            const response = await fetch(`http://localhost:8000/restaurants/${id}/favorite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                alert('Added to favorites!');
+                // Optionally update the local state or re-fetch the favorites
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            console.error('Error adding to favorites:', error);
+            alert('Failed to add to favorites.');
+        }
     };
+
 
     const addReview = () => {
         if (!token) {
@@ -59,17 +79,8 @@ const DetailRestaurant = () => {
             <h1>{restaurantDetails.displayName.text}</h1>
             <p>Address: {restaurantDetails.formattedAddress}</p>
             <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
-            {restaurantDetails.websiteUri ? (
-                <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
-                    {restaurantDetails.websiteUri}
-                    </a>
-            ) : null}
-            {restaurantDetails.internationalPhoneNumber ? (
-                <p>
-                    International Phone Number: {restaurantDetails.internationalPhoneNumber}
-                </p>
-            ) : null}
-            {/* <p>International Phone Number: {restaurantDetails.internationalPhoneNumber}</p> */}
+            <p>website: {restaurantDetails.websiteUrl}</p>
+            <p>international Phone Number: {restaurantDetails.internationalPhoneNumber}</p>
             <h3>Reviews from Google</h3>
             <ul>
                 {restaurantDetails.reviews.map((review, index) => {
