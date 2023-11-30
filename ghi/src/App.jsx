@@ -2,12 +2,14 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./Nav";
 import HomePage from "./HomePage";
-import SignupForm from "./SignupForm";
-import LoginForm from "./LoginForm";
-import LogoutButton from "./LogoutButton";
+import SignupForm from "./Accounts/SignupForm";
+import LoginForm from "./Accounts/LoginForm";
+import LogoutButton from "./Accounts/LogoutButton";
 import Sidebar from "./Sidebar";
-import EditProfile from "./EditProfile";
+import EditProfile from "./Accounts/EditProfile";
+import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -27,6 +29,7 @@ function App() {
                         <Route path="/logout" element={<LogoutButton />} />
                         <Route path="/sidebar" element={<Sidebar />} />
                         <Route path="/editprofile" element={<EditProfile />} />
+                        <Route path="/restaurants/:id" element={<DetailRestaurant />} />
                     </Routes>
                 </div>
             </AuthProvider>

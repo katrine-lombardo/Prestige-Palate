@@ -13,17 +13,14 @@ const HomePage = () => {
 
 
     const handleSearchResults = (results) => {
-        if (results.length > 0) {
-            console.log("Setting restaurants:", results);
-            setRestaurants(results || []);
-        }
+        setRestaurants(results);
     };
 
     return (
         <div className="homepage">
             <header className="homepage-header">
                 <SearchBar onSearch={handleSearchResults} />
-                    <h1 className="logo">Prestige Palate</h1>
+                <h1 className="logo">Prestige Palate</h1>
                 <div className="user-icon-container" onClick={toggleSidebar}>
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png"

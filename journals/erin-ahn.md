@@ -1,3 +1,13 @@
+## Thurs, Nov 29
+Features/issues that you worked on and who you worked with:
+- Completed Sign In page front end to work independently. Also resolved Token Error messages appearing due to using vite by adding more code into the yaml, .env and App.js.
+
+A reflection on any design conversations that you had
+- Token kept loading faster than the user logging in and had to utilize useEffect to determine if token (after logging in), navigate home.
+
+At least one ah-ha! moment:
+- Working with the JWT provided galvanize makes some things harder. It doesn't allow us to use try catch, so needed to use if console.error instead.
+
 ## Tues, Nov 28
 Features/issues that you worked on and who you worked with:
 - Completed Frontend Auth Independently - we'll also have to remember to incorporate it on other additional front end pages as needed.
