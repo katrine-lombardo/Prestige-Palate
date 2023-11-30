@@ -1,6 +1,7 @@
 import { useState } from "react";
 import JSONPretty from "react-json-pretty";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import userDataCard from accounts.userDataCard
 
 const UserDataCard = () => {
     const [userData, setUserData] = useState("");
@@ -30,6 +31,7 @@ const UserDataCard = () => {
 
     return (
         <div className="card text-bg-dark mb-3">
+            <UserDataCard />
             <h5 className="card-header d-flex">
                 <span className="flex-fill">User Data</span>
                 <div
