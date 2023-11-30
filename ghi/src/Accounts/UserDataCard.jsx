@@ -1,7 +1,6 @@
 import { useState } from "react";
-import JSONPretty from "react-json-pretty";
+// import JSONPretty from "react-json-pretty";
 import useToken from "@galvanize-inc/jwtdown-for-react";
-import userDataCard from accounts.userDataCard
 
 const UserDataCard = () => {
     const [userData, setUserData] = useState("");
