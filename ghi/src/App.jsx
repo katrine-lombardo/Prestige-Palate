@@ -19,13 +19,16 @@ if (!tokenUrl) {
 }
 
 function App() {
+    const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     return (
         <BrowserRouter>
             <AuthProvider baseUrl={tokenUrl}>
-                <Nav />
+                <Nav toggleSidebar={toggleSidebar} />
+                <Sidebar isOpen={isSidebarOpen} />
                 <div className="container">
                     <Routes>
-                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/home" element={<HomePage toggleSidebar={toggleSidebar} />} />
                         <Route path="/signup" element={<SignupForm />} />
                         <Route path="/login" element={<LoginForm />} />
                         <Route path="/logout" element={<LogoutButton />} />
