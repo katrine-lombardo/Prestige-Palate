@@ -36,7 +36,7 @@ function App() {
                         <Route path="/sidebar" element={<Sidebar />} />
                         <Route path="/editprofile" element={<EditProfile />} />
                         <Route path="/restaurants/:id" element={<DetailRestaurant />} />
-                        <Route path="/:username/reviews" element={<GetMyReviews />} />
+                        <Route path="/myreviews" element={<GetMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
                         <Route path="/restaurants" element={<ListRestaurants />} />
                     </Routes>
