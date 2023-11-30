@@ -1,39 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const { login } = useToken();
+    const { token } = useAuthContext();
     const navigate = useNavigate();
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     await login(username, password);
-    //     e.target.reset();
-    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const result = await login(email, password);
-            if (result.error) {
-                setErrorMessage(result.error);
-            } else {
-                navigate("/");
-            }
-        } catch (error) {
-            setErrorMessage(error.toString());
+        await login(email, password);
+        if (console.error){
+            setErrorMessage("Incorrect login information.");
         }
     };
+    useEffect(() => {
+        if (token) {
+            navigate("/home")
+            setErrorMessage("")
+        }
+    }, [token]) 
 
     return (
         <div className="card text-bg-light mb-3">
             <h5 className="card-header">Login</h5>
             <div className="card-body">
-                {errorMessage && <p className="text-danger">{errorMessage}</p>}
+                {errorMessage && (
+                    <div className="alert alert-danger" role="alert">
+                        {errorMessage}
+                    </div>
+                )}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">
