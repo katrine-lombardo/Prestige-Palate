@@ -107,17 +107,29 @@ async def restaurant_details(place_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@router.get("/restaurants/{place_id}/photos")
-async def restaurant_photos(place_id: str):
+@router.get("/api/restaurants/{photo_id}/photos")
+async def restaurant_photos(place_id: str,
+    max_height_px: int = 800,
+    max_width_px: int = 800,
+):
     try:
-        url = f"https://places.googleapis.com/v1/places/photos{place_id}"
+        base_url = "https://places.googleapis.com/v1/"
+        photo_id = f"{place_id}/media"
+        api_key = api_key
+        max_height_param = f"maxHeightPx={max_height_px}"
+        max_width_param = f"maxWidthPx={max_width_px}"
 
-        headers = {
-            "X-Goog-Api-Key": api_key
-        }
+        url = f"{base_url}{photo_id}?key={api_key}&{max_height_param}&{max_width_param}"
 
-    except:
-        pass
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            return data
+        else:
+            raise HTTPException(status_code=500, detail=f"Request failed with status code {response.status_code}")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 
