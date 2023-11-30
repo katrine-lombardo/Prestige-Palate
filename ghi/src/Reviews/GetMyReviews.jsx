@@ -2,11 +2,37 @@
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import UserDataCard from '../Accounts/UserDataCard';
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
+const [userData, setUserData] = useState("");
+const { fetchWithCookie } = useToken();
+
+const handleFetchWithAPI = async () => {
+    const url = `${tokenUrl}/token`;
+    fetch(url, {
+        credentials: "include",
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.account);
+            setUserData(data);
+        })
+        .catch((error) => console.error(error));
+};
+
+const handleFetchWithJFR = async (e) => {
+    e.preventDefault();
+    const data = await fetchWithCookie(
+        `${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`
+    );
+    console.log(data);
+    setUserData(data);
+};
+
 
 const GetMyReviews = () => {
     const [username, setUsername] = useState('')
@@ -15,29 +41,26 @@ const GetMyReviews = () => {
     console.log("username: ", username)
     console.log("token: ", token)
 
-
-    const fetchUsername = async () => {
-        console.log("fetchUsername function is being called");
-        try {
-            const response = await fetch(`${tokenUrl}/token`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    //token
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Cannot fetch username, or User is not logged in');
-            }
-            const data = await response.json();
-            console.log("Data from response:", data);
-            setUsername(data);
-            // console.log("Username set to:", data.account.username);
-        } catch (error) {
-            console.error('Error fetching username:', error);
-        }
-    }
     useEffect(() => {
+        const fetchUsername = async () => {
+            try {
+                const response = await fetch(`${tokenUrl}/token`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Cannot fetch username, or User is not logged in');
+                }
+                const data = await response.json();
+                console.log("Data from response:", data);
+                setUsername(data);
+                // console.log("Username set to:", data.account.username);
+            } catch (error) {
+                console.error('Error fetching username:', error);
+            }
+        }
+
         fetchUsername();
     }, [token]);
 
