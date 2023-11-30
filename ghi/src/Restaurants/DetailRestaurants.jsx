@@ -78,8 +78,17 @@ const DetailRestaurant = () => {
             <h1>{restaurantDetails.displayName.text}</h1>
             <p>Address: {restaurantDetails.formattedAddress}</p>
             <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
-            <p>website: {restaurantDetails.websiteUrl}</p>
-            <p>international Phone Number: {restaurantDetails.internationalPhoneNumber}</p>
+            {restaurantDetails.websiteUri ? (
+                <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
+                    {restaurantDetails.websiteUri}
+                </a>
+            ) : null}
+            {restaurantDetails.internationalPhoneNumber ? (
+                <p>
+                    International Phone Number: {restaurantDetails.internationalPhoneNumber}
+                </p>
+            ) : null}
+            {/* <p>International Phone Number: {restaurantDetails.internationalPhoneNumber}</p> */}
             <h3>Reviews from Google</h3>
             <ul>
                 {restaurantDetails.reviews.map((review, index) => {
@@ -91,12 +100,12 @@ const DetailRestaurant = () => {
                     });
 
                     return (
-                    <li key={index}>
-                        <p>Author: {review.authorAttribution.displayName}</p>
-                        <p>Rating: {review.rating}</p>
-                        <p>Review: {review.text.text}</p>
-                        <p>Date Posted: {formattedDate}</p>
-                    </li>
+                        <li key={index}>
+                            <p>Author: {review.authorAttribution.displayName}</p>
+                            <p>Rating: {review.rating}</p>
+                            <p>Review: {review.text.text}</p>
+                            <p>Date Posted: {formattedDate}</p>
+                        </li>
                     );
                 })}
             </ul>
