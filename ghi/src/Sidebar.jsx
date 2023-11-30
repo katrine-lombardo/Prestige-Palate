@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen }) => {
                 <NavLink className="nav-link" to="/new-review">
                     New Review
                 </NavLink>
-                <NavLink className="nav-link" to="/my-reviews">
+                <NavLink className="nav-link" to="/:username/reviews">
                     My Reviews
                 </NavLink>
                 <NavLink className="nav-link" to="/editprofile">
