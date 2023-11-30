@@ -4,13 +4,57 @@ import RestaurantCard from './RestaurantCard';
 
 const FavoriteRestaurants = () => {
     const [favorites, setFavorites] = useState([]);
+    const [detailedFavorites, setDetailedFavorites] = useState([]);
     const [sortKey, setSortKey] = useState('cityAsc');
     const [filterCity, setFilterCity] = useState('');
     const { token } = useAuthContext();
 
+
     useEffect(() => {
+        const fetchFavorites = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/user/favorites', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch favorites');
+                }
+                const favoriteIds = await response.json();
+                setFavorites(favoriteIds);
+            } catch (error) {
+                console.error('Error fetching favorites:', error);
+            }
+        };
+
         fetchFavorites();
-    }, [token, sortKey, filterCity]);
+    }, [token]);
+
+    useEffect(() => {
+        const fetchFavoriteDetails = async () => {
+            if (!favorites.length) return;
+
+            try {
+                const details = await Promise.all(
+                    favorites.map(fav =>
+                        fetch(`http://localhost:8000/api/restaurants/${fav.place_id}`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }).then(res => (res.ok ? res.json() : Promise.reject(res)))
+                    )
+                );
+                setDetailedFavorites(details);
+            } catch (error) {
+                console.error('Failed to fetch favorite details', error);
+            }
+        };
+
+        fetchFavoriteDetails();
+    }, [favorites, token]);
+
+
 
     const handleSortChange = (e) => {
         setSortKey(e.target.value);
@@ -20,43 +64,31 @@ const FavoriteRestaurants = () => {
         setFilterCity(e.target.value);
     };
 
-    const fetchFavorites = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/api/user/favorites', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch favorites');
-            }
-            const data = await response.json();
-            setFavorites(data);
-        } catch (error) {
-            console.error('Error fetching favorites:', error);
-        }
-    };
 
     const sortedAndFilteredFavorites = () => {
-        return favorites
-            .filter(fav => filterCity ? fav.city === filterCity : true)
+        return detailedFavorites
+            .filter(fav => {
+                const addressParts = fav.formattedAddress.split(', ');
+                const city = addressParts.length > 2 ? addressParts[1] : null;
+                return filterCity ? city && city.toLowerCase().includes(filterCity.toLowerCase()) : true;
+            })
             .sort((a, b) => {
                 switch (sortKey) {
-                    case 'cityAsc':
-                        return a.city.localeCompare(b.city);
-                    case 'cityDesc':
-                        return b.city.localeCompare(a.city);
+                    case 'nameAsc':
+                        return a.displayName.text.localeCompare(b.displayName.text);
+                    case 'nameDesc':
+                        return b.displayName.text.localeCompare(a.displayName.text);
                     case 'mostAdded':
-                        return b.count - a.count;
+                        return (b.userRatingCount || 0) - (a.userRatingCount || 0);
                     case 'leastAdded':
-                        return a.count - b.count;
-                    case 'addedTime':
-                        return new Date(b.addedTime) - new Date(a.addedTime);
+                        return (a.userRatingCount || 0) - (b.userRatingCount || 0);
                     default:
                         return 0;
                 }
             });
     };
+
+
 
     return (
         <div className="favorite-restaurants-container">
@@ -64,11 +96,10 @@ const FavoriteRestaurants = () => {
             <div>
                 <label>Sort by: </label>
                 <select onChange={handleSortChange} value={sortKey}>
-                    <option value="cityAsc">City (A-Z)</option>
-                    <option value="cityDesc">City (Z-A)</option>
+                    <option value="nameAsc">Name (A-Z)</option>
+                    <option value="nameDesc">Name (Z-A)</option>
                     <option value="mostAdded">Most Added</option>
                     <option value="leastAdded">Least Added</option>
-                    <option value="addedTime">Recently Added</option>
                 </select>
                 <input
                     type="text"
@@ -77,11 +108,10 @@ const FavoriteRestaurants = () => {
                     onChange={handleFilterCityChange}
                 />
             </div>
-            {sortedAndFilteredFavorites().length > 0 ? (
-                sortedAndFilteredFavorites().map((favorite) => (
-                    <RestaurantCard key={favorite.place_id} restaurant={favorite} />
-                ))
-            ) : (
+            {sortedAndFilteredFavorites().map(restaurant => (
+                <RestaurantCard key={restaurant.place_id} restaurant={restaurant} />
+            ))}
+            {detailedFavorites.length === 0 && (
                 <p>You have no favorite restaurants.</p>
             )}
         </div>
