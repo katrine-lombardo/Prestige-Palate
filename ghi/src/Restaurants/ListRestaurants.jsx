@@ -8,7 +8,7 @@ const ListRestaurants = () => {
 
     useEffect(() => {
         const fetchRestaurants = async () => {
-            const response = await fetch('http://localhost:8000/restaurants', {
+            const response = await fetch('http://localhost:8000/api/restaurants', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

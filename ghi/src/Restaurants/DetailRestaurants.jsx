@@ -12,7 +12,7 @@ const DetailRestaurant = () => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/restaurants/${id}`);
+                const response = await fetch(`http://localhost:8000/api/restaurants/${id}`);
                 if (!response.ok) {
                     throw new Error('Could not fetch restaurant details');
                 }
@@ -40,7 +40,7 @@ const DetailRestaurant = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/restaurants/${id}/favorite`, {
+            const response = await fetch(`http://localhost:8000/api/restaurants/${id}/favorite`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
