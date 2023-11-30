@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
+import { Link } from 'react-router-dom';
 
 const GetMyReviews = () => {
-    const { token } = useAuthContext();
+
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([])
-    console.log("reviews: ", reviews)
-    console.log("token: ", token)
+    const { token } = useAuthContext();
 
     const fetchReviews = async () => {
 
