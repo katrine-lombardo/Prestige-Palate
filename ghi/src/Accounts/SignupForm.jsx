@@ -25,10 +25,12 @@ const SignupForm = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault();
+
         if (password !== passwordConfirmation) {
-            setErrorMessage("Passwords do not match.");
+            setErrorMessage("Passwords do not match. Please check and try again.");
             return;
         }
+
         try {
             const response = await fetch("http://localhost:8000/api/accounts", {
                 method: "POST",
@@ -44,6 +46,7 @@ const SignupForm = () => {
                 }),
             });
             const data = await response.json();
+
             if (response.ok) {
                 await login(email, password);
                 navigate("/");
@@ -57,64 +60,106 @@ const SignupForm = () => {
     };
 
     return (
-        <div className="signup-form">
-            <h2>Sign Up</h2>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <form onSubmit={handleSignup}>
-                <input
-                    type="text"
-                    placeholder="first name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="last name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                <input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="button" onClick={togglePasswordVisibility}>
-                    {passwordVisible ? "Hide" : "Show"}
-                </button>
-                <input
-                    type={confirmationVisible ? "text" : "password"}
-                    placeholder="password confirmation"
-                    value={passwordConfirmation}
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                    required
-                />
-                <button type="button" onClick={toggleConfirmationVisibility}>
-                    {confirmationVisible ? "Hide" : "Show"}
-                </button>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p>
-                Already have an account?{" "}
-                <Link to="/login">Click Here to Log In</Link>
-            </p>
+        <div className="card text-bg-light mb-3">
+            <h2 className="card-header">Sign Up</h2>
+            <div className="card-body">
+                {errorMessage && (
+                    <p className="alert alert-danger mb-3" role="alert">
+                        {errorMessage}
+                    </p>
+                )}
+                <form onSubmit={handleSignup}>
+                    <div className="mb-3">
+                        <label htmlFor="firstname" className="form-label">
+                            First Name:
+                        </label>
+                        <input
+                            type="text"
+                            id="firstname"
+                            placeholder="first name"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="lastname" className="form-label">
+                            Last Name:
+                        </label>
+                        <input
+                            type="text"
+                            id="lastname"
+                            placeholder="last name"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">
+                            Email Address:
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="email address"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="username" className="form-label">
+                            Username:
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">
+                            Password:
+                        </label>
+                        <input
+                            type={passwordVisible ? "text" : "password"}
+                            id="password"
+                            placeholder="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <button type="button" onClick={togglePasswordVisibility}>
+                            {passwordVisible ? "Hide Password" : "Show Password"}
+                        </button>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="confirmation" className="form-label">
+                            Password Confirmation:
+                        </label>
+                        <input
+                            type={confirmationVisible ? "text" : "password"}
+                            id="confirmation"
+                            placeholder="password confirmation"
+                            value={passwordConfirmation}
+                            onChange={(e) => setPasswordConfirmation(e.target.value)}
+                            required
+                        />
+                        <button type="button" onClick={toggleConfirmationVisibility}>
+                            {confirmationVisible ? "Hide Confirmation" : "Show Confirmation"}
+                        </button>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>
+                    Already have an account?{" "}
+                    <Link to="/login">Click Here to Log In</Link>
+                </p>
+            </div>
         </div>
     );
 };
