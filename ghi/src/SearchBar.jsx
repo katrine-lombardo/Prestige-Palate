@@ -6,7 +6,7 @@ function SearchBar({ onSearch }) {
     const handleSearch = async (event) => {
         event.preventDefault();
         if (searchTerm) {
-            const url = new URL('http://localhost:8000/restaurants');
+            const url = new URL('http://localhost:8000/api/restaurants');
             url.searchParams.append('location', searchTerm);
 
             try {

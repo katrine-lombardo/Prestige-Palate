@@ -9,6 +9,8 @@ import Sidebar from "./Sidebar";
 import EditProfile from "./Accounts/EditProfile";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
+import ListRestaurants from "./Restaurants/ListRestaurants";
 
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -30,6 +32,8 @@ function App() {
                         <Route path="/sidebar" element={<Sidebar />} />
                         <Route path="/editprofile" element={<EditProfile />} />
                         <Route path="/restaurants/:id" element={<DetailRestaurant />} />
+                        <Route path="/favorites/" element={<FavoriteRestaurants />} />
+                        <Route path="/restaurants" element={<ListRestaurants />} />
                     </Routes>
                 </div>
             </AuthProvider>

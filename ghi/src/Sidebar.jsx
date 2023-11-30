@@ -10,7 +10,7 @@ const Sidebar = () => {
                 <NavLink className="nav-link" to="/home">
                     Home
                 </NavLink>
-                <NavLink className="nav-link" to="/favorite">
+                <NavLink className="nav-link" to="/favorites">
                     Favorite
                 </NavLink>
                 <NavLink className="nav-link" to="/friends">
