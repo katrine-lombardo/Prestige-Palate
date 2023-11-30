@@ -95,7 +95,9 @@ const DetailRestaurant = () => {
                 <button onClick={addReview}>Add a Review</button>
                 <button onClick={addToFavorites}>Add to Favorites</button>
             </div>
-            <h3>Photos</h3>
+            <h3>Photos from Google</h3>
+            restaurantDetails.photos.map((photo, index) => ())
+
         </div>
     );
 };

@@ -7,7 +7,7 @@ import json
 router = APIRouter()
 
 
-@router.get("/restaurants")
+@router.get("/api/restaurants")
 def search_restaurants_by_location(location: str = Query(..., description="Begin Your Flavor Journey")):
     try:
 
@@ -82,7 +82,7 @@ def text_search(search_query: str = "restaurants",
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@router.get("/restaurants/{place_id}")
+@router.get("/api/restaurants/{place_id}")
 async def restaurant_details(place_id: str):
     try:
 
@@ -107,8 +107,17 @@ async def restaurant_details(place_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
+@router.get("/restaurants/{place_id}/photos")
+async def restaurant_photos(place_id: str):
+    try:
+        url = f"https://places.googleapis.com/v1/places/photos{place_id}"
 
+        headers = {
+            "X-Goog-Api-Key": api_key
+        }
 
+    except:
+        pass
 
 
 
