@@ -9,7 +9,8 @@ steps = [
             PRIMARY KEY (username, place_id),
             publish_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             text TEXT NOT NULL,
-            rating FLOAT CHECK (rating >= 1 AND rating <= 5) NOT NULL
+            rating FLOAT CHECK (rating >= 1 AND rating <= 5) NOT NULL,
+            photo_url TEXT NOT NULL
         );
         """,
         # "Down" SQL statement
