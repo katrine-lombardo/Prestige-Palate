@@ -1,12 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
+import { Link } from 'react-router-dom';
+import About from './About';
+import ListAppReviews from '../Reviews/GetAppReviews';
+import RestaurantPhotos from './RestaurantPhotos';
 
 const DetailRestaurant = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [restaurantDetails, setRestaurantDetails] = useState(null);
     const { token } = useAuthContext();
+    const [activeTab, setActiveTab] = useState('reviews');
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -49,6 +54,10 @@ const DetailRestaurant = () => {
         if (confirmLogin) {
             navigate('/login');
         }
+    };
+
+    const handleTabChange = (newActiveTab) => {
+        setActiveTab(newActiveTab);
     };
 
     const addToFavorites = async () => {
@@ -94,19 +103,17 @@ const DetailRestaurant = () => {
     return (
         <div className="restaurant-detail-container">
             <h1>{restaurantDetails.displayName.text}</h1>
-            <p>Address: {restaurantDetails.formattedAddress}</p>
+            <div className="actions">
+                <button onClick={addReview}>Add a Review</button>
+                <button onClick={addToFavorites}>Add to Favorites</button>
+            </div>
+
             <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
             {restaurantDetails.websiteUri ? (
                 <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
                     {restaurantDetails.websiteUri}
                 </a>
             ) : null}
-            {restaurantDetails.internationalPhoneNumber ? (
-                <p>
-                    International Phone Number: {restaurantDetails.internationalPhoneNumber}
-                </p>
-            ) : null}
-            {/* <p>International Phone Number: {restaurantDetails.internationalPhoneNumber}</p> */}
             <h3>Reviews from Google</h3>
             <ul>
                 {restaurantDetails.reviews.map((review, index) => {
@@ -117,22 +124,26 @@ const DetailRestaurant = () => {
                         day: "numeric",
                     });
 
-                        return (
-                            <li key={index}>
-                                <p>Author: {review.authorAttribution.displayName}</p>
-                                <p>Rating: {review.rating}</p>
-                                <p>Review: {review.text?.text || 'No review available'}</p>
-                                <p>Date Posted: {formattedDate}</p>
-                            </li>
-                        );
-                    })}
-                </ul>
-                <h3>Prestigious Palate Reviews</h3>
-                <div className="actions">
-                    <button onClick={addReview}>Add a Review</button>
-                    <button onClick={addToFavorites}>Add to Favorites</button>
-                </div>
+                    return (
+                        <li key={index}>
+                            <p>Author: {review.authorAttribution.displayName}</p>
+                            <p>Rating: {review.rating}</p>
+                            <p>Review: {review.text.text}</p>
+                            <p>Date Posted: {formattedDate}</p>
+                        </li>
+                    );
+                })}
+            </ul>
+
+            <div className="tab-menu">
+                <button onClick={() => handleTabChange('reviews')}>Reviews</button>
+                <button onClick={() => handleTabChange('photos')}>Photos</button>
+                <button onClick={() => handleTabChange('about')}>About</button>
             </div>
+
+            {activeTab === 'reviews' && <ListAppReviews placeId={id} />}
+            {activeTab === 'photos' && <RestaurantPhotos placeId={id} />}
+            {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
         </div>
     );
 };
