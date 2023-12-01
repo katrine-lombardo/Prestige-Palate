@@ -7,7 +7,7 @@ if (!tokenUrl) {
 }
 
 const ReviewCard = ({ review }) => {
-    const { username, place_id, id, text, rating } = review;
+    const { username, place_id, publish_time, text, rating } = review;
     const [restaurantDetails, setRestaurantDetails] = useState([])
     const [restaurantName, setRestaurantName] = useState("")
 
@@ -35,6 +35,7 @@ const ReviewCard = ({ review }) => {
             <Link to={`/accounts/${username}/reviews`} className="reviews-link">
                 <h3>{restaurantName}</h3>
             </Link>
+            <p>Review Date: {new Date(publish_time).toLocaleDateString()}</p>
             <p>Rating: {rating}</p>
             <p>Review: {text}</p>
         </div>
