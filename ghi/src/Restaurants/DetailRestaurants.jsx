@@ -92,7 +92,7 @@ const DetailRestaurant = () => {
             promptLogin("Only logged-in users can add reviews.");
             return;
         }
-        navigate(`/restaurants/${id}/create-review`);
+        navigate(`/create-review/${id}`);
     };
 
 
