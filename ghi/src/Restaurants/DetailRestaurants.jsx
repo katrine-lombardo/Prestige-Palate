@@ -132,7 +132,6 @@ const DetailRestaurant = () => {
                 </div>
                 <br></br>
                 <br></br>
-                <br></br>
                 <h3>Photos from Google</h3>
             </div>
             <div >

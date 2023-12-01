@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from queries.geocode import LocationSearchIn, geocode_location_search, api_key
 import requests
 import json
-from httpx import AsyncClient
 
 router = APIRouter()
 
