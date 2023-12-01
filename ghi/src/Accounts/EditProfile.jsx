@@ -9,7 +9,7 @@ if (!tokenUrl) {
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [username, setUsername] = useState("");
+    const [id, setAccountId] = useState("");
     const { token } = useAuthContext();
     const [updateSuccess, setUpdateSuccess] = useState(false);
 
@@ -21,7 +21,7 @@ const EditProfile = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("username: ", data.account.id);
+                    console.log("id: ", data.account.id);
                     setAccountId(data.account.id);
                 })
                 .catch((error) => console.error(error));
@@ -31,12 +31,14 @@ const EditProfile = () => {
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
+
+        // Ensure the token is set before making the API call
         if (!token) {
-            console.error("Token not available yet.");
+            console.error("Token not available yet. Aborting update.");
             return;
         }
 
-        const endpoint = `${tokenUrl}/api/accounts/edit-profile/`;
+        const endpoint = `${tokenUrl}/api/accounts/${id}/edit-profile/`;
         try {
             const response = await fetch(endpoint, {
                 method: "PATCH",
@@ -45,7 +47,6 @@ const EditProfile = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    username: username,
                     first_name: firstName,
                     last_name: lastName,
                 }),
@@ -53,6 +54,7 @@ const EditProfile = () => {
             if (response.ok) {
                 setUpdateSuccess(true);
             } else {
+                // Display an error message for non-successful responses
                 const data = await response.json();
                 throw new Error(
                     data.detail ||
@@ -97,18 +99,6 @@ const EditProfile = () => {
                             className="form-control"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="username" className="form-label">
-                            Username:
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            className="form-control"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
                     <div>

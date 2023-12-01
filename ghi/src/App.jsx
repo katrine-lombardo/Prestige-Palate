@@ -6,13 +6,14 @@ import SignupForm from "./Accounts/SignupForm";
 import LoginForm from "./Accounts/LoginForm";
 import LogoutButton from "./Accounts/LogoutButton";
 import Sidebar from "./Sidebar";
-// import EditProfile from "./Accounts/EditProfile";
+import EditProfile from "./Accounts/EditProfile";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import GetMyReviews from "./Reviews/GetMyReviews";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
+
 
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -35,7 +36,7 @@ function App() {
                         <Route path="/login" element={<LoginForm />} />
                         <Route path="/logout" element={<LogoutButton />} />
                         <Route path="/sidebar" element={<Sidebar />} />
-                        <Route path="accounts/edit-profile/" element={<EditProfile />} />
+                        <Route path="editprofile/" element={<EditProfile />} />
                         <Route path="/restaurants/:id" element={<DetailRestaurant />} />
                         <Route path="/myreviews" element={<GetMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
