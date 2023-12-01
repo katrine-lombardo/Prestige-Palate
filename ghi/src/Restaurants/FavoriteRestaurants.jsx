@@ -7,6 +7,7 @@ const FavoriteRestaurants = () => {
     const [detailedFavorites, setDetailedFavorites] = useState([]);
     const [sortKey, setSortKey] = useState('cityAsc');
     const [filterCity, setFilterCity] = useState('');
+    const [filterState, setFilterState] = useState('');
     const { token } = useAuthContext();
 
 
@@ -64,13 +65,18 @@ const FavoriteRestaurants = () => {
         setFilterCity(e.target.value);
     };
 
+    const handleFilterStateChange = (e) => {
+        setFilterState(e.target.value);
+    };
 
     const sortedAndFilteredFavorites = () => {
         return detailedFavorites
             .filter(fav => {
                 const addressParts = fav.formattedAddress.split(', ');
                 const city = addressParts.length > 2 ? addressParts[1] : null;
-                return filterCity ? city && city.toLowerCase().includes(filterCity.toLowerCase()) : true;
+                const state = addressParts.length > 2 ? addressParts[2].split(' ')[0] : null; 
+                return (!filterCity || (city && city.toLowerCase().includes(filterCity.toLowerCase()))) &&
+                    (!filterState || (state && state.toLowerCase().includes(filterState.toLowerCase())));
             })
             .sort((a, b) => {
                 switch (sortKey) {
@@ -106,6 +112,12 @@ const FavoriteRestaurants = () => {
                     placeholder="Filter by city"
                     value={filterCity}
                     onChange={handleFilterCityChange}
+                />
+                <input
+                    type="text"
+                    placeholder="Filter by state"
+                    value={filterState}
+                    onChange={handleFilterStateChange}
                 />
             </div>
             {sortedAndFilteredFavorites().map(restaurant => (
