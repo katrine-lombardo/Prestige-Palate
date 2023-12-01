@@ -92,28 +92,30 @@ const DetailRestaurant = () => {
     }
 
     return (
-        <div>
-            <div className="restaurant-detail-container">
-                <h1>{restaurantDetails.displayName.text}</h1>
-                <p>Address: {restaurantDetails.formattedAddress}</p>
-                <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
-                {restaurantDetails.websiteUri && (
-                    <p>
-                        <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
-                            {restaurantDetails.websiteUri}
-                        </a>
-                    </p>
-                )}
-                <p>International Phone Number: {restaurantDetails.internationalPhoneNumber}</p>
-                <h3>Reviews from Google</h3>
-                <ul>
-                    {restaurantDetails.reviews.map((review, index) => {
-                        const date = new Date(review.publishTime);
-                        const formattedDate = date.toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        });
+        <div className="restaurant-detail-container">
+            <h1>{restaurantDetails.displayName.text}</h1>
+            <p>Address: {restaurantDetails.formattedAddress}</p>
+            <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
+            {restaurantDetails.websiteUri ? (
+                <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
+                    {restaurantDetails.websiteUri}
+                </a>
+            ) : null}
+            {restaurantDetails.internationalPhoneNumber ? (
+                <p>
+                    International Phone Number: {restaurantDetails.internationalPhoneNumber}
+                </p>
+            ) : null}
+            {/* <p>International Phone Number: {restaurantDetails.internationalPhoneNumber}</p> */}
+            <h3>Reviews from Google</h3>
+            <ul>
+                {restaurantDetails.reviews.map((review, index) => {
+                    const date = new Date(review.publishTime);
+                    const formattedDate = date.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    });
 
                         return (
                             <li key={index}>

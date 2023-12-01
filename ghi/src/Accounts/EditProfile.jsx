@@ -21,9 +21,7 @@ const EditProfile = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    username: email,
-                    first_name: firstName,
-                    last_name: lastName,
+                    account: account
                 }),
             });
 
@@ -32,7 +30,7 @@ const EditProfile = () => {
             if (!response.ok) {
                 throw new Error(
                     data.detail ||
-                        "An error occurred while updating the profile."
+                    "An error occurred while updating the profile."
                 );
             }
 
