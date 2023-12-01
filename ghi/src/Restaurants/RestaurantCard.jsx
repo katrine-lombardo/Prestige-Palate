@@ -8,7 +8,7 @@ const RestaurantCard = ({ restaurant }) => {
             <Link to={`/restaurants/${restaurant.id}`} className="restaurant-link">
                 <h3>{restaurant.displayName.text}</h3>
                 <p>{restaurant.formattedAddress}</p>
-                <p>Rating: {restaurant.rating}</p>
+                <p>Rating: {restaurant.rating}({restaurant.userRatingCount} rating)</p>
             </Link>
         </div>
     );

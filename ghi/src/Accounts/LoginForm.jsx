@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const getToken = async (baseUrl, username, password) => {
@@ -94,6 +94,10 @@ const LoginForm = () => {
                         Login
                     </button>
                 </form>
+                <p className="mt-3">
+                    Want to make an account?{" "}
+                    <Link to="/signup">Click here to sign up</Link>
+                </p>
             </div>
         </div>
     );

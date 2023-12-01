@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen }) => {
     return (
-        <div className="sidebar">
+        <div className={`sidebar ${isOpen ? "open" : ""}`}>
             <div className="sidebar-upper"></div>
 
             <div className="sidebar-lower">

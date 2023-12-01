@@ -10,7 +10,7 @@ steps = [
             publish_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             text TEXT NOT NULL,
             rating FLOAT CHECK (rating >= 1 AND rating <= 5) NOT NULL,
-            photo_url TEXT NOT NULL
+            photo_url TEXT
         );
         """,
         # "Down" SQL statement
