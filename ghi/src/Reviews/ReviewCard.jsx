@@ -6,7 +6,7 @@ const ReviewCard = ({ review }) => {
 
     return (
         <div className="review-card">
-            <Link to={`/accounts/${review.username}/reviews`} className="reviews-link">
+            <Link to={`/accounts/${username}/reviews`} className="reviews-link">
                 <h3>Restaurant place_id: {place_id}</h3>
                 <p>Review ID: {id}</p>
                 <p>Review: {text}</p>
