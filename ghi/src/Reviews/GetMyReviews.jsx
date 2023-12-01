@@ -1,7 +1,8 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import ReviewCard from './ReviewCard';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -57,9 +58,9 @@ const GetMyReviews = () => {
     }, [token]);
 
     return (
-        < div >
+        <div>
             <h5>My reviews</h5>
-            {/* <div className="list-my-reviews-container">
+            <div className="list-my-reviews-container">
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
                         <ReviewCard key={review.id} review={review} />
@@ -67,9 +68,9 @@ const GetMyReviews = () => {
                 ) : (
                     <p>No reviews found.</p>
                 )}
-            </div> */}
-        </div >
-    )
+            </div>
+        </div>
+    );
 }
 
 export default GetMyReviews
