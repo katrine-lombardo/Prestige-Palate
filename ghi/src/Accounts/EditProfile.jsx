@@ -111,7 +111,6 @@ const EditProfile = () => {
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
-
                     <div>
                         <button type="submit" className="btn btn-primary">
                             Update

@@ -35,11 +35,7 @@ function App() {
                         <Route path="/login" element={<LoginForm />} />
                         <Route path="/logout" element={<LogoutButton />} />
                         <Route path="/sidebar" element={<Sidebar />} />
-<<<<<<< HEAD
-                        <Route path="/accounts/edit-profile/" element={<EditProfile />} />
-=======
-                        {/* <Route path="accounts/:accountId/edit-profile/" element={<EditProfile />} /> */}
->>>>>>> d3eeadad74562fb8016db47ae82ac4adbb2de94f
+                        <Route path="accounts/edit-profile/" element={<EditProfile />} />
                         <Route path="/restaurants/:id" element={<DetailRestaurant />} />
                         <Route path="/myreviews" element={<GetMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
