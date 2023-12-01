@@ -119,7 +119,7 @@ const DetailRestaurant = () => {
                             <li key={index}>
                                 <p>Author: {review.authorAttribution.displayName}</p>
                                 <p>Rating: {review.rating}</p>
-                                <p>Review: {review.text.text}</p>
+                                <p>Review: {review.text?.text || 'No review available'}</p>
                                 <p>Date Posted: {formattedDate}</p>
                             </li>
                         );
@@ -134,7 +134,7 @@ const DetailRestaurant = () => {
                 <br></br>
                 <h3>Photos from Google</h3>
             </div>
-            <div >
+            <div>
                 <ul style={{
                     listStyle: 'none',
                     display: 'grid',
@@ -149,22 +149,25 @@ const DetailRestaurant = () => {
                                 style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                                 loading="lazy"
                             />
-                            {photo.authorAttributions && photo.authorAttributions.map((author, authorIndex) => (
-                                <div style={{ display: 'flex', alignItems: 'center', marginTop: '3px' }} key={authorIndex}>
-                                    {author.photoUri && (
-                                        <p style={{ marginRight: '10px' }}>
-                                            <img
-                                                src={`https:${author.photoUri}`}
-                                                alt={`Author ${author.displayName}`}
-                                                style={{ width: '40px', height: 'auto' }}
-                                                loading="lazy"
-                                            />
-                                        </p>
-                                    )}
-                                    <p><a href={`https:${author.uri}`} target="_blank" rel="noopener noreferrer">{author.displayName}</a></p>
-                                    {/* <p><img src={`https:${author.photoUri}`} /></p> */}
-                                </div>
-                            ))}
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '3px' }}>
+                                {photo.authorAttributions?.[0]?.photoUri ? (
+                                    <p style={{ marginRight: '10px' }}>
+                                        <img
+                                            src={`https:${photo.authorAttributions?.[0]?.photoUri}`}
+                                            alt=""
+                                            style={{ width: '40px', height: 'auto' }}
+                                            loading="lazy"
+                                        />
+                                    </p>
+                                ) : (
+                                    <p>No image available</p>
+                                )}
+                                <p>
+                                    <a href={`https:${photo.authorAttributions?.[0]?.uri}`} target="_blank" rel="noopener noreferrer">
+                                        {photo.authorAttributions?.[0]?.displayName || 'Unknown Author'}
+                                    </a>
+                                </p>
+                            </div>
                         </li>
                     ))}
                 </ul>

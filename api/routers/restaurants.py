@@ -109,7 +109,6 @@ async def restaurant_details(place_id: str):
                         photo_url = f"https://places.googleapis.com/v1/{photo_reference}/media?key={api_key}&maxHeightPx=1000&maxWidthPx=1000"
                         photo_response = requests.get(photo_url, allow_redirects=True)
                         if photo_response.status_code == 200:
-                            # You might want to store these photos differently, depending on your requirements
                             photo["imageUrl"] = photo_response.url
                         else:
                             photo["imageUrl"] = "Error fetching photo"
