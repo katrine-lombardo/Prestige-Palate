@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
-import { Link } from 'react-router-dom';
 
 const DetailRestaurant = () => {
     const { id } = useParams();
@@ -25,6 +24,25 @@ const DetailRestaurant = () => {
 
         fetchDetails();
     }, [id]);
+
+    // const fetchPhoto = async (photoId) => {
+    //     try {
+    //         const response = await fetch(`http://localhost:8000/api/restaurants/${photoId}/photos`);
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+    //         const blob = await response.blob();
+    //         return URL.createObjectURL(blob);
+    //     } catch (error) {
+    //         console.error("Fetching photo failed:", error);
+    //         return ''; // Fallback image URL or empty string
+    //     }
+    // };
+
+    // const handleImageLoad = async (photoName, event) => {
+    //     const photoSrc = await fetchPhoto(photoName);
+    //     event.target.src = photoSrc;
+    // };
 
     const promptLogin = (message) => {
         const confirmLogin = window.confirm(`${message} Please login to continue.`);
@@ -74,40 +92,84 @@ const DetailRestaurant = () => {
     }
 
     return (
-        <div className="restaurant-detail-container">
-            <h1>{restaurantDetails.displayName.text}</h1>
-            <p>Address: {restaurantDetails.formattedAddress}</p>
-            <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
-            <p>website: {restaurantDetails.websiteUrl}</p>
-            <p>international Phone Number: {restaurantDetails.internationalPhoneNumber}</p>
-            <h3>Reviews from Google</h3>
-            <ul>
-                {restaurantDetails.reviews.map((review, index) => {
-                    const date = new Date(review.publishTime);
-                    const formattedDate = date.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    });
+        <div>
+            <div className="restaurant-detail-container">
+                <h1>{restaurantDetails.displayName.text}</h1>
+                <p>Address: {restaurantDetails.formattedAddress}</p>
+                <p>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</p>
+                {restaurantDetails.websiteUri && (
+                    <p>
+                        <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
+                            {restaurantDetails.websiteUri}
+                        </a>
+                    </p>
+                )}
+                <p>International Phone Number: {restaurantDetails.internationalPhoneNumber}</p>
+                <h3>Reviews from Google</h3>
+                <ul>
+                    {restaurantDetails.reviews.map((review, index) => {
+                        const date = new Date(review.publishTime);
+                        const formattedDate = date.toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        });
 
-                    return (
-                    <li key={index}>
-                        <p>Author: {review.authorAttribution.displayName}</p>
-                        <p>Rating: {review.rating}</p>
-                        <p>Review: {review.text.text}</p>
-                        <p>Date Posted: {formattedDate}</p>
-                    </li>
-                    );
-                })}
-            </ul>
-            <h3>Prestigious Palate Reviews</h3>
-            <div className="actions">
-                <button onClick={addReview}>Add a Review</button>
-                <button onClick={addToFavorites}>Add to Favorites</button>
+                        return (
+                            <li key={index}>
+                                <p>Author: {review.authorAttribution.displayName}</p>
+                                <p>Rating: {review.rating}</p>
+                                <p>Review: {review.text.text}</p>
+                                <p>Date Posted: {formattedDate}</p>
+                            </li>
+                        );
+                    })}
+                </ul>
+                <h3>Prestigious Palate Reviews</h3>
+                <div className="actions">
+                    <button onClick={addReview}>Add a Review</button>
+                    <button onClick={addToFavorites}>Add to Favorites</button>
+                </div>
+                <br></br>
+                <br></br>
+                <br></br>
+                <h3>Photos from Google</h3>
             </div>
-            <h3>Photos from Google</h3>
-            restaurantDetails.photos.map((photo, index) => ())
-
+            <div >
+                <ul style={{
+                    listStyle: 'none',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gap: '10px',
+                    padding: 0
+                }}>
+                    {restaurantDetails.photos.map((photo, index) => (
+                        <li key={index} style={{ width: '100%', overflow: 'hidden' }}>
+                            <img
+                                src={photo.imageUrl}
+                                style={{ width: '100%', height: '400px', objectFit: 'cover' }}
+                                loading="lazy"
+                            />
+                            {photo.authorAttributions && photo.authorAttributions.map((author, authorIndex) => (
+                                <div style={{ display: 'flex', alignItems: 'center', marginTop: '3px' }} key={authorIndex}>
+                                    {author.photoUri && (
+                                        <p style={{ marginRight: '10px' }}>
+                                            <img
+                                                src={`https:${author.photoUri}`}
+                                                alt={`Author ${author.displayName}`}
+                                                style={{ width: '40px', height: 'auto' }}
+                                                loading="lazy"
+                                            />
+                                        </p>
+                                    )}
+                                    <p><a href={`https:${author.uri}`} target="_blank" rel="noopener noreferrer">{author.displayName}</a></p>
+                                    {/* <p><img src={`https:${author.photoUri}`} /></p> */}
+                                </div>
+                            ))}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

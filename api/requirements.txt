@@ -5,3 +5,4 @@ uvicorn[standard]==0.17.6
 pytest
 boto3
 requests
+httpx
