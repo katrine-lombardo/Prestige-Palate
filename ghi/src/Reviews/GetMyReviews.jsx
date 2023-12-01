@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
-import useToken from "@galvanize-inc/jwtdown-for-react";
 import ReviewCard from './ReviewCard';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -9,33 +8,30 @@ if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
 
-
-
 const GetMyReviews = () => {
     const [username, setUsername] = useState("")
     const [reviews, setReviews] = useState([])
     const { token } = useAuthContext()
     console.log("username: ", username)
 
-    const handleFetchWithAPI = async () => {
-        const url = `${tokenUrl}/token`;
-        fetch(url, {
-            credentials: "include",
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("username: ", data.account.username);
-                setUsername(data.account.username);
-            })
-            .catch((error) => console.error(error));
-    };
-
     useEffect(() => {
+        const handleFetchWithAPI = async () => {
+            const url = `${tokenUrl}/token`;
+            fetch(url, {
+                credentials: "include",
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("username: ", data.account.username);
+                    setUsername(data.account.username);
+                })
+                .catch((error) => console.error(error));
+        };
         handleFetchWithAPI();
     }, [token]);
 
-    const fetchMyReviews = async () => {
-        try {
+    useEffect(() => {
+        const fetchMyReviews = async () => {
             const url = `${tokenUrl}/api/accounts/${username}/reviews`;
             fetch(url, {
                 credentials: "include",
@@ -45,15 +41,8 @@ const GetMyReviews = () => {
                     console.log("review data: ", data)
                     setReviews(data);
                 })
-            setReviews(data);
-            console.log(data)
-        } catch (error) {
-            console.error('Error fetching reviews:', error);
-        }
-    };
-
-
-    useEffect(() => {
+                .catch((error) => console.error(error))
+        };
         fetchMyReviews();
     }, [token]);
 
