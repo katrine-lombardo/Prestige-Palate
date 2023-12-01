@@ -71,11 +71,11 @@ async def get_app_reviews_for_restaurant(
 
 
 @router.get(
-    "/api/accounts/{username}/reviews",
+    "/api/accounts/{account_id}/reviews",
     response_model=List[ReviewOut],
 )
 async def get_reviews_by_account(
-    username: str,
+    account_id: int,
     reviews: ReviewQueries = Depends(),
     current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
@@ -85,11 +85,11 @@ async def get_reviews_by_account(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="User must be logged in to view app reviews",
             )
-        success = reviews.get_reviews_by_account(username)
+        success = reviews.get_reviews_by_account(account_id)
         if not success:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="No reviews found for this user",
+                detail="No reviews found for this user id",
             )
         return success
     except Exception as e:
@@ -122,7 +122,7 @@ async def create_review(
 
 
 @router.put(
-    "/api/accounts/{username}/reviews/{review_id}", response_model=ReviewOut
+    "/api/accounts/{account_id}/reviews/{review_id}", response_model=ReviewOut
 )
 async def update_review(
     review_id: int,
@@ -151,7 +151,7 @@ async def update_review(
 
 
 @router.delete(
-    "/api/accounts/{username}/reviews/{review_id}",
+    "/api/accounts/{account_id}/reviews/{review_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_review(
