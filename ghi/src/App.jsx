@@ -8,6 +8,7 @@ import LogoutButton from "./Accounts/LogoutButton";
 import Sidebar from "./Sidebar";
 import EditProfile from "./Accounts/EditProfile";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
+import GetMyReviews from "./Reviews/GetMyReviews";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
@@ -35,6 +36,7 @@ function App() {
                         <Route path="/sidebar" element={<Sidebar />} />
                         <Route path="accounts/:accountId/edit-profile/" element={<EditProfile />} />
                         <Route path="/restaurants/:id" element={<DetailRestaurant />} />
+                        <Route path="/myreviews" element={<GetMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
                         <Route path="/restaurants" element={<ListRestaurants />} />
                     </Routes>
