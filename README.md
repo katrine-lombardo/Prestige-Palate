@@ -42,4 +42,6 @@ We are targeting Elite foodies who want to explore their next global culinary ad
 3. Create volumes: docker volume create pg-admin & docker volume create postrgres-data
 4. Build the image: docker compose build
 5. Run the containers: docker compose up
-6. Open browser to localhost
+6. Change directory: cd ghi
+7. Run command: npm install @aws-sdk/client-s3
+8. Open browser to localhost
