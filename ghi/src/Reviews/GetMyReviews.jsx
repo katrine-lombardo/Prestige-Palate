@@ -12,7 +12,6 @@ const GetMyReviews = () => {
     const [username, setUsername] = useState("")
     const [reviews, setReviews] = useState([])
     const { token } = useAuthContext()
-    console.log("username: ", username)
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -48,14 +47,14 @@ const GetMyReviews = () => {
 
     return (
         <div>
-            <h5>My reviews</h5>
+            <h5>{username}'s reviews</h5>
             <div className="list-my-reviews-container">
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
                         <ReviewCard key={review.id} review={review} />
                     ))
                 ) : (
-                    <p>No reviews found.</p>
+                    <p>Loading reviews...</p>
                 )}
             </div>
         </div>
