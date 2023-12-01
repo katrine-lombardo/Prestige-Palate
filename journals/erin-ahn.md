@@ -1,5 +1,15 @@
 ## Thurs, Nov 29
 Features/issues that you worked on and who you worked with:
+- Completed Sign In and Sign Up page front end to work independently. Had to rewrite the login function and not use the JWT library.
+
+A reflection on any design conversations that you had
+- JWT library doesn't allow for error handling.
+
+At least one ah-ha! moment:
+- Resolving with if console.error makes the statement true briefly before logging in which would display the error message briefly as well. 
+
+## Wed, Nov 29
+Features/issues that you worked on and who you worked with:
 - Completed Sign In page front end to work independently. Also resolved Token Error messages appearing due to using vite by adding more code into the yaml, .env and App.js.
 
 A reflection on any design conversations that you had
