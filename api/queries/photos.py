@@ -34,7 +34,7 @@ class PhotoQueries:
             print(f"Error in get_photo_urls_by_username: {e}")
             raise
 
-    def get_photos_by_place(self, place_id: str) -> List[PhotoOut]:
+    def get_photos_by_restaurant(self, place_id: str) -> List[PhotoOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
