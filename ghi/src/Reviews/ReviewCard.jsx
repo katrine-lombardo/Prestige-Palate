@@ -32,7 +32,7 @@ const ReviewCard = ({ review }) => {
 
     return (
         <div className="review-card">
-            <Link to={`/accounts/${username}/reviews`} className="reviews-link">
+            <Link to={`/restaurants/${place_id}`} className="restaurant-details-link">
                 <h3>{restaurantName}</h3>
             </Link>
             <p>Review Date: {new Date(publish_time).toLocaleDateString()}</p>
