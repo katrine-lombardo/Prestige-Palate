@@ -4,27 +4,27 @@ import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 
 const RestaurantPhotos = () => {
     const { id } = useParams();
-    const [restaurantDetails, setRestaurantDetails] = useState(null);
+    const [restaurantPhotos, setRestaurantPhotos] = useState(null);
     const { token } = useAuthContext();
 
     useEffect(() => {
-        const fetchDetails = async () => {
+        const fetchPhotos = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${id}`);
+                const response = await fetch(`http://localhost:8000/api/restaurants/${id}/photos`);
                 if (!response.ok) {
-                    throw new Error('Could not fetch restaurant details');
+                    throw new Error('Could not fetch restaurant photos');
                 }
                 const data = await response.json();
-                setRestaurantDetails(data);
+                setRestaurantPhotos(data);
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchDetails();
+        fetchPhotos();
     }, [id]);
 
-    if (!restaurantDetails) {
+    if (!restaurantPhotos) {
         return <div>Loading...</div>;
     }
 
@@ -39,7 +39,7 @@ const RestaurantPhotos = () => {
                     gap: '10px',
                     padding: 0
                 }}>
-                    {restaurantDetails.photos.map((photo, index) => (
+                    {restaurantPhotos.photos.map((photo, index) => (
                         <li key={index} style={{ width: '100%', overflow: 'hidden' }}>
                             <img
                                 src={photo.imageUrl}
