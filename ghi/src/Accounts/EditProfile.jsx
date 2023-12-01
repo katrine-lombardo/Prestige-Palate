@@ -31,10 +31,8 @@ const EditProfile = () => {
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
-
-        // Ensure the token is set before making the API call
         if (!token) {
-            console.error("Token not available yet. Aborting update.");
+            console.error("Token not available.");
             return;
         }
 
@@ -54,7 +52,6 @@ const EditProfile = () => {
             if (response.ok) {
                 setUpdateSuccess(true);
             } else {
-                // Display an error message for non-successful responses
                 const data = await response.json();
                 throw new Error(
                     data.detail ||
@@ -63,7 +60,6 @@ const EditProfile = () => {
             }
         } catch (error) {
             console.error("Update profile error:", error);
-            alert(error.message || "Failed to update profile.");
         }
     };
 
