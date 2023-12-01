@@ -34,16 +34,16 @@ class ReviewUpdate(BaseModel):
 
 
 class ReviewQueries:
-    def get_reviews_by_account(self, username: str) -> List[ReviewOut]:
+    def get_reviews_by_account(self, account_id: int) -> List[ReviewOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
                         SELECT * FROM reviews
-                        WHERE username = (SELECT username FROM accounts WHERE username = %s);
+                        WHERE id = (SELECT id FROM accounts WHERE id = %s);
                         """,
-                        [username],
+                        [account_id],
                     )
                     reviews = []
                     for row in cur.fetchall():
@@ -54,9 +54,7 @@ class ReviewQueries:
                         reviews.append(ReviewOut(**row_dict))
                     return reviews
         except Exception:
-            return {
-                "message": "Could not get reviews for this account's username"
-            }
+            return {"message": "Could not get reviews for this account's id"}
 
     def delete_review(self, review_id: int) -> bool:
         try:
