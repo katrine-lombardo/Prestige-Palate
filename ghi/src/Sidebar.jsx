@@ -30,6 +30,9 @@ const Sidebar = ({ isOpen }) => {
                         <NavLink className="nav-link" to="/editprofile">
                             Edit Profile
                         </NavLink>
+                        <NavLink className="nav-link" to="/updatepassword">
+                            Update Password
+                        </NavLink>
                         <NavLink className="nav-link" to="/deleteprofile">
                             Delete Profile
                         </NavLink>
