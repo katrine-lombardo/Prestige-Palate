@@ -3,7 +3,7 @@ import React from 'react';
 const About = ({ restaurantDetails }) => {
     return (
         <div className="about-section">
-            <h3>About</h3>
+            <h3 style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }}>About</h3>
             <div className="about-content">
                 <div className="hours-of-operation">
                     <h4>Hours of Operation</h4>

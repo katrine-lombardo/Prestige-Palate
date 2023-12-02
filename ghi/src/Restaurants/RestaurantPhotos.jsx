@@ -30,7 +30,7 @@ const RestaurantPhotos = () => {
 
     return (
         <div>
-            <h3>Photos from Google</h3>
+            <h2 style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }}>Google Photos</h2>
             <div>
                 <ul style={{
                     listStyle: 'none',
@@ -46,13 +46,13 @@ const RestaurantPhotos = () => {
                                 style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                                 loading="lazy"
                             />
-                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '3px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
                                 {photo.authorAttributions?.[0]?.photoUri ? (
                                     <p style={{ marginRight: '10px' }}>
                                         <img
                                             src={`https:${photo.authorAttributions?.[0]?.photoUri}`}
                                             alt=""
-                                            style={{ width: '40px', height: 'auto' }}
+                                            style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                                             loading="lazy"
                                         />
                                     </p>
