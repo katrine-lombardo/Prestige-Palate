@@ -35,7 +35,7 @@ function Nav() {
                         <NavLink
                             className="nav-link"
                             activeclassname="active"
-                            to="/home"
+                            to="/"
                         >
                             Home
                         </NavLink>

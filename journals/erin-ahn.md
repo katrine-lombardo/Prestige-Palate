@@ -1,4 +1,24 @@
-## Thurs, Nov 29
+## Mon, Dec 4
+Features/issues that you worked on and who you worked with:
+- Completed Delete Profile front end independently.
+
+A reflection on any design conversations that you had
+- 
+
+At least one ah-ha! moment:
+- 
+
+## Fri, Dec 1
+Features/issues that you worked on and who you worked with:
+- Completed Edit Profile and Update Password front end independently.
+
+A reflection on any design conversations that you had
+- UseState to set different error messages (for passwords not matching vs. current password incorrect).
+
+At least one ah-ha! moment:
+- changed both update password and edit profile to use PUT instead of PATCH. 
+
+## Thurs, Nov 30
 Features/issues that you worked on and who you worked with:
 - Completed Sign In and Sign Up page front end to work independently. Had to rewrite the login function and not use the JWT library.
 
