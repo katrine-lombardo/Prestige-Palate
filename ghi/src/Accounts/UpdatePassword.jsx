@@ -3,14 +3,33 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw new Error("VITE_APP_API_HOST was undefined.");
+    throw error("VITE_APP_API_HOST was undefined.")
 }
 
 const UpdatePassword = () => {
-    const [password, setPassword] = useState("");
     const [id, setAccountId] = useState("");
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
+    const [newPasswordVisible, setNewPasswordVisible] = useState(false);
+    const [confirmationVisible, setConfirmationVisible] = useState(false);
+    const [changeSuccess, setChangeSuccess] = useState(false);
+    const [changeError, setChangeError] = useState(false);
+    const [passwordMatchError, setPasswordMatchError] = useState("");
     const { token } = useAuthContext();
-    const [updateSuccess, setUpdateSuccess] = useState(false);
+
+    const toggleCurrentPasswordVisibility = () => {
+        setCurrentPasswordVisible(!currentPasswordVisible);
+    };
+
+    const toggleNewPasswordVisibility = () => {
+        setNewPasswordVisible(!newPasswordVisible);
+    };
+
+    const toggleConfirmationVisibility = () => {
+        setConfirmationVisible(!confirmationVisible);
+    };
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -20,7 +39,6 @@ const UpdatePassword = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("id: ", data.account.id);
                     setAccountId(data.account.id);
                 })
                 .catch((error) => console.error(error));
@@ -28,81 +46,124 @@ const UpdatePassword = () => {
         handleFetchWithAPI();
     }, [token]);
 
-    const handleUpdateProfile = async (e) => {
+    const handleUpdatePassword = async (e) => {
         e.preventDefault();
         if (!token) {
-            console.error("Token not available yet. Aborting update.");
+            console.error("Token not available.");
             return;
         }
 
-        const endpoint = `${tokenUrl}/api/accounts/${id}/edit-profile/`;
+        if (newPassword !== confirmPassword) {
+            setPasswordMatchError("Passwords do not match. Please check and try again.");
+            return;
+        } else {
+            setPasswordMatchError("");
+        }
+
+
+        const endpoint = `${tokenUrl}/api/accounts/${id}/change-password/`;
         try {
             const response = await fetch(endpoint, {
-                method: "PATCH",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    first_name: firstName,
-                    last_name: lastName,
+                    current_password: currentPassword,
+                    new_password: newPassword,
+                    confirm_password: confirmPassword,
                 }),
             });
+
             if (response.ok) {
-                setUpdateSuccess(true);
+                setChangeSuccess(true);
+                setTimeout(() => {
+                    setChangeSuccess(false);
+                }, 1000);
             } else {
-                // Display an error message for non-successful responses
                 const data = await response.json();
-                throw new Error(
-                    data.detail ||
-                    "An error occurred while updating the profile."
-                );
+                throw new Error(data.detail || "An error occurred while changing the password.");
             }
         } catch (error) {
-            console.error("Update profile error:", error);
-            alert(error.message || "Failed to update profile.");
+            setChangeError(true);
+            setTimeout(() => {
+                setChangeError(false);
+            }, 1000);
         }
     };
 
     return (
         <div className="card text-bg-light mb-3">
-            <h5 className="card-header">Edit Profile</h5>
-            {updateSuccess && (
+            <h5 className="card-header">Change Password</h5>
+            {changeSuccess && (
                 <div className="alert alert-success" role="alert">
-                    Successfully updated account information.
+                    Password successfully changed.
+                </div>
+            )}
+            {changeError && (
+                <div className="alert alert-danger" role="alert">
+                    Incorrect current password. Please try again.
+                </div>
+            )}
+            {passwordMatchError && (
+                <div className="alert alert-danger" role="alert">
+                    {passwordMatchError}
                 </div>
             )}
             <div className="card-body">
-                <form onSubmit={handleUpdateProfile}>
+                <form onSubmit={handleUpdatePassword}>
                     <div className="mb-3">
-                        <label htmlFor="firstName" className="form-label">
-                            First Name:
+                        <label htmlFor="currentPassword" className="form-label">
+                            Current Password:
                         </label>
                         <input
-                            type="text"
-                            id="firstName"
+                            type={currentPasswordVisible ? "text" : "password"}
+                            id="currentPassword"
                             className="form-control"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            required
                         />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="lastName" className="form-label">
-                            Last Name:
-                        </label>
-                        <input
-                            type="text"
-                            id="lastName"
-                            className="form-control"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <button type="submit" className="btn btn-primary">
-                            Update
+                        <button type="button" onClick={toggleCurrentPasswordVisibility}>
+                            {currentPasswordVisible ? "Hide Password" : "Show Password"}
                         </button>
                     </div>
+                    <div className="mb-3">
+                        <label htmlFor="newPassword" className="form-label">
+                            New Password:
+                        </label>
+                        <input
+                            type={newPasswordVisible ? "text" : "password"}
+                            id="newPassword"
+                            className="form-control"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            required
+                        />
+                        <button type="button" onClick={toggleNewPasswordVisibility}>
+                            {newPasswordVisible ? "Hide Password" : "Show Password"}
+                        </button>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="confirmPassword" className="form-label">
+                            Confirm New Password:
+                        </label>
+                        <input
+                            type={confirmationVisible ? "text" : "password"}
+                            id="confirmPassword"
+                            className="form-control"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                        <button type="button" onClick={toggleConfirmationVisibility}>
+                            {confirmationVisible ? "Hide Confirmation" : "Show Confirmation"}
+                        </button>
+                    </div>
+                    <button type="submit" className="btn btn-primary">
+                        Change Password
+                    </button>
                 </form>
             </div>
         </div>

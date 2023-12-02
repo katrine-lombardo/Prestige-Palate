@@ -3,15 +3,17 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw new Error("VITE_APP_API_HOST was undefined.");
+    throw error("VITE_APP_API_HOST was undefined.")
 }
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [username, setUsername] = useState("");
     const [id, setAccountId] = useState("");
     const { token } = useAuthContext();
     const [updateSuccess, setUpdateSuccess] = useState(false);
+    const [updateError, setError] = useState(false);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -39,7 +41,7 @@ const EditProfile = () => {
         const endpoint = `${tokenUrl}/api/accounts/${id}/edit-profile/`;
         try {
             const response = await fetch(endpoint, {
-                method: "PATCH",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -47,10 +49,14 @@ const EditProfile = () => {
                 body: JSON.stringify({
                     first_name: firstName,
                     last_name: lastName,
+                    username: username,
                 }),
             });
             if (response.ok) {
                 setUpdateSuccess(true);
+                setTimeout(() => {
+                    setUpdateSuccess(false);
+                }, 1000)
             } else {
                 const data = await response.json();
                 throw new Error(
@@ -59,7 +65,10 @@ const EditProfile = () => {
                 );
             }
         } catch (error) {
-            console.error("Update profile error:", error);
+            setError(true);
+            setTimeout(() => {
+                setError(false)
+            }, 1000)
         }
     };
 
@@ -71,8 +80,25 @@ const EditProfile = () => {
                     Successfully updated account information.
                 </div>
             )}
+            {updateError && (
+                <div className="alert alert-danger" role="alert">
+                    Existing username. Try again.
+                </div>
+            )}
             <div className="card-body">
                 <form onSubmit={handleUpdateProfile}>
+                    <div className="mb-3">
+                        <label htmlFor="username" className="form-label">
+                            Username:
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            className="form-control"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
                     <div className="mb-3">
                         <label htmlFor="firstName" className="form-label">
                             First Name:

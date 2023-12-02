@@ -92,7 +92,7 @@ async def get_account_by_id(
         response.status_code = 404
     return account
 
-@router.patch("/api/accounts/{account_id}/change-password/")
+@router.put("/api/accounts/{account_id}/change-password/")
 async def change_password(
     change_password: ChangePassword,
     current_account_data: dict = Depends(
@@ -137,7 +137,7 @@ async def change_password(
     }
 
 
-@router.patch("/api/accounts/{account_id}/edit-profile/")
+@router.put("/api/accounts/{account_id}/edit-profile/")
 async def edit_profile(
     edit_profile: EditProfile,
     current_account_data: dict = Depends(
