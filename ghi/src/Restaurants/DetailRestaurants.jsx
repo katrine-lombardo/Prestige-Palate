@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import { Link } from 'react-router-dom';
 import About from './About';
-import ListAppReviews from '../Reviews/GetAppReviews';
+import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
 
 const DetailRestaurant = () => {

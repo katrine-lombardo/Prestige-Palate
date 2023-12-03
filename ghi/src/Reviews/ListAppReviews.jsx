@@ -1,6 +1,7 @@
-
-import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
+import { Link } from 'react-router-dom';
 import ReviewCard from './ReviewCard';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -8,30 +9,12 @@ if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
 
-const GetMyReviews = () => {
-    const [username, setUsername] = useState("")
-    const [reviews, setReviews] = useState([])
-    const { token } = useAuthContext()
+const ListAppReviews = () => {
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
-        const handleFetchWithAPI = async () => {
-            const url = `${tokenUrl}/token`;
-            fetch(url, {
-                credentials: "include",
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log("username: ", data.account.username);
-                    setUsername(data.account.username);
-                })
-                .catch((error) => console.error(error));
-        };
-        handleFetchWithAPI();
-    }, [token]);
-
-    useEffect(() => {
-        const fetchMyReviews = async () => {
-            const url = `${tokenUrl}/api/accounts/${username}/reviews`;
+        const fetchReviews = async () => {
+            const url = `${tokenUrl}/api/restaurants/${place_id}/reviews`;
             fetch(url, {
                 credentials: "include",
             })
@@ -42,12 +25,16 @@ const GetMyReviews = () => {
                 })
                 .catch((error) => console.error(error))
         };
-        fetchMyReviews();
-    }, [token]);
+        fetchReviews();
+    });
+
+    if (!reviews) {
+        return <div>Loading reviews...</div>;
+    }
 
     return (
         <div>
-            <h5>{username}'s reviews</h5>
+            <h5>Reviews</h5>
             <div className="list-my-reviews-container">
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
@@ -59,6 +46,7 @@ const GetMyReviews = () => {
             </div>
         </div>
     );
+
 }
 
-export default GetMyReviews
+export default ListAppReviews

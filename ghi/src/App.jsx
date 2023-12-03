@@ -10,7 +10,7 @@ import DeleteProfile from "./Accounts/DeleteProfile"
 import LogoutButton from "./Accounts/LogoutButton";
 import Sidebar from "./Sidebar";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
-import GetMyReviews from "./Reviews/GetMyReviews";
+import ListMyReviews from "./Reviews/ListMyReviews";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
@@ -40,7 +40,7 @@ function App() {
                         <Route path="/deleteprofile" element={<DeleteProfile />} />
                         <Route path="/updatepassword" element={<UpdatePassword />} />
                         <Route path="/restaurants/:id" element={<DetailRestaurant />} />
-                        <Route path="/myreviews" element={<GetMyReviews />} />
+                        <Route path="/myreviews" element={<ListMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
                         <Route path="/restaurants" element={<ListRestaurants />} />
                         <Route path="/create-review/:id" element={<CreateReview />} />
