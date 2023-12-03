@@ -1,13 +1,39 @@
+#### Fri, Dec 1
+
+Features/issues that you worked on and who you worked with:
+* I spent most of the day updating endpoints, but this conversation is slightly bigger than I originally thought.
+
+A reflection on any design conversations that you had
+* We still need to solve the issue of how our endpoints are set up as Erin and I spent the last three weeks developing code around two separate endpoints that are no longer restful. I spent most of the day attempting to convert my code to match Erin's endpoint of accounts/id for specific accounts (Rather than accounts/username that I had set up), and found myself in a deeper pit than I had been before. It feels like for every step forward I take two steps back. I'm starting to see why other teams divided their work by work area (front end, back end, etc) rather than dividing by feature, because finding consistency across our areas has taken a surprisingly longer amount of time than I anticipated.
+ 
+At least one ah-ha! moment:
+* We spent some time together playing with the Advent of Code which was interesting, and far more challenging than I anticipated!
+
+---
+
+#### Thurs, Nov 30
+
+Features/issues that you worked on and who you worked with:
+* Today Trey and I worked toegether and pomodoro'd, it was a great focus day and I was able to build out GetMyReviews and GetAppReviews.
+
+A reflection on any design conversations that you had
+* I saw Yaosheng's RestaurantCard and started thinking about how I can implement similarly beautiful code in my own area. So I started a ReviewCard and hope to be able to use this for my other review code too.
+
+At least one ah-ha! moment:
+* I got my frontend code to appear in the live app for the first time, which was extremely satisfying after spending this whole time behind the scenes on the backend.
+
+---
+
 #### Wed, Nov 29
 
 Features/issues that you worked on and who you worked with:
-* 
+* I spent the day updating the backend error handling for reviews and also created my first front-end code for viewing a list of reviews.
 
 A reflection on any design conversations that you had
-*
+* Getting into the front end made us reflect on how reviews and photos should work together, and we realised that maybe the photos database wasn't event needed.
 
 At least one ah-ha! moment:
-*
+* We were really happy to finally get Main healthy again -- We finally figured out how to collaborate and commit code together.
 
 ---
 
