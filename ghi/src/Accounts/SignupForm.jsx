@@ -62,12 +62,12 @@ const SignupForm = () => {
     return (
         <div className="card text-bg-light mb-3">
             <h5 className="card-header">Sign Up</h5>
-            <div className="card-body">
-                {errorMessage && (
+            {errorMessage && (
                     <p className="alert alert-danger mb-3" role="alert">
                         {errorMessage}
                     </p>
                 )}
+            <div className="card-body">
                 <form onSubmit={handleSignup}>
                     <div className="mb-3">
                         <label htmlFor="firstname" className="form-label">

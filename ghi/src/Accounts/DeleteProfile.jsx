@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -11,6 +12,7 @@ const DeleteProfile = () => {
     const [id, setAccountId] = useState("");
     const [updateError, setError] = useState(false);
     const { token } = useAuthContext();
+    const { logout } = useToken();
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -28,6 +30,7 @@ const DeleteProfile = () => {
     }, [token]);
 
     const handleDelete = async (e) => {
+        e.preventDefault();
         try {
             const response = await fetch(`${tokenUrl}/api/accounts/${id}`, {
                 method: "DELETE",
@@ -39,6 +42,7 @@ const DeleteProfile = () => {
 
             if (response.ok) {
                 setDeleteSuccess(true);
+                logout()
             } else {
                 throw new Error("Failed to delete account.");
             }
@@ -50,29 +54,34 @@ const DeleteProfile = () => {
         }
     };
 
-    const SuccessMessage = () => (
-        <div className="alert alert-success" role="alert">
-            Sorry to see you go. We'll be here if you need us again!
-        </div>
-    );
-
     return (
         <div className="card text-bg-light mb-3">
             <h5 className="card-header">Delete Profile</h5>
             <div className="card-body">
                 <form onSubmit={handleDelete}>
-                    {!updateError && (
-                        <div>
-                            Are you sure you want to delete your account? This action is permanent
-                            and irreversible.
-                        </div>
+                    {updateError && (
+                    <div className="alert alert-danger" role="alert">
+                        We're sorry. We had difficulty deleting your account. Try again later.
+                    </div> 
                     )}
-                    <button
-                        className="btn btn-danger"
-                    >
-                        Delete Account
-                    </button>
-                    {deleteSuccess && <SuccessMessage />}
+                    {!deleteSuccess ? (
+                        <>
+                            <div>
+                                Are you sure you want to delete your account? This action is permanent
+                                and irreversible.
+                            </div>
+                            <button
+                                className="btn btn-danger"
+                            >
+                                Delete Account
+                            </button>
+                        </>
+                    ) : (
+                    <div>
+                        Sorry to see you go. We'll be here if you need us again!
+                    </div>
+                    )}
+                    
                 </form>
             </div>
         </div>
