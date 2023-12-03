@@ -39,7 +39,7 @@ function App() {
                         <Route path="/editprofile" element={<EditProfile />} />
                         <Route path="/deleteprofile" element={<DeleteProfile />} />
                         <Route path="/updatepassword" element={<UpdatePassword />} />
-                        <Route path="/restaurants/:id" element={<DetailRestaurant />} />
+                        <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
                         <Route path="/myreviews" element={<ListMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
                         <Route path="/restaurants" element={<ListRestaurants />} />

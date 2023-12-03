@@ -6,8 +6,13 @@ import About from './About';
 import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw error("VITE_APP_API_HOST was undefined.")
+}
+
 const DetailRestaurant = () => {
-    const { id } = useParams();
+    const { place_id } = useParams();
     const navigate = useNavigate();
     const [restaurantDetails, setRestaurantDetails] = useState(null);
     const { token } = useAuthContext();
@@ -16,7 +21,7 @@ const DetailRestaurant = () => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${id}`);
+                const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}`);
                 if (!response.ok) {
                     throw new Error('Could not fetch restaurant details');
                 }
@@ -28,11 +33,11 @@ const DetailRestaurant = () => {
         };
 
         fetchDetails();
-    }, [id]);
+    }, [place_id]);
 
     // const fetchPhoto = async (photoId) => {
     //     try {
-    //         const response = await fetch(`http://localhost:8000/api/restaurants/${photoId}/photos`);
+    //         const response = await fetch(`${tokenUrl}/api/restaurants/${photoId}/photos`);
     //         if (!response.ok) {
     //             throw new Error(`HTTP error! status: ${response.status}`);
     //         }
@@ -67,7 +72,7 @@ const DetailRestaurant = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/restaurants/${id}/favorite`, {
+            const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/favorite`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,7 +97,7 @@ const DetailRestaurant = () => {
             promptLogin("Only logged-in users can add reviews.");
             return;
         }
-        navigate(`/create-review/${id}`);
+        navigate(`/create-review/${place_id}`);
     };
 
 
@@ -141,7 +146,7 @@ const DetailRestaurant = () => {
                 <button onClick={() => handleTabChange('about')}>About</button>
             </div>
 
-            {activeTab === 'reviews' && <ListAppReviews placeId={id} />}
+            {activeTab === 'reviews' && <ListAppReviews place_={place_id} />}
             {activeTab === 'photos' && <RestaurantPhotos placeId={id} />}
             {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
         </div>
