@@ -155,7 +155,7 @@ class ReviewQueries:
                     # Build the UPDATE query
                     update_query = """
                         UPDATE reviews
-                        SET username = %s, place_id = %s, text = %s, rating = %s
+                        SET title = %s, text = %s, rating = %s, photo_url = %s
                         WHERE id = %s
                         RETURNING *;
                     """
@@ -164,10 +164,10 @@ class ReviewQueries:
                     cur.execute(
                         update_query,
                         [
-                            updated_review["username"],
-                            updated_review["place_id"],
+                            updated_review["title"],
                             updated_review["text"],
                             updated_review["rating"],
+                            updated_review["photo_url"],
                             review_id,
                         ],
                     )
