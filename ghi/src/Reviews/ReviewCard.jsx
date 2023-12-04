@@ -36,7 +36,7 @@ const ReviewCard = ({ review }) => {
 
     return (
         <div className="review-card">
-            <div className="card">
+            <div className="card mt-3">
                 <div className="card-body">
                     <div className="card-title">
                         <Link to={`/restaurants/${place_id}`} className="restaurant-details-link">
