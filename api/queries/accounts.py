@@ -25,6 +25,7 @@ class AccountOut(BaseModel):
     username: str
     first_name: str
     last_name: str
+    profile_icon_id: int
 
 
 class AccountOutWithPassword(AccountOut):
@@ -40,10 +41,13 @@ class ChangePassword(BaseModel):
 class EditProfile(BaseModel):
     first_name: str
     last_name: str
+    profile_icon_id: int
 
 
 class AccountQueries:
-    def get_account_by_email(self, email: str) -> Union[Error, AccountOutWithPassword]:
+    def get_account_by_email(
+        self, email: str
+    ) -> Union[Error, AccountOutWithPassword]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
@@ -84,7 +88,7 @@ class AccountQueries:
                     hashed_password)
                     VALUES (%s, %s, %s, %s, %s)
                     RETURNING id, username, first_name, last_name, email,
-                    hashed_password
+                    hashed_password, profile_icon_id
                     """,
                     params,
                 )
@@ -95,7 +99,7 @@ class AccountQueries:
                     record = {}
                     for i, column in enumerate(cur.description):
                         record[column.name] = row[i]
-                return AccountOutWithPassword(**record)
+                    return AccountOutWithPassword(**record)
 
     def get_account_by_id(
         self, account_id: int
@@ -147,19 +151,27 @@ class AccountQueries:
                     params,
                 )
 
-    def edit_profile(self, email: str, edit_profile):
+    def edit_profile(
+        self, email: str, edit_profile: EditProfile
+        ):
         with pool.connection() as conn:
             with conn.cursor() as cur:
+                # Validate profile_icon_id
+                if not (1 <= edit_profile.profile_icon_id <= 16):
+                    raise ValueError("Invalid icon_id. It must be between 1 and 16.")
+
                 params = [
                     edit_profile.first_name,
                     edit_profile.last_name,
+                    edit_profile.profile_icon_id,
                     email,
                 ]
                 cur.execute(
                     """
                     UPDATE accounts
                     SET first_name = %s,
-                    last_name = %s
+                    last_name = %s,
+                    profile_icon_id = %s
                     WHERE email = %s;
                     """,
                     params,
