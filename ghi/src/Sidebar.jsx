@@ -15,28 +15,28 @@ const Sidebar = ({ isOpen }) => {
                 </NavLink>
                 {token ? (
                     <>
-                        <NavLink className="nav-link" to="/favorites">
+                        <NavLink className="nav-link" to="/favorites" onClick = {isOpen}>
                             Favorite
                         </NavLink>
-                        <NavLink className="nav-link" to="/friends">
+                        <NavLink className="nav-link" to="/friends" onClick={isOpen}>
                             Friends
                         </NavLink>
-                        <NavLink className="nav-link" to="/new-review">
+                        <NavLink className="nav-link" to="/new-review" onClick={isOpen}>
                             New Review
                         </NavLink>
-                        <NavLink className="nav-link" to="/myreviews">
+                        <NavLink className="nav-link" to="/myreviews" onClick={isOpen}>
                             My Reviews
                         </NavLink>
-                        <NavLink className="nav-link" to="/editprofile">
+                        <NavLink className="nav-link" to="/editprofile" onClick={isOpen}>
                             Edit Profile
                         </NavLink>
-                        <NavLink className="nav-link" to="/updatepassword">
+                        <NavLink className="nav-link" to="/updatepassword" onClick={isOpen}>
                             Update Password
                         </NavLink>
-                        <NavLink className="nav-link" to="/deleteprofile">
+                        <NavLink className="nav-link" to="/deleteprofile" onClick={isOpen}>
                             Delete Profile
                         </NavLink>
-                        <NavLink className="nav-link" to="/logout">
+                        <NavLink className="nav-link" to="/logout" onClick={isOpen}>
                             Log Out
                         </NavLink>
                     </>
