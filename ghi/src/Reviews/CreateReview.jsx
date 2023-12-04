@@ -40,18 +40,17 @@ const CreateReview = () => {
             console.error("Error", err);
         }
     };
-    const handlePhotoUpload = () => {
-        if (photo) {
-            uploadToS3(photo)
-                .then(url => {
-                    setReviewForm(prevReviewForm => ({
-                        ...prevReviewForm,
-                        photo_url: url
-                    }))
-                })
-                .catch(err => {
-                    console.error("Upload failed:", err);
-                });
+    const handlePhotoUpload = async () => {
+        try {
+            const url = await uploadToS3(photo);
+            setReviewForm(prevReviewForm => ({
+                ...prevReviewForm,
+                photo_url: url
+            }));
+            window.alert("File uploaded successfully!"); // Show a pop-up notification
+        } catch (err) {
+            console.error("Upload failed:", err);
+            // You can handle the error here, e.g., display another notification
         }
     };
 
@@ -108,21 +107,22 @@ const CreateReview = () => {
             <h2 className="mb-4">Write a Review</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="description" className="form-label">
-                        Description:
+                    <label htmlFor="title" className="form-label">
                     </label>
-                    <textarea
-                        id="description"
-                        name="text"
-                        value={reviewForm.text}
+                    <input
+                        id="title"
+                        name="title"
+                        type="text"
+                        placeholder="Title"
+                        value={reviewForm.title}
                         onChange={handleInputChange}
                         className="form-control"
                         required
-                    ></textarea>
+                        style={{ width: '50%' }} // Set the width as needed
+                    />
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Rating:</label>
-                    <div>
+                <div className="mb-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ marginRight: '10px' }}>
                         {[1, 2, 3, 4, 5].map((star) => (
                             <span
                                 key={star}
@@ -136,22 +136,37 @@ const CreateReview = () => {
                             </span>
                         ))}
                     </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <label htmlFor="photo_url" className="form-label" style={{ marginLeft: '10px' }}>
+                        </label>
+                        <input
+                            placeholder="photo_url"
+                            type="file"
+                            accept="image/*"
+                            name="photo_url"
+                            id="imageInput"
+                            className="form-control"
+                            onChange={handlePhotoChange}
+                            style={{ marginLeft: '10px' }}
+                        />
+                        <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ marginLeft: '10px' }}>
+                            Upload Photo
+                        </button>
+                    </div>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="photo_url" className="form-label">
-                        Attach a photo:
+                    <label htmlFor="description" className="form-label">
                     </label>
-                    <input
-                        placeholder="photo_url"
-                        type="file"
-                        accept="image/*"
-                        name="photo_url"
-                        id="imageInput"
+                    <textarea
+                        id="description"
+                        placeholder="Write your thoughts here...."
+                        name="text"
+                        value={reviewForm.text}
+                        onChange={handleInputChange}
                         className="form-control"
-                        onChange={handlePhotoChange}
-                    />
-
-                    <button onClick={handlePhotoUpload} type="button">Upload Photo</button>
+                        required
+                        style={{ height: '150px' }} // Set the height as needed
+                    ></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary">
                     Post
