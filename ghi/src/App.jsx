@@ -15,6 +15,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
+import SearchResults from "./SearchResults";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -44,6 +45,7 @@ function App() {
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
                         <Route path="/restaurants" element={<ListRestaurants />} />
                         <Route path="/create-review/:id" element={<CreateReview />} />
+                        <Route path="/search-results" element={<SearchResults />} />
                     </Routes>
                 </div>
             </AuthProvider>

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
 function Nav({ toggleSidebar }) {
     const [restaurants, setRestaurants] = useState([]);
     const [searched, setSearched] = useState(false);
+    const navigate = useNavigate();
 
     const handleSearchResults = (results) => {
         setRestaurants(results);
@@ -35,7 +36,8 @@ function Nav({ toggleSidebar }) {
                 </div>
             </nav>
             <main className="homepage-content">
-                {searched && <SearchResults results={restaurants} />}
+                {/* {searched && <SearchResults results={restaurants} />} */}
+                {searched && navigate("/search-results")}
             </main>
         </>
     );
