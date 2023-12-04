@@ -80,7 +80,7 @@ const EditProfile = () => {
             )}
             {updateError && (
                 <div className="alert alert-danger" role="alert">
-                    Existing username. Try again.
+                    There was trouble updating your profile. Please try again.
                 </div>
             )}
             <div className="card-body">

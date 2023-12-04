@@ -158,8 +158,7 @@ class AccountQueries:
                 cur.execute(
                     """
                     UPDATE accounts
-                    SET username = %s,
-                    first_name = %s,
+                    SET first_name = %s,
                     last_name = %s
                     WHERE email = %s;
                     """,
