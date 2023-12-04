@@ -45,7 +45,7 @@ const ListMyReviews = () => {
     }, [token, username]);
 
     if (!token) {
-        return <div>Please log in to see my reviews</div>;
+        return <div>Please log in to see reviews</div>;
     }
 
     return (
@@ -123,7 +123,21 @@ const ListMyReviews = () => {
                                 />
                             ))
                         ) : (
-                            <p>Loading reviews...</p>
+                            <div>
+                                <div className="container mt-4">
+                                    ...What are you waiting for?
+                                </div>
+                                <div>
+                                    <Link to={`/`}>
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary mt-3 ms-2"
+                                        >
+                                            Start your culinary adventure now
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -157,7 +171,7 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-following-tab"
                     tabIndex="0"
                 >
-                    <div className="nav-following-container">
+                    <div className="nav-following-container mt-4">
                         Palates you follow will appear here
                     </div>
                 </div>
@@ -168,7 +182,7 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-followers-tab"
                     tabIndex="0"
                 >
-                    <div className="nav-followers-container">
+                    <div className="nav-followers-container mt-4">
                         Palates following you will appear here
                     </div>
                 </div>
