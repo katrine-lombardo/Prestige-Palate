@@ -11,6 +11,7 @@ const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
     const { token } = useAuthContext();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -24,42 +25,23 @@ const ListMyReviews = () => {
                 })
                 .catch((error) => console.error(error));
         };
-
         const fetchMyReviews = async () => {
-            if (username) {
+            try {
                 const url = `${tokenUrl}/api/accounts/${username}/reviews`;
-                fetch(url, {
-                    credentials: "include",
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        setReviews(data);
-                    })
-                    .catch((error) => console.error(error));
+                const response = await fetch(url);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail);
+                }
+                const data = await response.json();
+                setReviews(data);
+            } catch (error) {
+                console.error(error.message);
             }
         };
         handleFetchWithAPI();
         fetchMyReviews();
     }, [token, username]);
-
-    useEffect(() => {
-        const fetchRestaurantDetails = async () => {
-            try {
-                const url = `${tokenUrl}/api/restaurants/${place_id}`;
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error("Could not fetch restaurant details");
-                }
-                const data = await response.json();
-                setRestaurantName(data.displayName.text);
-                setLoading(false);
-            } catch (error) {
-                console.error(error);
-                setLoading(false);
-            }
-        };
-        fetchRestaurantDetails();
-    }, []);
 
     if (!token) {
         return <div>Please log in to see reviews</div>;
@@ -147,7 +129,6 @@ const ListMyReviews = () => {
                                         <div className="card-text">
                                             <div className="container">
                                                 <div className="d-flex justify-content-between">
-                                                    <div>{username}</div>
                                                     <div>
                                                         {[1, 2, 3, 4, 5].map(
                                                             (star) => (

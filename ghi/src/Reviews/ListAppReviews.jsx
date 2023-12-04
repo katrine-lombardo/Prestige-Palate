@@ -10,7 +10,7 @@ if (!tokenUrl) {
 const ListAppReviews = () => {
     const navigate = useNavigate();
     const { place_id } = useParams();
-    const { token } = useAuthContext();
+    const { token } = useAuthContext()
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
