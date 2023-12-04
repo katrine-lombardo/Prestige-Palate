@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import SearchResults from "./SearchResults";
+// import SearchResults from "./SearchResults";
 
 function Nav({ toggleSidebar }) {
-    const [restaurants, setRestaurants] = useState([]);
+    // const [restaurants, setRestaurants] = useState([]);
     const [searched, setSearched] = useState(false);
     const navigate = useNavigate();
 
