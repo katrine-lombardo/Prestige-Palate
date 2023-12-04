@@ -1,14 +1,7 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
-import useToken from "@galvanize-inc/jwtdown-for-react";
-import React, { useState } from "react";
-
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 function Nav() {
-    const { logout } = useToken();
-    const { token } = useAuthContext();
-    const navigate = useNavigate();
-
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -30,31 +23,17 @@ function Nav() {
                     className="collapse navbar-collapse"
                     id="navbarSupportedContent"
                 >
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-                    <li className="nav-item">
-                        <NavLink
-                            className="nav-link"
-                            activeclassname="active"
-                            to="/home"
-                        >
-                            Home
-                        </NavLink>
-                    </li>
-                    <div>
-                        {!token && (
-                            <button className="signIn" onClick={() => navigate("/login")}>
-                                Sign In
-                            </button>
-                        )}
-                    </div>
-                    <div>
-                        {token && (
-                            <button className="signIn" onClick={logout}>
-                                Sign Out
-                            </button>
-                        )}
-                    </div>
-
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <NavLink
+                                className="nav-link"
+                                activeClassName="active"
+                                to="/"
+                            >
+                                Home
+                            </NavLink>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

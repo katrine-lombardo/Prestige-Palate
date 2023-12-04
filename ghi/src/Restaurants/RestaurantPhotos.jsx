@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 
 const RestaurantPhotos = () => {
-    const { id } = useParams();
+    const { place_id } = useParams();
     const [restaurantPhotos, setRestaurantPhotos] = useState(null);
     const { token } = useAuthContext();
 
     useEffect(() => {
         const fetchPhotos = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${id}/photos`);
+                const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/photos`);
                 if (!response.ok) {
                     throw new Error('Could not fetch restaurant photos');
                 }
@@ -22,7 +22,7 @@ const RestaurantPhotos = () => {
         };
 
         fetchPhotos();
-    }, [id]);
+    }, [place_id]);
 
     if (!restaurantPhotos) {
         return <div>Loading...</div>;

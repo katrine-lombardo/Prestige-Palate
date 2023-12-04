@@ -3,13 +3,18 @@ import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import { Link } from 'react-router-dom';
 import About from './About';
-import ListAppReviews from '../Reviews/GetAppReviews';
+import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
 import BigStarCard from './StarCardBig';
 import StarCard from './StarCard';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw error("VITE_APP_API_HOST was undefined.")
+}
+
 const DetailRestaurant = () => {
-    const { id } = useParams();
+    const { place_id } = useParams();
     const navigate = useNavigate();
     const [restaurantDetails, setRestaurantDetails] = useState(null);
     const { token } = useAuthContext();
@@ -18,7 +23,7 @@ const DetailRestaurant = () => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${id}`);
+                const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}`);
                 if (!response.ok) {
                     throw new Error('Could not fetch restaurant details');
                 }
@@ -30,7 +35,26 @@ const DetailRestaurant = () => {
         };
 
         fetchDetails();
-    }, [id]);
+    }, [place_id]);
+
+    // const fetchPhoto = async (photoId) => {
+    //     try {
+    //         const response = await fetch(`${tokenUrl}/api/restaurants/${photoId}/photos`);
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+    //         const blob = await response.blob();
+    //         return URL.createObjectURL(blob);
+    //     } catch (error) {
+    //         console.error("Fetching photo failed:", error);
+    //         return ''; // Fallback image URL or empty string
+    //     }
+    // };
+
+    // const handleImageLoad = async (photoName, event) => {
+    //     const photoSrc = await fetchPhoto(photoName);
+    //     event.target.src = photoSrc;
+    // };
 
     const promptLogin = (message) => {
         const confirmLogin = window.confirm(`${message} Please login to continue.`);
@@ -50,7 +74,7 @@ const DetailRestaurant = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/restaurants/${id}/favorite`, {
+            const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/favorite`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +99,7 @@ const DetailRestaurant = () => {
             promptLogin("Only logged-in users can add reviews.");
             return;
         }
-        navigate(`/create-review/${id}`);
+        navigate(`/create-review/${place_id}`);
     };
 
 
@@ -155,8 +179,8 @@ const DetailRestaurant = () => {
                 <button onClick={() => handleTabChange('about')}>About</button>
             </div>
 
-            {activeTab === 'reviews' && <ListAppReviews placeId={id} />}
-            {activeTab === 'photos' && <RestaurantPhotos placeId={id} />}
+            {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
+            {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
             {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
         </div>
     );

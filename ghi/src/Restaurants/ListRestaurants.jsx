@@ -24,7 +24,7 @@ const ListRestaurants = () => {
         <div className="list-restaurants-container">
             {restaurants.length > 0 ? (
                 restaurants.map((restaurant) => (
-                    <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                    <RestaurantCard key={restaurant.place_id} restaurant={restaurant} />
                 ))
             ) : (
                 <p>No restaurants found.</p>

@@ -4,12 +4,13 @@ import Nav from "./Nav";
 import HomePage from "./HomePage";
 import SignupForm from "./Accounts/SignupForm";
 import LoginForm from "./Accounts/LoginForm";
-import LogoutButton from "./Accounts/LogoutButton";
-import Sidebar from "./Sidebar";
 import EditProfile from "./Accounts/EditProfile";
 import UpdatePassword from "./Accounts/UpdatePassword"
+import DeleteProfile from "./Accounts/DeleteProfile"
+import LogoutButton from "./Accounts/LogoutButton";
+import Sidebar from "./Sidebar";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
-import GetMyReviews from "./Reviews/GetMyReviews";
+import ListMyReviews from "./Reviews/ListMyReviews";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
@@ -30,15 +31,16 @@ function App() {
                 <Sidebar isOpen={isSidebarOpen} />
                 <div className="container">
                     <Routes>
-                        <Route path="/home" element={<HomePage toggleSidebar={toggleSidebar} />} />
+                        <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
                         <Route path="/signup" element={<SignupForm />} />
                         <Route path="/login" element={<LoginForm />} />
                         <Route path="/logout" element={<LogoutButton />} />
                         <Route path="/sidebar" element={<Sidebar />} />
                         <Route path="/editprofile" element={<EditProfile />} />
+                        <Route path="/deleteprofile" element={<DeleteProfile />} />
                         <Route path="/updatepassword" element={<UpdatePassword />} />
-                        <Route path="/restaurants/:id" element={<DetailRestaurant />} />
-                        <Route path="/myreviews" element={<GetMyReviews />} />
+                        <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
+                        <Route path="/myreviews" element={<ListMyReviews />} />
                         <Route path="/favorites/" element={<FavoriteRestaurants />} />
                         <Route path="/restaurants" element={<ListRestaurants />} />
                         <Route path="/create-review/:id" element={<CreateReview />} />
