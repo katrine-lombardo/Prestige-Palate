@@ -92,6 +92,7 @@ async def get_account_by_id(
         response.status_code = 404
     return account
 
+
 @router.put("/api/accounts/{account_id}/change-password/")
 async def change_password(
     change_password: ChangePassword,
@@ -140,12 +141,18 @@ async def change_password(
 @router.put("/api/accounts/{account_id}/edit-profile/")
 async def edit_profile(
     edit_profile: EditProfile,
-    current_account_data: dict = Depends(
+    current_account: AccountOut = Depends(
         authenticator.try_get_current_account_data
     ),
     queries: AccountQueries = Depends(),
 ):
-    email = current_account_data["email"]
+    email = current_account["email"]
+    if not (1 <= edit_profile.profile_icon_id <= 16):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid icon_id. It must be between 1 and 16."
+        )
+
     queries.edit_profile(email, edit_profile)
     return {
         "status_code": status.HTTP_200_OK,
