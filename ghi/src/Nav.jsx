@@ -19,7 +19,7 @@ function Nav({ toggleSidebar }) {
                             src={logoImage}
                             alt="Logo"
                             className="logo-image"
-                            style={{ width: '100px', height: '50px' }} 
+                            style={{ width: '50px', height: '50px' }} 
                         />
                     </Link>
                     <div className="d-flex justify-content-center">
