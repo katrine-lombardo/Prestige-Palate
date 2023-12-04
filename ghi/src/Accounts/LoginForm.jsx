@@ -49,7 +49,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (token) {
-            navigate("/home");
+            navigate("/");
             setErrorMessage("");
         }
     }, [token]);
