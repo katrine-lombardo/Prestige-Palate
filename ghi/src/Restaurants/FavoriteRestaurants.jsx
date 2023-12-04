@@ -74,7 +74,7 @@ const FavoriteRestaurants = () => {
             .filter(fav => {
                 const addressParts = fav.formattedAddress.split(', ');
                 const city = addressParts.length > 2 ? addressParts[1] : null;
-                const state = addressParts.length > 2 ? addressParts[2].split(' ')[0] : null; 
+                const state = addressParts.length > 2 ? addressParts[2].split(' ')[0] : null;
                 return (!filterCity || (city && city.toLowerCase().includes(filterCity.toLowerCase()))) &&
                     (!filterState || (state && state.toLowerCase().includes(filterState.toLowerCase())));
             })

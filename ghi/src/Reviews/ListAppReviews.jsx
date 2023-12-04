@@ -1,7 +1,5 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
-import { Link } from 'react-router-dom';
 import ReviewCard from './ReviewCard';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -10,7 +8,9 @@ if (!tokenUrl) {
 }
 
 const ListAppReviews = () => {
+    const { place_id } = useParams();
     const [reviews, setReviews] = useState([]);
+    const [accountInfo, setAccountInfo] = useState([]);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -26,7 +26,7 @@ const ListAppReviews = () => {
                 .catch((error) => console.error(error))
         };
         fetchReviews();
-    });
+    }, [place_id]);
 
     if (!reviews) {
         return <div>Loading reviews...</div>;

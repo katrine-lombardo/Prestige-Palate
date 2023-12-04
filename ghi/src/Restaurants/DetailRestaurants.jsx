@@ -146,8 +146,8 @@ const DetailRestaurant = () => {
                 <button onClick={() => handleTabChange('about')}>About</button>
             </div>
 
-            {activeTab === 'reviews' && <ListAppReviews place_={place_id} />}
-            {activeTab === 'photos' && <RestaurantPhotos placeId={id} />}
+            {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
+            {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
             {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
         </div>
     );
