@@ -13,6 +13,7 @@ class DuplicateReviewError(ValueError):
 
 
 class ReviewIn(BaseModel):
+    title: str
     text: str
     rating: float
     photo_url: str
@@ -23,14 +24,17 @@ class ReviewOut(BaseModel):
     username: str
     place_id: str
     publish_time: datetime
+    title: str
     text: str
     rating: float
     photo_url: Optional[str]
 
 
 class ReviewUpdate(BaseModel):
+    title: Optional[str] = None
     text: Optional[str] = None
     rating: Optional[float] = None
+    photo_url: Optional[str] = None
 
 
 class ReviewQueries:
@@ -81,13 +85,14 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                            INSERT INTO reviews (username, place_id, text, rating, photo_url)
-                            VALUES (%s, %s, %s, %s, %s)
+                            INSERT INTO reviews (username, place_id, title, text, rating, photo_url)
+                            VALUES (%s, %s, %s, %s, %s, %s)
                             RETURNING *;
                         """,
                         [
                             username,
                             place_id,
+                            review.title,
                             review.text,
                             review.rating,
                             review.photo_url,
@@ -104,9 +109,10 @@ class ReviewQueries:
                             "username": record[1],
                             "place_id": record[2],
                             "publish_time": record[3],
-                            "text": record[4],
-                            "rating": record[5],
-                            "photo_url": record[6],
+                            "title": record[4],
+                            "text": record[5],
+                            "rating": record[6],
+                            "photo_url": record[7],
                         }
                         print("review data: ", review_data)
                         return ReviewOut(**review_data)
@@ -149,7 +155,7 @@ class ReviewQueries:
                     # Build the UPDATE query
                     update_query = """
                         UPDATE reviews
-                        SET username = %s, place_id = %s, text = %s, rating = %s
+                        SET title = %s, text = %s, rating = %s, photo_url = %s
                         WHERE id = %s
                         RETURNING *;
                     """
@@ -158,10 +164,10 @@ class ReviewQueries:
                     cur.execute(
                         update_query,
                         [
-                            updated_review["username"],
-                            updated_review["place_id"],
+                            updated_review["title"],
                             updated_review["text"],
                             updated_review["rating"],
+                            updated_review["photo_url"],
                             review_id,
                         ],
                     )
