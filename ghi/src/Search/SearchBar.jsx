@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar({ onSearch }) {
     const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
 
     const handleSearch = async (event) => {
         event.preventDefault();
@@ -15,13 +17,14 @@ function SearchBar({ onSearch }) {
                 if (response.ok) {
                     const data = await response.json();
                     const searchResults = data.restaurants.places.length > 0 ? data.restaurants.places : [];
-                    onSearch(searchResults);
+                    navigate('/search-results', { state: { results: searchResults } });
                 } else {
-                    onSearch([]);
+                    navigate('/search-results', { state: { results: [] } });
                 }
 
             } catch (error) {
                 console.error("search error:", error)
+                navigate('/search-results', { state: { results: [] } });
             }
         } else {
             console.log("None")
