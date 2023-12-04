@@ -171,7 +171,7 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-following-tab"
                     tabIndex="0"
                 >
-                    <div className="nav-following-container mt-4">
+                    <div className="container mt-4">
                         Palates you follow will appear here
                     </div>
                 </div>
@@ -182,7 +182,7 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-followers-tab"
                     tabIndex="0"
                 >
-                    <div className="nav-followers-container mt-4">
+                    <div className="container mt-4">
                         Palates following you will appear here
                     </div>
                 </div>
