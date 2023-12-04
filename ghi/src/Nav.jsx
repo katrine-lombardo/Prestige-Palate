@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import logoImage from "./imgs/logo_light.png"
 
 function Nav({ toggleSidebar }) {
     const navigate = useNavigate();
@@ -14,7 +15,12 @@ function Nav({ toggleSidebar }) {
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">
-                        Prestige Palate
+                        <img
+                            src={logoImage}
+                            alt="Logo"
+                            className="logo-image"
+                            style={{ width: '100px', height: '50px' }} 
+                        />
                     </Link>
                     <div className="d-flex justify-content-center">
                         <SearchBar onSearch={handleSearchResults} />
