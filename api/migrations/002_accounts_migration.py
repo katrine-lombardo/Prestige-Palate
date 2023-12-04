@@ -8,7 +8,9 @@ steps = [
             first_name VARCHAR(256) NOT NULL,
             last_name VARCHAR(256) NOT NULL,
             email VARCHAR(256) UNIQUE NOT NULL,
-            hashed_password VARCHAR(256)
+            hashed_password VARCHAR(256),
+            profile_icon_id INT DEFAULT 1,
+            FOREIGN KEY (profile_icon_id) REFERENCES icons(id)
         );
         """,
         # "Down" SQL statement
