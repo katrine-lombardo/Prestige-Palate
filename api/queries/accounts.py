@@ -38,7 +38,6 @@ class ChangePassword(BaseModel):
 
 
 class EditProfile(BaseModel):
-    username: str
     first_name: str
     last_name: str
 
@@ -152,7 +151,6 @@ class AccountQueries:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 params = [
-                    edit_profile.username,
                     edit_profile.first_name,
                     edit_profile.last_name,
                     email,

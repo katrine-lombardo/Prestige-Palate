@@ -7,7 +7,7 @@ function Nav({ toggleSidebar }) {
     const navigate = useNavigate();
 
     const handleSearchResults = (results) => {
-        navigate("/search-results"); 
+        navigate("/search-results", { state: { results } });
     };
 
     return (

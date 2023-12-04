@@ -9,7 +9,6 @@ if (!tokenUrl) {
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [username, setUsername] = useState("");
     const [id, setAccountId] = useState("");
     const { token } = useAuthContext();
     const [updateSuccess, setUpdateSuccess] = useState(false);
@@ -49,7 +48,6 @@ const EditProfile = () => {
                 body: JSON.stringify({
                     first_name: firstName,
                     last_name: lastName,
-                    username: username,
                 }),
             });
             if (response.ok) {
@@ -87,18 +85,6 @@ const EditProfile = () => {
             )}
             <div className="card-body">
                 <form onSubmit={handleUpdateProfile}>
-                    <div className="mb-3">
-                        <label htmlFor="username" className="form-label">
-                            Username:
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            className="form-control"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </div>
                     <div className="mb-3">
                         <label htmlFor="firstName" className="form-label">
                             First Name:

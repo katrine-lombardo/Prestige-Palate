@@ -33,13 +33,15 @@ function SearchBar({ onSearch }) {
 
     return (
         <form onSubmit={handleSearch}>
-            <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search Restaurants..."
-            />
-            <button type="submit">Search</button>
+            <div className="input-group">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="City, State"
+                />
+                <button type="submit">Search</button>
+            </div>
         </form>
     );
 };
