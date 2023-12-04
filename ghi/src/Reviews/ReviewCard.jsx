@@ -36,14 +36,34 @@ const ReviewCard = ({ review }) => {
 
     return (
         <div className="review-card">
-            <Link to={`/restaurants/${place_id}`} className="restaurant-details-link">
-                <h3>{restaurantName}</h3>
-            </Link>
-            <p>Review Author: {username}</p>
-            <p>Review Date: {new Date(publish_time).toLocaleDateString()}</p>
-            <p>Rating: {rating}</p>
-            <p>Review: {text}</p>
-        </div>
+            <div className="card">
+                <div className="card-body">
+                    <div className="card-title">
+                        <Link to={`/restaurants/${place_id}`} className="restaurant-details-link">
+                            <h3>{restaurantName}</h3>
+                        </Link>
+                    </div>
+                    <div className="card-text">
+                        <p className="card-subtitle mb-2 text-body-secondary">Review Date: {new Date(publish_time).toLocaleDateString()}</p>
+                        <p>Review Author: {username}</p>
+                        <div>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    style={{
+                                        cursor: "pointer",
+                                        color: star <= rating ? "gold" : "gray",
+                                    }}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        <p>{text}</p>
+                    </div>
+                </div>
+            </div >
+        </div >
     );
 };
 
