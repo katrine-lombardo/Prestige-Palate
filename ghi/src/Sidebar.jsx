@@ -10,7 +10,7 @@ const Sidebar = ({ isOpen }) => {
             <div className="sidebar-upper"></div>
 
             <div className="sidebar-lower">
-                <NavLink className="nav-link" to="/">
+                <NavLink className="nav-link" to="/" onClick={isOpen}>
                     Home
                 </NavLink>
                 {token ? (
