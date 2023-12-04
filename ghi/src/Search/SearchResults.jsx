@@ -1,5 +1,5 @@
 import React from 'react';
-import RestaurantCard from './Restaurants/RestaurantCard';
+import RestaurantCard from '../Restaurants/RestaurantCard';
 
 function SearchResults({ results }) {
     const hasResults = results && results.length > 0;

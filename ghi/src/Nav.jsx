@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import SearchBar from "./SearchBar";
-import logoImage from "./imgs/logo_light.png"
+import SearchBar from "./Search/SearchBar";
+import logoImage from "./imgs/logo_lightmode.png"
+import logoImage2 from "./imgs/logo_darkmode.png"
 
 function Nav({ toggleSidebar }) {
     const navigate = useNavigate();
 
     const handleSearchResults = (results) => {
-        navigate("/search-results", { state: { results } });
+        navigate("/search-results")
     };
 
     return (

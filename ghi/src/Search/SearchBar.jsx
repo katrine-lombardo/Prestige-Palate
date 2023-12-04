@@ -33,11 +33,11 @@ function SearchBar({ onSearch }) {
 
     return (
         <form onSubmit={handleSearch}>
-            <div class="form-outline" data-mdb-input-init>
+            <div className="form-outline" data-mdb-input-init>
                 <input
                     type="search"
                     id="form1"
-                    class="form-control"
+                    className="form-control"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search For Your Next Food Adventure by: City, State.."

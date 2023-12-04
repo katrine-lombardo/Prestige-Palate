@@ -15,7 +15,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
-import SearchResults from "./SearchResults";
+import SearchResults from "./Search/SearchResults";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
