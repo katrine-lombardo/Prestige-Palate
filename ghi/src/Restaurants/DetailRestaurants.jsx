@@ -109,7 +109,9 @@ const DetailRestaurant = () => {
 
     return (
         <div className="restaurant-detail-container">
-            <h1 style={{ marginBottom: '20px' }}>{restaurantDetails.displayName.text}</h1>
+            {restaurantDetails && restaurantDetails.displayName &&
+                <h1 style={{ marginBottom: '20px' }}>{restaurantDetails.displayName.text}</h1>
+            }
             <div className="actions">
                 <button onClick={addReview}
                     style={{ marginRight: '5px' }}>Add a Review</button>
@@ -134,14 +136,14 @@ const DetailRestaurant = () => {
             <h2>Google Reviews</h2>
             <br />
             <ul style={{ listStyle: 'none' }}>
-                {restaurantDetails.reviews.map((review, index) => {
+                {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => {
                     const date = new Date(review.publishTime);
                     const formattedDate = date.toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
                     });
-
+                    const reviewText = review.text && review.text.text ? review.text.text : "No review text available";
                     return (
                         <li key={index}>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -161,7 +163,7 @@ const DetailRestaurant = () => {
                                 />
                             </div>
                             <p />
-                            <p>{review.text.text}</p>
+                            <p>{reviewText}</p>
                             <p>Date Posted: {formattedDate}</p>
                             <br />
                         </li>

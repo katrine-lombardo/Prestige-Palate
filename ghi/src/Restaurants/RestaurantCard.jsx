@@ -2,10 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const RestaurantCard = ({ restaurant }) => {
-    const addressParts = restaurant.formattedAddress.split(', ');
-    const city = addressParts.length > 2 ? addressParts[1] : null;
-    const state = addressParts.length > 2 ? addressParts[2].split(' ')[0] : null;
-    const country = addressParts.length > 2 ? addressParts[3] : null;
+    let city, state, country;
+    if (restaurant.formattedAddress) {
+        const addressParts = restaurant.formattedAddress.split(', ');
+        city = addressParts.length > 2 ? addressParts[1] : null;
+        state = addressParts.length > 2 ? addressParts[2].split(' ')[0] : null;
+        country = addressParts.length > 2 ? addressParts[3] : null;
+    }
+
     return (
         <div className="restaurant-card">
             <Link to={`/restaurants/${restaurant.id}`} className="restaurant-link">
