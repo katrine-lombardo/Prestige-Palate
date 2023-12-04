@@ -10,7 +10,6 @@ if (!tokenUrl) {
 const ListAppReviews = () => {
     const { place_id } = useParams();
     const [reviews, setReviews] = useState([]);
-    const [accountInfo, setAccountInfo] = useState([]);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -20,7 +19,6 @@ const ListAppReviews = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("review data: ", data)
                     setReviews(data);
                 })
                 .catch((error) => console.error(error))
@@ -35,7 +33,7 @@ const ListAppReviews = () => {
     return (
         <div>
             <h5>Reviews</h5>
-            <div className="list-my-reviews-container">
+            <div className="app-reviews-container">
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
                         <ReviewCard key={review.id} review={review} />
