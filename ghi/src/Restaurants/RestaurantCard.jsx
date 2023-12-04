@@ -8,7 +8,7 @@ const RestaurantCard = ({ restaurant }) => {
     const country = addressParts.length > 2 ? addressParts[3] : null;
     return (
         <div className="restaurant-card">
-            <Link to={`/restaurants/${restaurant.place_id}`} className="restaurant-link">
+            <Link to={`/restaurants/${restaurant.id}`} className="restaurant-link">
                 <h3>{restaurant.displayName.text}</h3>
                 <p>{restaurant.formattedAddress}</p>
                 <p>{city}</p>
