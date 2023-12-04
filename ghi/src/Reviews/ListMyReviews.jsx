@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import ReviewCard from "./ReviewCard";
+import StarCard from "../Restaurants/StarCard";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -50,7 +51,6 @@ const ListMyReviews = () => {
     return (
         <div>
             <div className="myreviews-title-container">
-                {/* <img src="https://images.pexels.com/photos/4199145/pexels-photo-4199145.jpeg?auto=compress&cs=tinysrgb&w=800"></img> */}
                 <h5>My reviews</h5>
             </div>
             <div className="container mb-5"></div>
