@@ -5,9 +5,11 @@ import SearchResults from "./SearchResults";
 
 function Nav({ toggleSidebar }) {
     const [restaurants, setRestaurants] = useState([]);
+    const [searched, setSearched] = useState(false);
 
     const handleSearchResults = (results) => {
         setRestaurants(results);
+        setSearched(true);
     };
 
     return (
@@ -32,9 +34,8 @@ function Nav({ toggleSidebar }) {
                     </div>
                 </div>
             </nav>
-
             <main className="homepage-content">
-                <SearchResults results={restaurants} />
+                {searched && <SearchResults results={restaurants} />}
             </main>
         </>
     );
