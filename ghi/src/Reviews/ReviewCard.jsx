@@ -51,7 +51,6 @@ const ReviewCard = ({ review }) => {
                                 <span
                                     key={star}
                                     style={{
-                                        cursor: "pointer",
                                         color: star <= rating ? "gold" : "gray",
                                     }}
                                 >
