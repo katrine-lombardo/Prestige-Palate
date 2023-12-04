@@ -1,12 +1,14 @@
 import React from 'react';
-import RestaurantCard from './Restaurants/RestaurantCard';
+import { useLocation } from 'react-router-dom';
+import RestaurantCard from '../Restaurants/RestaurantCard';
 
-function SearchResults({ results }) {
-    const hasResults = results && results.length > 0;
+function SearchResults({ }) {
+    const location = useLocation();
+    const results = location.state?.results || [];
 
     return (
         <div>
-            {hasResults ? (
+            {results.length > 0 ? (
                 results.map((restaurant) => (
                     <RestaurantCard key={restaurant.id} restaurant={restaurant} />
                 ))
