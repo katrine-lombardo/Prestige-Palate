@@ -42,10 +42,10 @@ const Sidebar = ({ isOpen }) => {
                     </>
                 ) : (
                     <>
-                        <NavLink className="nav-link" to="/login">
+                        <NavLink className="nav-link" to="/login" onClick={isOpen}>
                             Log In
                         </NavLink>
-                        <NavLink className="nav-link" to="/signup">
+                        <NavLink className="nav-link" to="/signup" onClick={isOpen}>
                             Sign Up
                         </NavLink>
                     </>
