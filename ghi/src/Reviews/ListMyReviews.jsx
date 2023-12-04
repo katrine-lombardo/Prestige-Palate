@@ -135,14 +135,14 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="nav-photos-container">
-                        <div className="container mt-3">
-                            What are you waiting for?
+                        <div className="container mt-4">
+                            ...What are you waiting for?
                         </div>
                         <div>
                             <Link to={`/`}>
                                 <button
                                     type="button"
-                                    className="btn btn-secondary mt-3"
+                                    className="btn btn-secondary mt-3 ms-2"
                                 >
                                     Start your culinary adventure now
                                 </button>

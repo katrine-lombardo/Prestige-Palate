@@ -36,7 +36,7 @@ const ReviewCard = ({ review }) => {
 
     return (
         <div className="review-card">
-            <div className="card mt-3">
+            <div className="card mt-2">
                 <div className="card-body">
                     <div className="card-title">
                         <Link to={`/restaurants/${place_id}`} className="restaurant-details-link">
@@ -44,7 +44,7 @@ const ReviewCard = ({ review }) => {
                         </Link>
                     </div>
                     <div className="card-text">
-                        <p className="card-subtitle mb-2 text-body-secondary">Review Date: {new Date(publish_time).toLocaleDateString()}</p>
+                        <p className="card-subtitle mb-1 text-body-secondary">Review Date: {new Date(publish_time).toLocaleDateString()}</p>
                         <p>Review Author: {username}</p>
                         <div>
                             {[1, 2, 3, 4, 5].map((star) => (
