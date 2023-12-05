@@ -17,7 +17,7 @@ const CreateReview = () => {
     const { id } = useParams();
     const [photos, setPhotos] = useState([]);
     const [reviewForm, setReviewForm] = useState({
-        title:"",
+        title: "",
         text: "",
         rating: 0,
         photo_urls: [],
@@ -93,7 +93,7 @@ const CreateReview = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/reviews/`, {
+            const response = await fetch(`http://localhost:8000/api/restaurants/${id}/reviews/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
