@@ -28,6 +28,7 @@ const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [passwordVisible, setPasswordVisible] = useState(false);
     const { token, setToken, baseUrl } = useAuthContext();
     const navigate = useNavigate();
 
@@ -44,6 +45,9 @@ const LoginForm = () => {
         } catch (error) {
             console.error("An error occurred during login:", error);
             setErrorMessage("An error occurred during login. Please try again.");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 1000);
         }
     };
 
@@ -53,6 +57,10 @@ const LoginForm = () => {
             setErrorMessage("");
         }
     }, [token]);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     return (
         <div className="card text-bg-light mb-3">
@@ -81,14 +89,23 @@ const LoginForm = () => {
                         <label htmlFor="password" className="form-label">
                             Password:
                         </label>
-                        <input
-                            id="password"
-                            type="password"
-                            className="form-control"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                        <div className="input-group">
+                            <input
+                                id="password"
+                                type={passwordVisible ? "text" : "password"}
+                                className="form-control rounded-right"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {passwordVisible ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" className="btn btn-primary" value="Login">
                         Login

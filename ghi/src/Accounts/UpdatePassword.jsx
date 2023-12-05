@@ -3,7 +3,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.")
+    throw new Error("VITE_APP_API_HOST was undefined.");
 }
 
 const UpdatePassword = () => {
@@ -59,7 +59,6 @@ const UpdatePassword = () => {
         } else {
             setPasswordMatchError("");
         }
-
 
         const endpoint = `${tokenUrl}/api/accounts/${id}/change-password/`;
         try {
@@ -117,49 +116,67 @@ const UpdatePassword = () => {
                         <label htmlFor="currentPassword" className="form-label">
                             Current Password:
                         </label>
-                        <input
-                            type={currentPasswordVisible ? "text" : "password"}
-                            id="currentPassword"
-                            className="form-control"
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            required
-                        />
-                        <button type="button" onClick={toggleCurrentPasswordVisibility}>
-                            {currentPasswordVisible ? "Hide Password" : "Show Password"}
-                        </button>
+                        <div className="input-group">
+                            <input
+                                type={currentPasswordVisible ? "text" : "password"}
+                                id="currentPassword"
+                                className="form-control rounded-right"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={toggleCurrentPasswordVisibility}
+                            >
+                                {currentPasswordVisible ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="newPassword" className="form-label">
                             New Password:
                         </label>
-                        <input
-                            type={newPasswordVisible ? "text" : "password"}
-                            id="newPassword"
-                            className="form-control"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-                        <button type="button" onClick={toggleNewPasswordVisibility}>
-                            {newPasswordVisible ? "Hide Password" : "Show Password"}
-                        </button>
+                        <div className="input-group">
+                            <input
+                                type={newPasswordVisible ? "text" : "password"}
+                                id="newPassword"
+                                className="form-control rounded-right"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={toggleNewPasswordVisibility}
+                            >
+                                {newPasswordVisible ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="confirmPassword" className="form-label">
                             Confirm New Password:
                         </label>
-                        <input
-                            type={confirmationVisible ? "text" : "password"}
-                            id="confirmPassword"
-                            className="form-control"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                        <button type="button" onClick={toggleConfirmationVisibility}>
-                            {confirmationVisible ? "Hide Confirmation" : "Show Confirmation"}
-                        </button>
+                        <div className="input-group">
+                            <input
+                                type={confirmationVisible ? "text" : "password"}
+                                id="confirmPassword"
+                                className="form-control rounded-right"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={toggleConfirmationVisibility}
+                            >
+                                {confirmationVisible ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" className="btn btn-primary">
                         Change Password

@@ -56,6 +56,9 @@ const SignupForm = () => {
         } catch (error) {
             console.error("Signup error:", error);
             setErrorMessage("Failed to sign up.");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 1000);
         }
     };
 
@@ -63,10 +66,10 @@ const SignupForm = () => {
         <div className="card text-bg-light mb-3">
             <h5 className="card-header">Sign Up</h5>
             {errorMessage && (
-                    <p className="alert alert-danger mb-3" role="alert">
-                        {errorMessage}
-                    </p>
-                )}
+                <div className="alert alert-danger mb-3" role="alert">
+                    {errorMessage}
+                </div>
+            )}
             <div className="card-body">
                 <form onSubmit={handleSignup}>
                     <div className="mb-3">
@@ -76,7 +79,8 @@ const SignupForm = () => {
                         <input
                             type="text"
                             id="firstname"
-                            placeholder="first name"
+                            placeholder="Enter your first name"
+                            className="form-control"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             required
@@ -89,7 +93,8 @@ const SignupForm = () => {
                         <input
                             type="text"
                             id="lastname"
-                            placeholder="last name"
+                            placeholder="Enter your last name"
+                            className="form-control"
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             required
@@ -102,7 +107,8 @@ const SignupForm = () => {
                         <input
                             type="email"
                             id="email"
-                            placeholder="email address"
+                            placeholder="Enter your email address"
+                            className="form-control"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -115,7 +121,8 @@ const SignupForm = () => {
                         <input
                             type="text"
                             id="username"
-                            placeholder="username"
+                            placeholder="Choose a username"
+                            className="form-control"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
@@ -125,35 +132,51 @@ const SignupForm = () => {
                         <label htmlFor="password" className="form-label">
                             Password:
                         </label>
-                        <input
-                            type={passwordVisible ? "text" : "password"}
-                            id="password"
-                            placeholder="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <button type="button" onClick={togglePasswordVisibility}>
-                            {passwordVisible ? "Hide Password" : "Show Password"}
-                        </button>
+                        <div className="input-group">
+                            <input
+                                type={passwordVisible ? "text" : "password"}
+                                id="password"
+                                placeholder="Enter your password"
+                                className="form-control rounded-right"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {passwordVisible ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="confirmation" className="form-label">
                             Password Confirmation:
                         </label>
-                        <input
-                            type={confirmationVisible ? "text" : "password"}
-                            id="confirmation"
-                            placeholder="password confirmation"
-                            value={passwordConfirmation}
-                            onChange={(e) => setPasswordConfirmation(e.target.value)}
-                            required
-                        />
-                        <button type="button" onClick={toggleConfirmationVisibility}>
-                            {confirmationVisible ? "Hide Confirmation" : "Show Confirmation"}
-                        </button>
+                        <div className="input-group">
+                            <input
+                                type={confirmationVisible ? "text" : "password"}
+                                id="confirmation"
+                                placeholder="Re-enter your password"
+                                className="form-control rounded-right"
+                                value={passwordConfirmation}
+                                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={toggleConfirmationVisibility}
+                            >
+                                {confirmationVisible ? "Hide" : "Show"}
+                            </button>
+                        </div>
                     </div>
-                    <button type="submit" className="btn btn-primary" value="Signup">Sign Up</button>
+                    <button type="submit" className="btn btn-primary" value="Signup">
+                        Sign Up
+                    </button>
                 </form>
                 <p>
                     Already have an account?{" "}
