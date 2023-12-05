@@ -1,12 +1,25 @@
-## Monday, Dec 2
+## Tuesday, Dec 3
 Features/issues that you worked on and who you worked with:
-- 
+- I worked on the ListMyReviews page and created two buttons Edit/Delete Reviews. The edit button navigates the user to the UpdateReview page and the Delete button deletes the review from the list. I also created the DeleteReview component.
 
 A reflection on any design conversations that you had:
-- 
+- Continued design conversation with the group on how the layout of the review form should look.
 
 At least one ah-ha! moment:
-- 
+- I was struggling with getting the page to re render after clicking the delete button. Initially when I clicked the delete review button I would have to refresh the page in order to see the changes reflect. I added setReviews((prevReviews) =>
+                prevReviews.filter((review) => review.id !== activeReviewId)
+            );
+By using the setReviews function with prevReviews.filter, you filter out the deleted review from the state. This way, the component will re-render, and the deleted review will be reflected immediately in the UI.
+
+## Monday, Dec 2
+Features/issues that you worked on and who you worked with:
+- I created the UpdateReview component and finished the edit review form.
+
+A reflection on any design conversations that you had:
+- As a team we discussed how the MVP of our project (Creating a review) should be designed. Still a WIP with the styling and layout of the review form.
+
+At least one ah-ha! moment:
+- Nothing too specific but I feel more confident in my coding ability as the project progresses. It has been really beneficial to build something from scratch without step by step instructions, I have really learned a lot throughout this process!
 
 ## Friday, Dec 1
 Features/issues that you worked on and who you worked with:
