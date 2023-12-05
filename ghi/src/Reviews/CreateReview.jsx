@@ -14,7 +14,7 @@ const s3Client = new S3Client({
 });
 
 const CreateReview = () => {
-    const { id } = useParams();
+    const { place_id } = useParams();
     const [photos, setPhotos] = useState([]);
     const [reviewForm, setReviewForm] = useState({
         title: "",
@@ -93,7 +93,7 @@ const CreateReview = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:8000/api/restaurants/${id}/reviews/`, {
+            const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/reviews/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

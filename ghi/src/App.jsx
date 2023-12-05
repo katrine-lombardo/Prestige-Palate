@@ -16,6 +16,7 @@ import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
 import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
 import SearchResults from "./Search/SearchResults";
+import UpdateReview from "./Reviews/UpdateReview";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -46,6 +47,7 @@ function App() {
                         <Route path="/restaurants" element={<ListRestaurants />} />
                         <Route path="/create-review/:place_id" element={<CreateReview />} />
                         <Route path="/search-results" element={<SearchResults />} />
+                        <Route path="/update-review/:username/:review_id" element={<UpdateReview />} />
                     </Routes>
                 </div>
             </AuthProvider>
