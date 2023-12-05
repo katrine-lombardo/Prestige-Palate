@@ -10,6 +10,7 @@ if (!tokenUrl) {
 const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
+    const [restaurantDetails, setRestaurantDetails] = useState(null);
     const { token } = useAuthContext();
     const [loading, setLoading] = useState(true);
 
@@ -25,23 +26,39 @@ const ListMyReviews = () => {
                 })
                 .catch((error) => console.error(error));
         };
+
         const fetchMyReviews = async () => {
-            try {
-                const url = `${tokenUrl}/api/accounts/${username}/reviews`;
-                const response = await fetch(url);
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.detail);
-                }
-                const data = await response.json();
-                setReviews(data);
-            } catch (error) {
-                console.error(error.message);
-            }
+            const url = `${tokenUrl}/api/accounts/${username}/reviews`;
+            fetch(url, {
+                credentials: "include",
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setReviews(data);
+                })
+                .catch((error) => console.error(error));
         };
+
         handleFetchWithAPI();
         fetchMyReviews();
     }, [token, username]);
+
+    useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}`);
+                if (!response.ok) {
+                    throw new Error('Could not fetch restaurant details');
+                }
+                const data = await response.json();
+                setRestaurantDetails(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchDetails();
+    }, [place_id]);
 
     if (!token) {
         return <div>Please log in to see reviews</div>;
@@ -120,7 +137,7 @@ const ListMyReviews = () => {
                                     <div className="card-body">
                                         <div className="card-title">
                                             <Link
-                                                to={`/restaurants/${place_id}`}
+                                                to={`/restaurants/${reviews.place_id}`}
                                                 className="restaurant-details-link"
                                             >
                                                 <h3>{restaurantName}</h3>
