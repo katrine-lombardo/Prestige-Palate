@@ -1,9 +1,15 @@
 ## Mon, Dec 4
 Features/issues that you worked on and who you worked with:
 - Completed Delete Profile front end independently.
+- Completed creating Icons Table and Data independently.
+- Completed changing Accounts Table to include icons id independently.
+- Created new router and query to get icon independently.
+- Restructured the front end Nav and Home to ensure clean look and no overlaps independently.
+- Implemented a new logo for the webpage independently.
+- Now user icon loading on top right.
 
 A reflection on any design conversations that you had
-- 
+- Got rid of feature to edit username due to complexity of the code (used in reviews table) and per all team members agreement. We have Katrine working on 
 
 At least one ah-ha! moment:
 - 

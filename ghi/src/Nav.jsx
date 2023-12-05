@@ -71,8 +71,8 @@ function Nav({ toggleSidebar }) {
                             overflow: 'hidden',
                             border: token ? '2px solid black' : '0',
                             padding: token ? '2px' : '0',
-                            display: 'flex', 
-                            alignItems: 'center', 
+                            display: 'flex',
+                            alignItems: 'center',
                         }}
                     >
                         {token ? (
@@ -81,12 +81,12 @@ function Nav({ toggleSidebar }) {
                                 alt="User"
                                 className="user-icon"
                                 style={{
-                                    width: '40px', 
-                                    height: '40px', 
+                                    width: '40px',
+                                    height: '40px',
                                     borderRadius: '5%',
                                     objectFit: 'cover',
-                                    margin: 'auto', 
-                                    display: 'block', 
+                                    margin: 'auto',
+                                    display: 'block',
                                 }}
                                 loading={loading ? 'lazy' : 'eager'}
                             />

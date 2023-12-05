@@ -3,16 +3,18 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.")
+    throw new Error("VITE_APP_API_HOST was undefined.");
 }
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [id, setAccountId] = useState("");
+    const [selectedIcon, setSelectedIcon] = useState("");
     const { token } = useAuthContext();
     const [updateSuccess, setUpdateSuccess] = useState(false);
     const [updateError, setError] = useState(false);
+    const [icons, setIcons] = useState([]);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -22,8 +24,20 @@ const EditProfile = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("id: ", data.account.id);
                     setAccountId(data.account.id);
+                })
+                .catch((error) => console.error(error));
+        };
+        handleFetchWithAPI();
+    }, [token]);
+
+    useEffect(() => {
+        const handleFetchWithAPI = async () => {
+            const iconsUrl = `${tokenUrl}/api/icons`;
+            fetch(iconsUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    setIcons(data);
                 })
                 .catch((error) => console.error(error));
         };
@@ -48,13 +62,14 @@ const EditProfile = () => {
                 body: JSON.stringify({
                     first_name: firstName,
                     last_name: lastName,
+                    profile_icon_id: selectedIcon,
                 }),
             });
             if (response.ok) {
                 setUpdateSuccess(true);
                 setTimeout(() => {
                     setUpdateSuccess(false);
-                }, 1000)
+                }, 1000);
             } else {
                 const data = await response.json();
                 throw new Error(
@@ -65,8 +80,8 @@ const EditProfile = () => {
         } catch (error) {
             setError(true);
             setTimeout(() => {
-                setError(false)
-            }, 1000)
+                setError(false);
+            }, 1000);
         }
     };
 
@@ -108,6 +123,24 @@ const EditProfile = () => {
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                         />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="iconSelect" className="form-label">
+                            Select Profile Icon:
+                        </label>
+                        <select
+                            id="iconSelect"
+                            className="form-select"
+                            value={selectedIcon}
+                            onChange={(e) => setSelectedIcon(e.target.value)}
+                        >
+                            <option value="">Select an icon</option>
+                            {icons.map((icon) => (
+                                <option key={icon.id} value={icon.id}>
+                                    {icon.icon_name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div>
                         <button type="submit" className="btn btn-primary">
