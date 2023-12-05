@@ -47,7 +47,7 @@ const ListMyReviews = () => {
     }
 
     const renderNullReviews = () => {
-        return <div className="container text-center">
+        return <div>
             <div className="container mt-4">
                 No Prestige Palate reviews here. Yet...
             </div>
@@ -134,8 +134,6 @@ const ListMyReviews = () => {
                     <div className="container mt-3">
                         {!reviews.length ? renderNullReviews() : (
                             <div>
-
-
                                 {reviews.map((review, index) => {
                                     return (
                                         <div key={index} className="card border-0">
@@ -167,8 +165,6 @@ const ListMyReviews = () => {
                                     );
                                 })
                                 }
-
-
                             </div>
                         )}
                     </div>
