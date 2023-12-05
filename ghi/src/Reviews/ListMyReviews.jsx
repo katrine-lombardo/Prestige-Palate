@@ -34,8 +34,10 @@ const ListMyReviews = () => {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        setReviews(data);
-                        setPlaceID(data.place_id)
+                        if (data) {
+                            setReviews(data)
+                            setPlaceID(data.place_id);
+                        };
                     })
                     .catch((error) => console.error(error));
             }
@@ -47,6 +49,24 @@ const ListMyReviews = () => {
     if (!token) {
         return <div>Please log in to see reviews</div>;
     }
+
+    const renderNullReviews = () => {
+        return <div className="container text-center">
+            <div className="container mt-4">
+                No Prestige Palate reviews here. Yet...
+            </div>
+            <div>
+                <button
+                    onClick={addReview}
+                    style={{ marginRight: "5px" }}
+                    type="button"
+                    className="btn btn-secondary mt-3 ms-2"
+                >
+                    Start your culinary adventure now
+                </button>
+            </div>
+        </div>;
+    };
 
     return (
         <div>
@@ -114,38 +134,40 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        <div>
-                            {reviews.map((review, index) => {
-                                return (
-                                    <div key={index} className="card border-0">
-                                        <div className="card-body">
-                                            <div className="card-title">
-                                                <div className="d-flex justify-content-between">
-                                                    <h5>{review.title}</h5>
-                                                    <div>
-                                                        {[1, 2, 3, 4, 5].map((star) => (
-                                                            <span key={star} style={{
-                                                                color: star <= review.rating ? "gold" : "gray",
-                                                            }}>★</span>
-                                                        ))}
+                        {reviews.length === 0 ? renderNullReviews() : (
+                            <div>
+                                {reviews.map((review, index) => {
+                                    return (
+                                        <div key={index} className="card border-0">
+                                            <div className="card-body">
+                                                <div className="card-title">
+                                                    <div className="d-flex justify-content-between">
+                                                        <h5>{review.title}</h5>
+                                                        <div>
+                                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                                <span key={star} style={{
+                                                                    color: star <= review.rating ? "gold" : "gray",
+                                                                }}>★</span>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="card-text">
-                                                <p>{review.text}</p>
-                                                <p className="card-subtitle mb-1 text-body-secondary">
-                                                    Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
-                                                        year: "numeric",
-                                                        month: "long",
-                                                        day: "numeric",
-                                                    })}</p>
-                                                <p></p>
+                                                <div className="card-text">
+                                                    <p>{review.text}</p>
+                                                    <p className="card-subtitle mb-1 text-body-secondary">
+                                                        Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+                                                            year: "numeric",
+                                                            month: "long",
+                                                            day: "numeric",
+                                                        })}</p>
+                                                    <p></p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div
