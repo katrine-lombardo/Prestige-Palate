@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import ReviewCard from "./ReviewCard";
+import StarCard from "../Restaurants/StarCard";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -10,9 +12,7 @@ if (!tokenUrl) {
 const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
-    const [restaurantDetails, setRestaurantDetails] = useState(null);
     const { token } = useAuthContext();
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -28,37 +28,21 @@ const ListMyReviews = () => {
         };
 
         const fetchMyReviews = async () => {
-            const url = `${tokenUrl}/api/accounts/${username}/reviews`;
-            fetch(url, {
-                credentials: "include",
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    setReviews(data);
+            if (username) {
+                const url = `${tokenUrl}/api/accounts/${username}/reviews`;
+                fetch(url, {
+                    credentials: "include",
                 })
-                .catch((error) => console.error(error));
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setReviews(data);
+                    })
+                    .catch((error) => console.error(error));
+            }
         };
-
         handleFetchWithAPI();
         fetchMyReviews();
     }, [token, username]);
-
-    useEffect(() => {
-        const fetchDetails = async () => {
-            try {
-                const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}`);
-                if (!response.ok) {
-                    throw new Error('Could not fetch restaurant details');
-                }
-                const data = await response.json();
-                setRestaurantDetails(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchDetails();
-    }, [place_id]);
 
     if (!token) {
         return <div>Please log in to see reviews</div>;
@@ -132,55 +116,12 @@ const ListMyReviews = () => {
                 >
                     <div className="container mt-3">
                         {reviews.length > 0 ? (
-                            <div className="review-card">
-                                <div className="card mt-2">
-                                    <div className="card-body">
-                                        <div className="card-title">
-                                            <Link
-                                                to={`/restaurants/${reviews.place_id}`}
-                                                className="restaurant-details-link"
-                                            >
-                                                <h3>{restaurantName}</h3>
-                                            </Link>
-                                        </div>
-                                        <div className="card-text">
-                                            <div className="container">
-                                                <div className="d-flex justify-content-between">
-                                                    <div>
-                                                        {[1, 2, 3, 4, 5].map(
-                                                            (star) => (
-                                                                <span
-                                                                    key={star}
-                                                                    style={{
-                                                                        color:
-                                                                            star <=
-                                                                                rating
-                                                                                ? "gold"
-                                                                                : "gray",
-                                                                    }}
-                                                                >
-                                                                    ★
-                                                                </span>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <p>{text}</p>
-                                            <p className="card-subtitle mb-1 text-body-secondary">
-                                                Date posted:{" "}
-                                                {new Date(
-                                                    publish_time
-                                                ).toLocaleDateString("en-US", {
-                                                    year: "numeric",
-                                                    month: "long",
-                                                    day: "numeric",
-                                                })}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            reviews.map((review) => (
+                                <ReviewCard
+                                    key={review.place_id}
+                                    review={review}
+                                />
+                            ))
                         ) : (
                             <div>
                                 <div className="container mt-4">
