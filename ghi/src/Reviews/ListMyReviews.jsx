@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import DeleteReview from "./DeleteReview";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -10,6 +11,7 @@ if (!tokenUrl) {
 const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const navigate = useNavigate();
     const [activeReviewId, setActiveReviewId] = useState(null);
     const { token } = useAuthContext();
@@ -52,6 +54,45 @@ const ListMyReviews = () => {
     const handleToggleEditButton = (reviewId) => {
         setActiveReviewId(activeReviewId === reviewId ? null : reviewId);
     };
+    const handleDeleteReview = (review) => {
+        setActiveReviewId(review.id);
+        setDeleteModalOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8000/api/accounts/${username}/reviews/${activeReviewId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (response.ok) {
+                // Update state to remove the deleted review
+                setReviews((prevReviews) =>
+                    prevReviews.filter((review) => review.id !== activeReviewId)
+                );
+
+                // Close the delete modal
+                setDeleteModalOpen(false);
+            } else {
+                console.error("Error deleting review:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error deleting review:", error);
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setActiveReviewId(null);
+        setDeleteModalOpen(false);
+    };
+
 
     if (!token) {
         return <div>Please log in to see reviews</div>;
@@ -143,7 +184,9 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        {!reviews.length ? renderNullReviews() : (
+                        {!reviews.length ? (
+                            renderNullReviews()
+                        ) : (
                             <div>
                                 {reviews.map((review, index) => (
                                     <div key={index} className="card border-0">
@@ -152,42 +195,96 @@ const ListMyReviews = () => {
                                                 <div className="d-flex justify-content-between">
                                                     <h5>{review.title}</h5>
                                                     <div>
-                                                        {[1, 2, 3, 4, 5].map((star) => (
-                                                            <span key={star} style={{
-                                                                color: star <= review.rating ? "gold" : "gray",
-                                                            }}>★</span>
-                                                        ))}
+                                                        {[1, 2, 3, 4, 5].map(
+                                                            (star) => (
+                                                                <span
+                                                                    key={star}
+                                                                    style={{
+                                                                        color:
+                                                                            star <=
+                                                                                review.rating
+                                                                                ? "gold"
+                                                                                : "gray",
+                                                                    }}
+                                                                >
+                                                                    ★
+                                                                </span>
+                                                            )
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="card-text">
                                                 <p>{review.text}</p>
                                                 <p className="card-subtitle mb-1 text-body-secondary">
-                                                    Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
-                                                        year: "numeric",
-                                                        month: "long",
-                                                        day: "numeric",
-                                                    })}</p>
-                                                <p></p>
+                                                    Date posted:{" "}
+                                                    {new Date(
+                                                        review.publish_time
+                                                    ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                            year: "numeric",
+                                                            month: "long",
+                                                            day: "numeric",
+                                                        }
+                                                    )}
+                                                </p>
                                                 <div className="d-flex justify-content-end">
                                                     <span
-                                                        style={{ marginRight: '10px', cursor: 'pointer', color: 'blue' }}
-                                                        onClick={() => handleToggleEditButton(review.id)}
+                                                        style={{
+                                                            marginRight: "10px",
+                                                            cursor: "pointer",
+                                                            color: "blue",
+                                                        }}
+                                                        onClick={() =>
+                                                            handleToggleEditButton(
+                                                                review.id
+                                                            )
+                                                        }
                                                     >
                                                         ...
                                                     </span>
-                                                    {activeReviewId === review.id && (
-                                                        <>
-                                                            <button className="btn btn-secondary" onClick={() => handleEditReview(review)}>
-                                                                Edit Review
-                                                            </button>
-                                                            <button className="btn btn-danger ms-2" onClick={() => handleDeleteReview(review)}>
-                                                                Delete Review
-                                                            </button>
-                                                        </>
-                                                    )}
+                                                    {activeReviewId ===
+                                                        review.id && (
+                                                            <>
+                                                                <button
+                                                                    className="btn btn-secondary"
+                                                                    onClick={() =>
+                                                                        handleEditReview(
+                                                                            review
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Edit Review
+                                                                </button>
+                                                                <button
+                                                                    className="btn btn-danger ms-2"
+                                                                    onClick={() =>
+                                                                        handleDeleteReview(
+                                                                            review
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Delete Review
+                                                                </button>
+                                                            </>
+                                                        )}
                                                 </div>
                                             </div>
+                                            {isDeleteModalOpen &&
+                                                activeReviewId ===
+                                                review.id && (
+                                                    <div>
+                                                        <DeleteReview
+                                                            onConfirm={
+                                                                handleConfirmDelete
+                                                            }
+                                                            onCancel={
+                                                                handleCancelDelete
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
                                         </div>
                                     </div>
                                 ))}
@@ -195,53 +292,8 @@ const ListMyReviews = () => {
                         )}
                     </div>
                 </div>
-                <div
-                    className="tab-pane fade"
-                    id="nav-photos"
-                    role="tabpanel"
-                    aria-labelledby="nav-photos-tab"
-                    tabIndex="0"
-                >
-                    <div className="nav-photos-container">
-                        <div className="container mt-4">
-                            ...What are you waiting for?
-                        </div>
-                        <div>
-                            <Link to={`/`}>
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary mt-3 ms-2"
-                                >
-                                    Start your culinary adventure now
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className="tab-pane fade"
-                    id="nav-following"
-                    role="tabpanel"
-                    aria-labelledby="nav-following-tab"
-                    tabIndex="0"
-                >
-                    <div className="container mt-4">
-                        Palates you follow will appear here
-                    </div>
-                </div>
-                <div
-                    className="tab-pane fade"
-                    id="nav-followers"
-                    role="tabpanel"
-                    aria-labelledby="nav-followers-tab"
-                    tabIndex="0"
-                >
-                    <div className="container mt-4">
-                        Palates following you will appear here
-                    </div>
-                </div>
             </div>
-        </div >
+        </div>
     );
 };
 
