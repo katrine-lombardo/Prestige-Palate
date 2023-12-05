@@ -20,34 +20,35 @@ function Nav({ toggleSidebar }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const accountUrl = `${tokenUrl}/token`;
-                const iconUrl = `${tokenUrl}/api/accounts/${id}`;
-                const iconsUrl = `${tokenUrl}/api/icons`;
-
-                const [accountResponse, iconResponse, iconsResponse] = await Promise.all([
-                    fetch(accountUrl, { credentials: "include" }),
-                    fetch(iconUrl, { credentials: "include" }),
-                    fetch(iconsUrl, { credentials: "include" }),
-                ]);
-
-                const accountData = await accountResponse.json();
+    const fetchData = async () => {
+        try {
+            const accountUrl = `${tokenUrl}/token`;
+            const accountResponse = await fetch(accountUrl, { credentials: "include" });
+            const accountData = await accountResponse.json();
+            if (accountData && token) {
+                setAccountId(accountData.account.id);
+                const iconUrl = `${tokenUrl}/api/accounts/${accountData.account.id}`;
+                const iconResponse = await fetch(iconUrl, { credentials: "include" });
                 const iconData = await iconResponse.json();
+
+                const iconsUrl = `${tokenUrl}/api/icons`;
+                const iconsResponse = await fetch(iconsUrl, { credentials: "include" });
                 const iconsData = await iconsResponse.json();
 
-                setAccountId(accountData.account.id);
                 setIconId(iconData.profile_icon_id);
-                setIconUrl(iconsData[icon_id - 1]?.icon_url);
+                setIconUrl(iconsData[iconData.profile_icon_id - 1]?.icon_url);
                 setLoading(false);
-            } catch (error) {
-                console.error(error);
+            } else {
                 setLoading(false);
             }
-        };
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
 
-        fetchData();
-    }, [token, id, icon_id]);
+    fetchData();
+}, [token]);
 
     return (
         <>
