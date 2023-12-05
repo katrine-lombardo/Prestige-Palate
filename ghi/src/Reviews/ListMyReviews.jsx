@@ -10,7 +10,6 @@ if (!tokenUrl) {
 const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
-    const [place_id, setPlaceID] = useState("");
     const { token } = useAuthContext();
 
     useEffect(() => {
@@ -24,8 +23,8 @@ const ListMyReviews = () => {
                     setUsername(data.account.username);
                 })
                 .catch((error) => console.error(error));
-        };
 
+        };
         const fetchMyReviews = async () => {
             if (username) {
                 const url = `${tokenUrl}/api/accounts/${username}/reviews`;
@@ -34,10 +33,7 @@ const ListMyReviews = () => {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        if (data) {
-                            setReviews(data)
-                            setPlaceID(data.place_id);
-                        };
+                        setReviews(data);
                     })
                     .catch((error) => console.error(error));
             }
@@ -56,20 +52,22 @@ const ListMyReviews = () => {
                 No Prestige Palate reviews here. Yet...
             </div>
             <div>
-                <button
-                    onClick={addReview}
-                    style={{ marginRight: "5px" }}
-                    type="button"
-                    className="btn btn-secondary mt-3 ms-2"
-                >
-                    Start your culinary adventure now
-                </button>
+                <Link to={`/`}>
+                    <button
+                        style={{ marginRight: "5px" }}
+                        type="button"
+                        className="btn btn-secondary mt-3 ms-2"
+                    >
+                        Start your culinary adventure now
+                    </button>
+                </Link>
             </div>
         </div>;
     };
 
     return (
         <div>
+
             <div className="container mb-4">
                 <h3>My reviews</h3>
             </div>
@@ -134,8 +132,10 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        {reviews.length === 0 ? renderNullReviews() : (
+                        {!reviews.length ? renderNullReviews() : (
                             <div>
+
+
                                 {reviews.map((review, index) => {
                                     return (
                                         <div key={index} className="card border-0">
@@ -164,8 +164,11 @@ const ListMyReviews = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    )
-                                })}
+                                    );
+                                })
+                                }
+
+
                             </div>
                         )}
                     </div>
