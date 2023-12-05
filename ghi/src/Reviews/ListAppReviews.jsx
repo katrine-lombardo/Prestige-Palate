@@ -68,46 +68,42 @@ const ListAppReviews = () => {
     }
 
     return (
-        <div>
-            <div className="container mt-3">
-                <div>
-                    {reviews.map((review, index) => {
-                        return (
-                            <div key={index} className="card border-0">
-                                <div className="card-body">
-                                    <div className="card-title">
-                                        <div className="d-flex justify-content-between">
-                                            <Link to={`/accounts/${review.username}`}>
-                                                <h5>{review.username}</h5>
-                                            </Link>
-                                            <div>
-                                                {[1, 2, 3, 4, 5].map((star) => (
-                                                    <span key={star} style={{
-                                                        color: star <= review.rating ? "gold" : "gray",
-                                                    }}>★</span>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="card-text">
-                                        <blockquote className="blockquote">
-                                            <p>{review.title}</p>
-                                        </blockquote>
-                                        <p>{review.text}</p>
-                                        <p className="card-subtitle mb-1 text-body-secondary">
-                                            Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
-                                                year: "numeric",
-                                                month: "long",
-                                                day: "numeric",
-                                            })}</p>
-                                        <p></p>
+        <div className="container mt-4">
+            {reviews.map((review, index) => {
+                return (
+                    <div key={index} className="card border-0">
+                        <div className="card-body">
+                            <div className="card-title">
+                                <div className="d-flex justify-content-between">
+                                    <Link to={`/accounts/${review.username}/reviews`}>
+                                        <h5>{review.username}</h5>
+                                    </Link>
+                                    <div>
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <span key={star} style={{
+                                                color: star <= review.rating ? "gold" : "gray",
+                                            }}>★</span>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
-                        )
-                    })}
-                </div>
-            </div>
+                            <div className="card-text">
+                                <blockquote className="blockquote">
+                                    <p>{review.title}</p>
+                                </blockquote>
+                                <p>{review.text}</p>
+                                <p className="card-subtitle mb-1 text-body-secondary">
+                                    Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}</p>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })}
         </div>
     );
 };
