@@ -55,6 +55,9 @@ const UpdatePassword = () => {
 
         if (newPassword !== confirmPassword) {
             setPasswordMatchError("Passwords do not match. Please check and try again.");
+            setTimeout(() => {
+                setPasswordMatchError("");
+            }, 1000);
             return;
         } else {
             setPasswordMatchError("");
