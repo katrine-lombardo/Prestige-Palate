@@ -49,7 +49,7 @@ const ListAppReviews = () => {
 
     if (reviews.length === 0) {
         return (
-            <div className="container text-center">
+            <div className="container">
                 <div className="container mt-4">
                     No Prestige Palate reviews here. Yet...
                 </div>
