@@ -14,40 +14,54 @@ const s3Client = new S3Client({
 });
 
 const CreateReview = () => {
-    const { place_id } = useParams();
-    const [photo, setPhoto] = useState(null)
+    const { id } = useParams();
+    const [photos, setPhotos] = useState([]);
     const [reviewForm, setReviewForm] = useState({
+        title:"",
         text: "",
-        rating: "",
-        photo_url: "",
+        rating: 0,
+        photo_urls: [],
     });
+
+    const [isReviewPosted, setIsReviewPosted] = useState(false);
 
     const { token } = useAuthContext();
 
-    const uploadToS3 = async (photo) => {
-        const params = {
-            Bucket: bucketName,
-            Key: photo.name,
-            Body: photo,
-            ContentType: photo.type
-        };
+    const uploadToS3 = async (photos) => {
+        const uploadPromises = photos.map(async (photo) => {
+            const params = {
+                Bucket: bucketName,
+                Key: photo.name,
+                Body: photo,
+                ContentType: photo.type,
+            };
+            try {
+                const data = await s3Client.send(new PutObjectCommand(params));
+                const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`;
+                console.log("Success", url);
+                return url;
+            } catch (err) {
+                console.error("Error", err);
+                throw err; // Propagate the error
+            }
+        });
+
         try {
-            const data = await s3Client.send(new PutObjectCommand(params));
-            const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`
-            console.log("Success", url);
-            return url;
+            const urls = await Promise.all(uploadPromises);
+            return urls;
         } catch (err) {
-            console.error("Error", err);
+            throw err; // Propagate the error
         }
     };
+
     const handlePhotoUpload = async () => {
         try {
-            const url = await uploadToS3(photo);
-            setReviewForm(prevReviewForm => ({
+            const urls = await uploadToS3(photos);
+            setReviewForm((prevReviewForm) => ({
                 ...prevReviewForm,
-                photo_url: url
+                photo_urls: urls,
             }));
-            window.alert("File uploaded successfully!"); // Show a pop-up notification
+            window.alert("Files uploaded successfully!"); // Show a pop-up notification
         } catch (err) {
             console.error("Upload failed:", err);
             // You can handle the error here, e.g., display another notification
@@ -69,10 +83,11 @@ const CreateReview = () => {
     };
 
     const handlePhotoChange = (e) => {
-        if (e.target.files[0]) {
-            setPhoto(e.target.files[0])
+        if (e.target.files.length > 0) {
+            // Use the spread operator to concatenate the new files with the existing ones
+            setPhotos([...photos, ...e.target.files]);
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -90,10 +105,12 @@ const CreateReview = () => {
             if (response.ok) {
                 console.log("Review posted successfully");
                 setReviewForm({
+                    title: "",
                     text: "",
-                    rating: "",
-                    photo_url: "",
+                    rating: 0,
+                    photo_urls: [],
                 });
+                setIsReviewPosted(true);
             } else {
                 console.error("Error posting review:", response.statusText);
             }
@@ -105,9 +122,15 @@ const CreateReview = () => {
     return (
         <div className="card p-4 text-center">
             <h2 className="mb-4">Write a Review</h2>
+
+            {isReviewPosted && ( // Render the success message conditionally
+                <div className="alert alert-success" role="alert">
+                    Your review has been posted!
+                </div>
+            )}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="title" className="form-label">
+                    <label htmlFor="title" className="form-label d-block mx-auto">
                     </label>
                     <input
                         id="title"
@@ -116,10 +139,25 @@ const CreateReview = () => {
                         placeholder="Title"
                         value={reviewForm.title}
                         onChange={handleInputChange}
-                        className="form-control"
+                        className="form-control mx-auto"
                         required
                         style={{ width: '50%' }} // Set the width as needed
                     />
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="description" className="form-label">
+                    </label>
+                    <textarea
+                        id="description"
+                        placeholder="Write your thoughts here...."
+                        name="text"
+                        value={reviewForm.text}
+                        onChange={handleInputChange}
+                        className="form-control"
+                        required
+                        style={{ height: '150px' }} // Set the height as needed
+                    ></textarea>
                 </div>
                 <div className="mb-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <div style={{ marginRight: '10px' }}>
@@ -147,26 +185,13 @@ const CreateReview = () => {
                             id="imageInput"
                             className="form-control"
                             onChange={handlePhotoChange}
+                            multiple  // Allow multiple file selection
                             style={{ marginLeft: '10px' }}
                         />
                         <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ marginLeft: '10px' }}>
                             Upload Photo
                         </button>
                     </div>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="description" className="form-label">
-                    </label>
-                    <textarea
-                        id="description"
-                        placeholder="Write your thoughts here...."
-                        name="text"
-                        value={reviewForm.text}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        style={{ height: '150px' }} // Set the height as needed
-                    ></textarea>
                 </div>
                 <button type="submit" className="btn btn-primary">
                     Post
