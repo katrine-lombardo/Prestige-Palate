@@ -133,16 +133,23 @@ const EditProfile = () => {
                             Select Your Icon:
                         </label>
                         {icons.map((icon) => (
-                            <label key={icon.id} className="icon-radio" style={{ width: "100%", padding: "5px", boxSizing: "border-box" }}>
-                                <input
-                                    type="radio"
-                                    name="icon"
-                                    value={icon.id}
-                                    checked={selectedIcon.id === icon.id}
-                                    onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
-                                />
-                                <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
-                            </label>
+                            <div key={icon.id} className="icon-container">
+                                <label className="icon-radio" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "5px", boxSizing: "border-box" }}>
+                                    <div>
+                                        <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
+                                    </div>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <input
+                                            type="radio"
+                                            name="icon"
+                                            value={icon.id}
+                                            checked={selectedIcon.id === icon.id}
+                                            onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
+                                        />
+                                        <div className="icon-name" style={{ fontSize: "12px", marginLeft: "5px" }}>{icon.icon_name}</div>
+                                    </div>
+                                </label>
+                            </div>
                         ))}
                     </div>
                     <div>
