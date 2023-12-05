@@ -75,7 +75,7 @@ const ListAppReviews = () => {
                         <div className="card-body">
                             <div className="card-title">
                                 <div className="d-flex justify-content-between">
-                                    <Link to={`/accounts/${review.username}/reviews`}>
+                                    <Link to={`/${review.username}/reviews`}>
                                         <h5>{review.username}</h5>
                                     </Link>
                                     <div>
