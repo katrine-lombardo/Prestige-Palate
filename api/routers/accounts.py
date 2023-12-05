@@ -13,11 +13,12 @@ from queries.accounts import (
     DuplicateAccountError,
     ChangePassword,
     EditProfile,
+    Icon
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from pydantic import BaseModel
-from typing import Union, List, Optional
+from typing import Union, List, Dict, Optional
 
 
 class AccountForm(BaseModel):
@@ -59,6 +60,13 @@ async def get_token(
         "type": "Bearer",
         "account": account,
     }
+
+@router.get("/api/icons", response_model=Union[List[Icon], Error])
+async def get_all_icons(
+    accounts: AccountQueries = Depends(),
+    account_data: dict = Depends(authenticator.try_get_current_account_data),
+):
+    return accounts.get_all_icons()
 
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
@@ -150,7 +158,7 @@ async def edit_profile(
     if not (1 <= edit_profile.profile_icon_id <= 16):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid icon_id. It must be between 1 and 16."
+            detail="Invalid icon_id. It must be between 1 and 16.",
         )
 
     queries.edit_profile(email, edit_profile)

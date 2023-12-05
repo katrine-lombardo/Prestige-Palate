@@ -1,12 +1,16 @@
 ## Mon, Dec 4
 Features/issues that you worked on and who you worked with:
 - Completed Delete Profile front end independently.
+- Completed creating Icons Table and 16 icons for user selection independently.
+- Completed changing Accounts Table to include icons id independently.
+- Created new router and query to get all icon on the back end independently.
+- Restructured the front end Nav and Home to ensure clean look and no overlaps independently.
+- Implemented a new logo for the webpage independently.
+- Now user icon loading on top right.
+- Edit Profile changes: No more username, and added Icons for selection.
 
 A reflection on any design conversations that you had
-- 
-
-At least one ah-ha! moment:
-- 
+- Got rid of feature to edit username due to complexity of the code (used in reviews table) and per all team members agreement. We have Katrine using tokens to grab username (which does not get updated due to it being a JWT library from Galvanize), and also username will not get updated in the reviews table (only on api/accounts/id). We talked about maybe figuring out poller but currently with a lot to figure out with limited time, teammates all in agreement to edit first and last name, and the user icon.
 
 ## Fri, Dec 1
 Features/issues that you worked on and who you worked with:

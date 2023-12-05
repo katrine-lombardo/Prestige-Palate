@@ -3,7 +3,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.")
+    throw new Error("VITE_APP_API_HOST was undefined.");
 }
 
 const EditProfile = () => {
@@ -13,6 +13,8 @@ const EditProfile = () => {
     const { token } = useAuthContext();
     const [updateSuccess, setUpdateSuccess] = useState(false);
     const [updateError, setError] = useState(false);
+    const [icons, setIcons] = useState([]);
+    const [selectedIcon, setSelectedIcon] = useState({ id: "", icon_url: "" });
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -22,8 +24,23 @@ const EditProfile = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("id: ", data.account.id);
                     setAccountId(data.account.id);
+                })
+                .catch((error) => console.error(error));
+        };
+        handleFetchWithAPI();
+    }, [token]);
+
+    useEffect(() => {
+        const handleFetchWithAPI = async () => {
+            const iconsUrl = `${tokenUrl}/api/icons`;
+            fetch(iconsUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    setIcons(data);
+                    if (data.length > 0) {
+                        setSelectedIcon({ id: data[0].id, icon_url: data[0].icon_url });
+                    }
                 })
                 .catch((error) => console.error(error));
         };
@@ -48,13 +65,15 @@ const EditProfile = () => {
                 body: JSON.stringify({
                     first_name: firstName,
                     last_name: lastName,
+                    profile_icon_id: selectedIcon.id,
                 }),
             });
             if (response.ok) {
                 setUpdateSuccess(true);
                 setTimeout(() => {
                     setUpdateSuccess(false);
-                }, 1000)
+                    window.location.reload();
+                }, 1000);
             } else {
                 const data = await response.json();
                 throw new Error(
@@ -65,8 +84,8 @@ const EditProfile = () => {
         } catch (error) {
             setError(true);
             setTimeout(() => {
-                setError(false)
-            }, 1000)
+                setError(false);
+            }, 1000);
         }
     };
 
@@ -94,7 +113,7 @@ const EditProfile = () => {
                             id="firstName"
                             className="form-control"
                             value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            onChange={(e) => setFirstName(e.target.value)} required
                         />
                     </div>
                     <div className="mb-3">
@@ -106,8 +125,32 @@ const EditProfile = () => {
                             id="lastName"
                             className="form-control"
                             value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            onChange={(e) => setLastName(e.target.value)} required
                         />
+                    </div>
+                    <div className="mb-3 icon-grid" style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px" }}>
+                        <label className="form-label" style={{ gridColumn: "span 8", marginBottom: "5px" }}>
+                            Select Your Icon:
+                        </label>
+                        {icons.map((icon) => (
+                            <div key={icon.id} className="icon-container">
+                                <label className="icon-radio" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "5px", boxSizing: "border-box" }}>
+                                    <div>
+                                        <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
+                                    </div>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <input
+                                            type="radio"
+                                            name="icon"
+                                            value={icon.id}
+                                            checked={selectedIcon.id === icon.id}
+                                            onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
+                                        />
+                                        <div className="icon-name" style={{ fontSize: "12px", marginLeft: "5px" }}>{icon.icon_name}</div>
+                                    </div>
+                                </label>
+                            </div>
+                        ))}
                     </div>
                     <div>
                         <button type="submit" className="btn btn-primary">
