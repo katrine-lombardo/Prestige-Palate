@@ -16,15 +16,17 @@ function SearchBar({ onSearch }) {
 
                 if (response.ok) {
                     const data = await response.json();
+
+                    const locationData = data.location_data
                     const searchResults = data.restaurants.places.length > 0 ? data.restaurants.places : [];
-                    navigate('/search-results', { state: { results: searchResults } });
+                    navigate('/search-results', { state: { results: searchResults, locationData: locationData } });
                 } else {
-                    navigate('/search-results', { state: { results: [] } });
+                    navigate('/search-results', { state: { results: [], locationData: null } });
                 }
 
             } catch (error) {
                 console.error("search error:", error)
-                navigate('/search-results', { state: { results: [] } });
+                navigate('/search-results', { state: { results: [], locationData: null } });
             }
         } else {
             console.log("None")

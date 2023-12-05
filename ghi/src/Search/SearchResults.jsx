@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import RestaurantCard from '../Restaurants/RestaurantCard';
+import Map from '../Map';
 
 function SearchResults() {
     const location = useLocation();
     const initialResults = location.state?.results || [];
+    const locationData = location.state?.locationData;
     const [results, setResults] = useState(initialResults);
     const [sortKey, setSortKey] = useState('nameAsc');
     const [filterCity, setFilterCity] = useState('');
@@ -83,60 +85,68 @@ function SearchResults() {
     };
 
     return (
-        <div className="container mt-4">
-            <div className="row mb-3">
-                <div className="col">
-                    <label>Restaurants per page: </label>
-                    <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                    </select>
+        <div>
+            <Map
+                key={location.pathname}
+                restaurants={initialResults}
+                viewport={locationData?.viewport}
+            />
+
+            <div className="container mt-4">
+                <div className="row mb-3">
+                    <div className="col">
+                        <label>Restaurants per page: </label>
+                        <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
+                    <nav>
+                        <ul className="pagination">
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                                    <button className="page-link" onClick={() => changePage(page)}>{page}</button>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                    <div className="col">
+                        <label>Sort by: </label>
+                        <select className="form-control d-inline-block w-auto ml-2" onChange={handleSortChange} value={sortKey}>
+                            <option value="highRating">Highest Rating</option>
+                            <option value="lowRating">Lowest Rating</option>
+                            <option value="nameAsc">Name (A-Z)</option>
+                            <option value="nameDesc">Name (Z-A)</option>
+                            <option value="mostRating">Most Rating</option>
+                            <option value="leastRating">Least Rating</option>
+                        </select>
+                    </div>
                 </div>
-                <nav>
-                    <ul className="pagination">
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                            <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
-                                <button className="page-link" onClick={() => changePage(page)}>{page}</button>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-                <div className="col">
-                    <label>Sort by: </label>
-                    <select className="form-control d-inline-block w-auto ml-2" onChange={handleSortChange} value={sortKey}>
-                        <option value="highRating">Highest Rating</option>
-                        <option value="lowRating">Lowest Rating</option>
-                        <option value="nameAsc">Name (A-Z)</option>
-                        <option value="nameDesc">Name (Z-A)</option>
-                        <option value="mostRating">Most Rating</option>
-                        <option value="leastRating">Least Rating</option>
-                    </select>
+
+                <div className="row mb-3">
+                    <div className="col">
+                        <input type="number" className="form-control" placeholder="Filter by rating" value={filterRating} onChange={handleFilterRatingChange} />
+                    </div>
+                    <div className="col">
+                        <input type="text" className="form-control" placeholder="Filter by name" value={filterName} onChange={handleFilterNameChange} />
+                    </div>
+                    <div className="col">
+                        <input type="text" className="form-control" placeholder="Filter by city" value={filterCity} onChange={handleFilterCityChange} />
+                    </div>
+                    <div className="col">
+                        <input type="text" className="form-control" placeholder="Filter by state" value={filterState} onChange={handleFilterStateChange} />
+                    </div>
                 </div>
+
+                {currentItems.map(restaurant => (
+                    <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                ))}
+
+                {currentItems.length === 0 && <div className="alert alert-warning">No restaurants found.</div>}
+
+
             </div>
-
-            <div className="row mb-3">
-                <div className="col">
-                    <input type="number" className="form-control" placeholder="Filter by rating" value={filterRating} onChange={handleFilterRatingChange} />
-                </div>
-                <div className="col">
-                    <input type="text" className="form-control" placeholder="Filter by name" value={filterName} onChange={handleFilterNameChange} />
-                </div>
-                <div className="col">
-                    <input type="text" className="form-control" placeholder="Filter by city" value={filterCity} onChange={handleFilterCityChange} />
-                </div>
-                <div className="col">
-                    <input type="text" className="form-control" placeholder="Filter by state" value={filterState} onChange={handleFilterStateChange} />
-                </div>
-            </div>
-
-            {currentItems.map(restaurant => (
-                <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-            ))}
-
-            {currentItems.length === 0 && <div className="alert alert-warning">No restaurants found.</div>}
-
-
         </div>
     );
 

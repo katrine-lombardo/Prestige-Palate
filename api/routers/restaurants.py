@@ -47,7 +47,7 @@ def text_search(
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": "places.id,places.formattedAddress,places.rating,places.displayName.text",
+            "X-Goog-FieldMask": "places.id,places.formattedAddress,places.rating,places.displayName.text,places.location",
         }
 
         request_body = {
