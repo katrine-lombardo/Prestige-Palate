@@ -17,6 +17,7 @@ import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
 import SearchResults from "./Search/SearchResults";
 import UpdateReview from "./Reviews/UpdateReview";
+import ListUserReviews from "./Reviews/ListUserReviews";
 import { LoadScript } from '@react-google-maps/api';
 
 
@@ -61,6 +62,7 @@ function App() {
                             <Route path="/create-review/:place_id" element={<CreateReview />} />
                             <Route path="/search-results" element={<SearchResults />} />
                             <Route path="/update-review/:username/:review_id" element={<UpdateReview />} />
+                            <Route path="/:username" element={<ListUserReviews />} />
                         </Routes>
                     </div>
                 </AuthProvider>

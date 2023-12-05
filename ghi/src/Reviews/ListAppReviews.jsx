@@ -24,7 +24,6 @@ const ListAppReviews = () => {
                 }
                 const data = await response.json();
                 setReviews(data);
-
             } catch (error) {
                 console.error(error.message);
             }
@@ -33,9 +32,11 @@ const ListAppReviews = () => {
     }, [place_id]);
 
     const promptLogin = (message) => {
-        const confirmLogin = window.confirm(`${message} Please login to continue.`);
+        const confirmLogin = window.confirm(
+            `${message} Please login to continue.`
+        );
         if (confirmLogin) {
-            navigate('/login');
+            navigate("/login");
         }
     };
 
@@ -49,7 +50,7 @@ const ListAppReviews = () => {
 
     if (reviews.length === 0) {
         return (
-            <div className="container text-center">
+            <div className="container">
                 <div className="container mt-4">
                     No Prestige Palate reviews here. Yet...
                 </div>
@@ -64,7 +65,7 @@ const ListAppReviews = () => {
                     </button>
                 </div>
             </div>
-        )
+        );
     }
 
     return (
@@ -75,14 +76,22 @@ const ListAppReviews = () => {
                         <div className="card-body">
                             <div className="card-title">
                                 <div className="d-flex justify-content-between">
-                                    <Link to={`/accounts/${review.username}/reviews`}>
+                                    <Link to={`/${review.username}`}>
                                         <h5>{review.username}</h5>
                                     </Link>
                                     <div>
                                         {[1, 2, 3, 4, 5].map((star) => (
-                                            <span key={star} style={{
-                                                color: star <= review.rating ? "gold" : "gray",
-                                            }}>★</span>
+                                            <span
+                                                key={star}
+                                                style={{
+                                                    color:
+                                                        star <= review.rating
+                                                            ? "gold"
+                                                            : "gray",
+                                                }}
+                                            >
+                                                ★
+                                            </span>
                                         ))}
                                     </div>
                                 </div>
@@ -93,16 +102,19 @@ const ListAppReviews = () => {
                                 </blockquote>
                                 <p>{review.text}</p>
                                 <p className="card-subtitle mb-1 text-body-secondary">
-                                    Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+                                    Date posted:{" "}
+                                    {new Date(
+                                        review.publish_time
+                                    ).toLocaleDateString("en-US", {
                                         year: "numeric",
                                         month: "long",
                                         day: "numeric",
-                                    })}</p>
-                                <p></p>
+                                    })}
+                                </p>
                             </div>
                         </div>
                     </div>
-                )
+                );
             })}
         </div>
     );
