@@ -17,6 +17,15 @@ import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
 import SearchResults from "./Search/SearchResults";
 import UpdateReview from "./Reviews/UpdateReview";
+import { LoadScript } from '@react-google-maps/api';
+
+
+const libraries = ['places'];
+
+const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+if (!googleApiKey) {
+    throw error("VITE_APP_API_HOST was undefined.")
+}
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -27,31 +36,36 @@ function App() {
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     return (
-        <BrowserRouter>
-            <AuthProvider baseUrl={tokenUrl}>
-                <Nav toggleSidebar={toggleSidebar} />
-                <Sidebar isOpen={isSidebarOpen} />
-                <div className="container">
-                    <Routes>
-                        <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
-                        <Route path="/signup" element={<SignupForm />} />
-                        <Route path="/login" element={<LoginForm />} />
-                        <Route path="/logout" element={<LogoutButton />} />
-                        <Route path="/sidebar" element={<Sidebar />} />
-                        <Route path="/editprofile" element={<EditProfile />} />
-                        <Route path="/deleteprofile" element={<DeleteProfile />} />
-                        <Route path="/updatepassword" element={<UpdatePassword />} />
-                        <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
-                        <Route path="/myreviews" element={<ListMyReviews />} />
-                        <Route path="/favorites/" element={<FavoriteRestaurants />} />
-                        <Route path="/restaurants" element={<ListRestaurants />} />
-                        <Route path="/create-review/:place_id" element={<CreateReview />} />
-                        <Route path="/search-results" element={<SearchResults />} />
-                        <Route path="/update-review/:username/:review_id" element={<UpdateReview />} />
-                    </Routes>
-                </div>
-            </AuthProvider>
-        </BrowserRouter>
+        <LoadScript
+            googleMapsApiKey={googleApiKey}
+            libraries={libraries}
+        >
+            <BrowserRouter>
+                <AuthProvider baseUrl={tokenUrl}>
+                    <Nav toggleSidebar={toggleSidebar} />
+                    <Sidebar isOpen={isSidebarOpen} />
+                    <div className="container">
+                        <Routes>
+                            <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
+                            <Route path="/signup" element={<SignupForm />} />
+                            <Route path="/login" element={<LoginForm />} />
+                            <Route path="/logout" element={<LogoutButton />} />
+                            <Route path="/sidebar" element={<Sidebar />} />
+                            <Route path="/editprofile" element={<EditProfile />} />
+                            <Route path="/deleteprofile" element={<DeleteProfile />} />
+                            <Route path="/updatepassword" element={<UpdatePassword />} />
+                            <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
+                            <Route path="/myreviews" element={<ListMyReviews />} />
+                            <Route path="/favorites/" element={<FavoriteRestaurants />} />
+                            <Route path="/restaurants" element={<ListRestaurants />} />
+                            <Route path="/create-review/:place_id" element={<CreateReview />} />
+                            <Route path="/search-results" element={<SearchResults />} />
+                            <Route path="/update-review/:username/:review_id" element={<UpdateReview />} />
+                        </Routes>
+                    </div>
+                </AuthProvider>
+            </BrowserRouter>
+        </LoadScript>
     );
 }
 
