@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -24,6 +24,7 @@ const UpdateReview = () => {
 
     const [isReviewUpdated, setIsReviewUpdated] = useState(false);
     const { token } = useAuthContext();
+    const fileInputRef = useRef(null);
 
     const uploadToS3 = async (photos) => {
         const uploadPromises = photos.map(async (photo) => {
@@ -59,10 +60,15 @@ const UpdateReview = () => {
                 ...prevReviewForm,
                 photo_urls: urls,
             }));
-            window.alert("Files uploaded successfully!"); // Show a pop-up notification
+            window.alert("Files uploaded successfully!");
+
+            // Reset the file input value after successful upload
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
         } catch (err) {
             console.error("Upload failed:", err);
-            // You can handle the error here, e.g., display another notification
+            // Handle the error, e.g., display another notification
         }
     };
 
@@ -189,7 +195,8 @@ const UpdateReview = () => {
                             id="imageInput"
                             className="form-control"
                             onChange={handlePhotoChange}
-                            multiple  // Allow multiple file selection
+                            multiple
+                            ref={fileInputRef} // Assign the ref to the file input
                             style={{ marginLeft: '10px' }}
                         />
                         <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ marginLeft: '10px' }}>
