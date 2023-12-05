@@ -114,6 +114,14 @@ async def create_review(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Cannot create a review with these credentials",
             )
+
+        # Ensure photo_urls is a list
+        review.photo_urls = (
+            review.photo_urls
+            if isinstance(review.photo_urls, list)
+            else [review.photo_urls]
+        )
+
         return reviews.create_review(
             place_id, review, current_user["username"]
         )

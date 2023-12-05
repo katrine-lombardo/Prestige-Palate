@@ -11,7 +11,7 @@ steps = [
             title TEXT NOT NULL,
             text TEXT NOT NULL,
             rating FLOAT CHECK (rating >= 1 AND rating <= 5) NOT NULL,
-            photo_url TEXT
+            photo_urls TEXT[]
         );
         """,
         # "Down" SQL statement

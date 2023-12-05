@@ -16,7 +16,7 @@ class ReviewIn(BaseModel):
     title: str
     text: str
     rating: float
-    photo_url: str
+    photo_urls: List[str]
 
 
 class ReviewOut(BaseModel):
@@ -27,14 +27,14 @@ class ReviewOut(BaseModel):
     title: str
     text: str
     rating: float
-    photo_url: Optional[str]
+    photo_urls: Optional[List[str]]
 
 
 class ReviewUpdate(BaseModel):
     title: Optional[str] = None
     text: Optional[str] = None
     rating: Optional[float] = None
-    photo_url: Optional[str] = None
+    photo_urls: Optional[List[str]] = None
 
 
 class ReviewQueries:
@@ -83,24 +83,24 @@ class ReviewQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
+                    # Use unnest to convert the array of photo URLs to rows
                     cur.execute(
                         """
-                            INSERT INTO reviews (username, place_id, title, text, rating, photo_url)
-                            VALUES (%s, %s, %s, %s, %s, %s)
-                            RETURNING *;
-                        """,
+                                INSERT INTO reviews (username, place_id, title, text, rating, photo_urls)
+                                VALUES (%s, %s, %s, %s, %s, %s)
+                                RETURNING *;
+                                """,
                         [
                             username,
                             place_id,
                             review.title,
                             review.text,
                             review.rating,
-                            review.photo_url,
+                            review.photo_urls,
                         ],
                     )
                     conn.commit()
                     record = cur.fetchone()
-                    print("record: ", record)
                     if record is None:
                         return ValueError("No records found")
                     else:
@@ -112,9 +112,8 @@ class ReviewQueries:
                             "title": record[4],
                             "text": record[5],
                             "rating": record[6],
-                            "photo_url": record[7],
+                            "photo_urls": record[7],
                         }
-                        print("review data: ", review_data)
                         return ReviewOut(**review_data)
         except DuplicateReviewError:
             return ValueError("Review already exists for this restaurant")

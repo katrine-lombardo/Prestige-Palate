@@ -15,42 +15,53 @@ const s3Client = new S3Client({
 
 const CreateReview = () => {
     const { id } = useParams();
-    const [photo, setPhoto] = useState(null)
+    const [photos, setPhotos] = useState([]);
     const [reviewForm, setReviewForm] = useState({
         title:"",
         text: "",
-        rating: "",
-        photo_url: "",
+        rating: 0,
+        photo_urls: [],
     });
 
     const [isReviewPosted, setIsReviewPosted] = useState(false);
 
     const { token } = useAuthContext();
 
-    const uploadToS3 = async (photo) => {
-        const params = {
-            Bucket: bucketName,
-            Key: photo.name,
-            Body: photo,
-            ContentType: photo.type
-        };
+    const uploadToS3 = async (photos) => {
+        const uploadPromises = photos.map(async (photo) => {
+            const params = {
+                Bucket: bucketName,
+                Key: photo.name,
+                Body: photo,
+                ContentType: photo.type,
+            };
+            try {
+                const data = await s3Client.send(new PutObjectCommand(params));
+                const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`;
+                console.log("Success", url);
+                return url;
+            } catch (err) {
+                console.error("Error", err);
+                throw err; // Propagate the error
+            }
+        });
+
         try {
-            const data = await s3Client.send(new PutObjectCommand(params));
-            const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`
-            console.log("Success", url);
-            return url;
+            const urls = await Promise.all(uploadPromises);
+            return urls;
         } catch (err) {
-            console.error("Error", err);
+            throw err; // Propagate the error
         }
     };
+
     const handlePhotoUpload = async () => {
         try {
-            const url = await uploadToS3(photo);
-            setReviewForm(prevReviewForm => ({
+            const urls = await uploadToS3(photos);
+            setReviewForm((prevReviewForm) => ({
                 ...prevReviewForm,
-                photo_url: url
+                photo_urls: urls,
             }));
-            window.alert("File uploaded successfully!"); // Show a pop-up notification
+            window.alert("Files uploaded successfully!"); // Show a pop-up notification
         } catch (err) {
             console.error("Upload failed:", err);
             // You can handle the error here, e.g., display another notification
@@ -72,10 +83,11 @@ const CreateReview = () => {
     };
 
     const handlePhotoChange = (e) => {
-        if (e.target.files[0]) {
-            setPhoto(e.target.files[0])
+        if (e.target.files.length > 0) {
+            // Use the spread operator to concatenate the new files with the existing ones
+            setPhotos([...photos, ...e.target.files]);
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -95,8 +107,8 @@ const CreateReview = () => {
                 setReviewForm({
                     title: "",
                     text: "",
-                    rating: "",
-                    photo_url: "",
+                    rating: 0,
+                    photo_urls: [],
                 });
                 setIsReviewPosted(true);
             } else {
@@ -173,6 +185,7 @@ const CreateReview = () => {
                             id="imageInput"
                             className="form-control"
                             onChange={handlePhotoChange}
+                            multiple  // Allow multiple file selection
                             style={{ marginLeft: '10px' }}
                         />
                         <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ marginLeft: '10px' }}>
