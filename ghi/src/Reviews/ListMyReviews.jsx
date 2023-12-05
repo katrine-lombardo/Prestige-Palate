@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -11,7 +10,6 @@ if (!tokenUrl) {
 const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
-    const [place_id, setPlaceID] = useState("");
     const navigate = useNavigate();
     const [activeReviewId, setActiveReviewId] = useState(null);
     const { token } = useAuthContext();
@@ -147,87 +145,54 @@ const ListMyReviews = () => {
                     <div className="container mt-3">
                         {!reviews.length ? renderNullReviews() : (
                             <div>
-                                {reviews.map((review, index) => {
-                                    return (
-                                        <div key={index} className="card border-0">
-                                            <div className="card-body">
-                                                <div className="card-title">
-                                                    <div className="d-flex justify-content-between">
-                                                        <h5>{review.title}</h5>
-                                                        <div>
-                                                            {[1, 2, 3, 4, 5].map((star) => (
-                                                                <span key={star} style={{
-                                                                    color: star <= review.rating ? "gold" : "gray",
-                                                                }}>★</span>
-                                                            ))}
-                                                        </div>
+                                {reviews.map((review, index) => (
+                                    <div key={index} className="card border-0">
+                                        <div className="card-body">
+                                            <div className="card-title">
+                                                <div className="d-flex justify-content-between">
+                                                    <h5>{review.title}</h5>
+                                                    <div>
+                                                        {[1, 2, 3, 4, 5].map((star) => (
+                                                            <span key={star} style={{
+                                                                color: star <= review.rating ? "gold" : "gray",
+                                                            }}>★</span>
+                                                        ))}
                                                     </div>
                                                 </div>
-                                                <div className="card-text">
-                                                    <p>{review.text}</p>
-                                                    <p className="card-subtitle mb-1 text-body-secondary">
-                                                        Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
-                                                            year: "numeric",
-                                                            month: "long",
-                                                            day: "numeric",
-                                                        })}</p>
-                                                    <p></p>
-                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                })
-                                }
-                            </div>
-                        )}
-                        <div>
-                            {reviews.map((review, index) => (
-                                <div key={index} className="card border-0">
-                                    <div className="card-body">
-                                        <div className="card-title">
-                                            <div className="d-flex justify-content-between">
-                                                <h5>{review.title}</h5>
-                                                <div>
-                                                    {[1, 2, 3, 4, 5].map((star) => (
-                                                        <span key={star} style={{
-                                                            color: star <= review.rating ? "gold" : "gray",
-                                                        }}>★</span>
-                                                    ))}
+                                            <div className="card-text">
+                                                <p>{review.text}</p>
+                                                <p className="card-subtitle mb-1 text-body-secondary">
+                                                    Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+                                                        year: "numeric",
+                                                        month: "long",
+                                                        day: "numeric",
+                                                    })}</p>
+                                                <p></p>
+                                                <div className="d-flex justify-content-end">
+                                                    <span
+                                                        style={{ marginRight: '10px', cursor: 'pointer', color: 'blue' }}
+                                                        onClick={() => handleToggleEditButton(review.id)}
+                                                    >
+                                                        ...
+                                                    </span>
+                                                    {activeReviewId === review.id && (
+                                                        <>
+                                                            <button className="btn btn-secondary" onClick={() => handleEditReview(review)}>
+                                                                Edit Review
+                                                            </button>
+                                                            <button className="btn btn-danger ms-2" onClick={() => handleDeleteReview(review)}>
+                                                                Delete Review
+                                                            </button>
+                                                        </>
+                                                    )}
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div className="card-text">
-                                            <p>{review.text}</p>
-                                            <p className="card-subtitle mb-1 text-body-secondary">
-                                                Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
-                                                    year: "numeric",
-                                                    month: "long",
-                                                    day: "numeric",
-                                                })}</p>
-                                            <p></p>
-                                            <div className="d-flex justify-content-end">
-                                                <span
-                                                    style={{ marginRight: '10px', cursor: 'pointer', color: 'blue' }}
-                                                    onClick={() => handleToggleEditButton(review.id)}
-                                                >
-                                                    ...
-                                                </span>
-                                                {activeReviewId === review.id && (
-                                                    <>
-                                                        <button className="btn btn-secondary" onClick={() => handleEditReview(review)}>
-                                                            Edit Review
-                                                        </button>
-                                                        <button className="btn btn-danger ms-2" onClick={() => handleDeleteReview(review)}>
-                                                            Delete Review
-                                                        </button>
-                                                    </>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div
