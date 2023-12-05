@@ -1,6 +1,6 @@
 from queries.pool import pool
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import List, Dict, Optional, Union
 
 
 class Error(BaseModel):
@@ -9,6 +9,18 @@ class Error(BaseModel):
 
 class DuplicateAccountError(ValueError):
     pass
+
+
+class EditProfile(BaseModel):
+    first_name: str
+    last_name: str
+    profile_icon_id: int
+
+
+class Icon(BaseModel):
+    id: int
+    icon_name: str
+    icon_url: str
 
 
 class AccountIn(BaseModel):
@@ -38,13 +50,28 @@ class ChangePassword(BaseModel):
     confirm_password: str
 
 
-class EditProfile(BaseModel):
-    first_name: str
-    last_name: str
-    profile_icon_id: int
-
-
 class AccountQueries:
+    def get_all_icons(self) -> Union[Error, List[Icon]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT *
+                        FROM icons
+                        ORDER BY id;
+                        """
+                    )
+                    accounts = []
+                    for row in cur.fetchall():
+                        record = {}
+                        for i, column in enumerate(cur.description):
+                            record[column.name] = row[i]
+                        accounts.append(Icon(**record))
+                    return accounts
+        except Exception as e:
+            return {"message": "Could not get all account information"}
+
     def get_account_by_email(
         self, email: str
     ) -> Union[Error, AccountOutWithPassword]:
@@ -151,14 +178,14 @@ class AccountQueries:
                     params,
                 )
 
-    def edit_profile(
-        self, email: str, edit_profile: EditProfile
-        ):
+    def edit_profile(self, email: str, edit_profile: EditProfile):
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 # Validate profile_icon_id
                 if not (1 <= edit_profile.profile_icon_id <= 16):
-                    raise ValueError("Invalid icon_id. It must be between 1 and 16.")
+                    raise ValueError(
+                        "Invalid icon_id. It must be between 1 and 16."
+                    )
 
                 params = [
                     edit_profile.first_name,
