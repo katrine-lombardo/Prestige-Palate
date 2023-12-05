@@ -44,4 +44,5 @@ We are targeting Elite foodies who want to explore their next global culinary ad
 5. Run the containers: docker compose up
 6. Change directory: cd ghi
 7. Run command: npm install @aws-sdk/client-s3
-8. Open browser to localhost
+8. Run command: npm install @react-google-maps/api --save
+9. Open browser to localhost
