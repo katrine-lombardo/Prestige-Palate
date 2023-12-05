@@ -12,10 +12,12 @@ const ListAppReviews = () => {
     const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
     const { token } = useAuthContext();
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
+                setLoading(true);
                 const url = `${tokenUrl}/api/restaurants/${place_id}/reviews`;
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -24,6 +26,7 @@ const ListAppReviews = () => {
                 }
                 const data = await response.json();
                 setReviews(data);
+                setLoading(false)
             } catch (error) {
                 console.error(error.message);
             }
@@ -47,6 +50,10 @@ const ListAppReviews = () => {
         }
         navigate(`/create-review/${place_id}`);
     };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (reviews.length === 0) {
         return (
