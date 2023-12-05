@@ -72,6 +72,7 @@ const EditProfile = () => {
                 setUpdateSuccess(true);
                 setTimeout(() => {
                     setUpdateSuccess(false);
+                    window.location.reload();
                 }, 1000);
             } else {
                 const data = await response.json();
