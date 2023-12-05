@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
@@ -8,9 +8,7 @@ if (!tokenUrl) {
 }
 
 const ListAppReviews = () => {
-    const navigate = useNavigate();
     const { place_id } = useParams();
-    const { token } = useAuthContext()
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
@@ -24,6 +22,7 @@ const ListAppReviews = () => {
                 }
                 const data = await response.json();
                 setReviews(data);
+
             } catch (error) {
                 console.error(error.message);
             }
@@ -39,8 +38,24 @@ const ListAppReviews = () => {
         navigate(`/create-review/${place_id}`);
     };
 
-    if (!reviews) {
-        return <div>Loading reviews...</div>;
+    if (reviews.length === 0) {
+        return (
+            <div className="container text-center">
+                <div className="container mt-4">
+                    No Prestige Palate reviews here. Yet...
+                </div>
+                <div>
+                    <button
+                        onClick={addReview}
+                        style={{ marginRight: "5px" }}
+                        type="button"
+                        className="btn btn-secondary mt-3 ms-2"
+                    >
+                        Be the first
+                    </button>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -53,8 +68,9 @@ const ListAppReviews = () => {
                                 <div className="card-body">
                                     <div className="card-title">
                                         <div className="d-flex justify-content-between">
-                                            <h5>{review.title}</h5>
-                                            <h5>{review.username}</h5>
+                                            <Link to={`/accounts/${review.username}`}>
+                                                <h5>{review.username}</h5>
+                                            </Link>
                                             <div>
                                                 {[1, 2, 3, 4, 5].map((star) => (
                                                     <span key={star} style={{
@@ -65,6 +81,9 @@ const ListAppReviews = () => {
                                         </div>
                                     </div>
                                     <div className="card-text">
+                                        <blockquote className="blockquote">
+                                            <p>{review.title}</p>
+                                        </blockquote>
                                         <p>{review.text}</p>
                                         <p className="card-subtitle mb-1 text-body-secondary">
                                             Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
@@ -76,24 +95,12 @@ const ListAppReviews = () => {
                                     </div>
                                 </div>
                             </div>
-                        ) : (
-                    <div className="container">
-                        <div className="container mt-4">
-                            No Prestige Palate reviews here. Yet...
-                        </div>
-                        <div>
-                            <button
-                                onClick={addReview}
-                                style={{ marginRight: "5px" }}
-                                type="button"
-                                className="btn btn-secondary mt-3 ms-2"
-                            >
-                                Be the first
-                            </button>
-                        </div>
-                    </div>
-                    )
-                    );
+                        )
+                    })}
+                </div>
+            </div>
+        </div>
+    );
 };
 
-                    export default ListAppReviews;
+export default ListAppReviews;
