@@ -130,44 +130,59 @@ const FavoriteRestaurants = () => {
 
 
     return (
-        <div className="favorite-restaurants-container">
+        <div className="container mt-4">
             <h2>My Favorite Restaurants</h2>
-            <div>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <button key={page} onClick={() => changePage(page)} disabled={currentPage === page}>
-                        {page}
-                    </button>
-                ))}
+            <div className="row mb-3">
+                <div className="col-md-6">
+                    <label>Restaurants per page: </label>
+                    <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+                <nav>
+                    <ul className="pagination justify-content-center">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                            <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                                <button className="page-link" onClick={() => changePage(page)}>{page}</button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <div className="col-md-6">
+                    <label>Sort by: </label>
+                    <select className="form-control d-inline-block w-auto ml-2" onChange={handleSortChange} value={sortKey}>
+                        <option value="highRating">Highest Rating</option>
+                        <option value="lowRating">Lowest Rating</option>
+                        <option value="nameAsc">Name (A-Z)</option>
+                        <option value="nameDesc">Name (Z-A)</option>
+                        <option value="mostRating">Most Rating</option>
+                        <option value="leastRating">Least Rating</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <label>Restaurants per page:</label>
-                <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                </select>
-            </div>
-            <div>
-                <label>Sort by: </label>
-                <select onChange={handleSortChange} value={sortKey}>
-                    <option value="highRating">Highest Rating</option>
-                    <option value="lowRating">Lowest Rating (Z-A)</option>
-                    <option value="nameAsc">Name (A-Z)</option>
-                    <option value="nameDesc">Name (Z-A)</option>
-                    <option value="mostRating">Most Rating</option>
-                    <option value="leastRating">Least Rating</option>
-                </select>
-                <input type="number" placeholder="Filter by rating" value={filterRating} onChange={handleFilterRatingChange} />
-                <input type="text" placeholder="Filter by name" value={filterName} onChange={handleFilterNameChange} />
-                <input type="text" placeholder="Filter by city" value={filterCity} onChange={handleFilterCityChange} />
-                <input type="text" placeholder="Filter by state" value={filterState} onChange={handleFilterStateChange} />
+            <div className="row mb-3">
+                <div className="col">
+                    <input type="number" className="form-control" placeholder="Filter by rating" value={filterRating} onChange={handleFilterRatingChange} />
+                </div>
+                <div className="col">
+                    <input type="text" className="form-control" placeholder="Filter by name" value={filterName} onChange={handleFilterNameChange} />
+                </div>
+                <div className="col">
+                    <input type="text" className="form-control" placeholder="Filter by city" value={filterCity} onChange={handleFilterCityChange} />
+                </div>
+                <div className="col">
+                    <input type="text" className="form-control" placeholder="Filter by state" value={filterState} onChange={handleFilterStateChange} />
+                </div>
             </div>
             {currentItems.map(restaurant => (
                 <RestaurantCard key={restaurant.place_id} restaurant={restaurant} />
             ))}
-            {currentItems.length === 0 && <p>You have no favorite restaurants.</p>}
+            {currentItems.length === 0 && <div className="alert alert-warning">No favorite restaurants found.</div>}
         </div>
     );
+
 };
 
 export default FavoriteRestaurants;

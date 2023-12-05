@@ -37,25 +37,6 @@ const DetailRestaurant = () => {
         fetchDetails();
     }, [place_id]);
 
-    // const fetchPhoto = async (photoId) => {
-    //     try {
-    //         const response = await fetch(`${tokenUrl}/api/restaurants/${photoId}/photos`);
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         const blob = await response.blob();
-    //         return URL.createObjectURL(blob);
-    //     } catch (error) {
-    //         console.error("Fetching photo failed:", error);
-    //         return ''; // Fallback image URL or empty string
-    //     }
-    // };
-
-    // const handleImageLoad = async (photoName, event) => {
-    //     const photoSrc = await fetchPhoto(photoName);
-    //     event.target.src = photoSrc;
-    // };
-
     const promptLogin = (message) => {
         const confirmLogin = window.confirm(`${message} Please login to continue.`);
         if (confirmLogin) {
@@ -108,84 +89,55 @@ const DetailRestaurant = () => {
     }
 
     return (
-        <div className="restaurant-detail-container">
+        <div className="container mt-4">
             {restaurantDetails && restaurantDetails.displayName &&
-                <h1 style={{ marginBottom: '20px' }}>{restaurantDetails.displayName.text}</h1>
+                <h1 className="text-center">{restaurantDetails.displayName.text}</h1>
             }
-            <div className="actions">
-                <button onClick={addReview}
-                    style={{ marginRight: '5px' }}>Add a Review</button>
-                <button onClick={addToFavorites}>Add to Favorites</button>
+            <div className="text-center mb-3">
+                <button className="btn btn-primary mr-2" onClick={addReview}>Add a Review</button>
+                <button className="btn btn-success" onClick={addToFavorites}>Add to Favorites</button>
             </div>
-            <p />
-            <h4>Rating: {restaurantDetails.rating}({restaurantDetails.userRatingCount})</h4>
-            <p />
             <BigStarCard rating={restaurantDetails.rating} />
-            <p />
-            {restaurantDetails.websiteUri ? (
-                <a
-                    href={restaurantDetails.websiteUri}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '18px', marginTop: '10px' }}
-                >
-                    {restaurantDetails.websiteUri}
-                </a>
-            ) : null}
-            <br />
-            <h2>Google Reviews</h2>
-            <br />
-            <ul style={{ listStyle: 'none' }}>
-                {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => {
-                    const date = new Date(review.publishTime);
-                    const formattedDate = date.toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    });
-                    const reviewText = review.text && review.text.text ? review.text.text : "No review text available";
-                    return (
-                        <li key={index}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <div>
-                                    <img
-                                        src={review.authorAttribution?.photoUri}
-                                        style={{ width: '40px', height: 'auto', marginRight: '10px' }}
-                                        loading="lazy"
-                                    />
-                                    <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
-                                        {review.authorAttribution?.displayName || 'Unknown Author'}
-                                    </a>
-                                </div>
-                                <StarCard
-                                    rating={review.rating}
-                                    style={{ marginLeft: '10px' }}
-                                />
-                            </div>
-                            <p />
-                            <p>{reviewText}</p>
-                            <p>Date Posted: {formattedDate}</p>
-                            <br />
-                        </li>
-                    );
-                })}
+            <h4 className="text-center mt-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
+
+            {restaurantDetails.websiteUri && (
+                <div className="text-center mt-3">
+                    <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
+                        {restaurantDetails.websiteUri}
+                    </a>
+                </div>
+            )}
+            <h2 className="mt-4">Google Reviews</h2>
+            <ul className="list-unstyled">
+                {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
+                    <li key={index} className="media my-4">
+                        <img src={review.authorAttribution?.photoUri} className="mr-3" alt="Author" style={{ width: '40px', height: '40px' }} />
+                        <div className="media-body">
+                            <h5 className="mt-0 mb-1">
+                                <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
+                                    {review.authorAttribution?.displayName || 'Unknown Author'}
+                                </a>
+                            </h5>
+                            <StarCard rating={review.rating} />
+                            <p>{review.text?.text || "No review text available"}</p>
+                            <small>Date Posted: {new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
+                        </div>
+                    </li>
+                ))}
             </ul>
-
-            <div className="tab-menu">
-                <button
-                    style={{ marginRight: '5px' }}
-                    onClick={() => handleTabChange('reviews')}>Reviews</button>
-                <button
-                    style={{ marginRight: '5px' }}
-                    onClick={() => handleTabChange('photos')}>Photos</button>
-                <button onClick={() => handleTabChange('about')}>About</button>
+            <div className="nav nav-tabs mt-4" id="nav-tab" role="tablist">
+                <button className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => handleTabChange('reviews')}>Reviews</button>
+                <button className={`nav-link ${activeTab === 'photos' ? 'active' : ''}`} onClick={() => handleTabChange('photos')}>Photos</button>
+                <button className={`nav-link ${activeTab === 'about' ? 'active' : ''}`} onClick={() => handleTabChange('about')}>About</button>
             </div>
-
-            {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
-            {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
-            {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
+            <div className="tab-content mt-3">
+                {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
+                {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
+                {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
+            </div>
         </div>
     );
+
 };
 
 export default DetailRestaurant;
