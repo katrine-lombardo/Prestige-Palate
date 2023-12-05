@@ -57,12 +57,12 @@ async def get_app_reviews_for_restaurant(
 ):
     try:
         success = reviews.get_app_reviews_for_restaurant(place_id)
-        if success:
-            return success
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Not a valid place_id",
-        )
+        if not reviews:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No app reviews for this restaurant",
+            )
+        return success
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
