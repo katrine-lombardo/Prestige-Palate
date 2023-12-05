@@ -10,11 +10,11 @@ const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [id, setAccountId] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("");
     const { token } = useAuthContext();
     const [updateSuccess, setUpdateSuccess] = useState(false);
     const [updateError, setError] = useState(false);
     const [icons, setIcons] = useState([]);
+    const [selectedIcon, setSelectedIcon] = useState({ id: "", icon_url: "" });
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -38,6 +38,9 @@ const EditProfile = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     setIcons(data);
+                    if (data.length > 0) {
+                        setSelectedIcon({ id: data[0].id, icon_url: data[0].icon_url });
+                    }
                 })
                 .catch((error) => console.error(error));
         };
@@ -62,7 +65,7 @@ const EditProfile = () => {
                 body: JSON.stringify({
                     first_name: firstName,
                     last_name: lastName,
-                    profile_icon_id: selectedIcon,
+                    profile_icon_id: selectedIcon.id,
                 }),
             });
             if (response.ok) {
@@ -124,23 +127,22 @@ const EditProfile = () => {
                             onChange={(e) => setLastName(e.target.value)}
                         />
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="iconSelect" className="form-label">
-                            Select Profile Icon:
+                    <div className="mb-3 icon-grid" style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px" }}>
+                        <label className="form-label" style={{ gridColumn: "span 8", marginBottom: "5px" }}>
+                            Select Your Icon:
                         </label>
-                        <select
-                            id="iconSelect"
-                            className="form-select"
-                            value={selectedIcon}
-                            onChange={(e) => setSelectedIcon(e.target.value)}
-                        >
-                            <option value="">Select an icon</option>
-                            {icons.map((icon) => (
-                                <option key={icon.id} value={icon.id}>
-                                    {icon.icon_name}
-                                </option>
-                            ))}
-                        </select>
+                        {icons.map((icon) => (
+                            <label key={icon.id} className="icon-radio" style={{ width: "100%", padding: "5px", boxSizing: "border-box" }}>
+                                <input
+                                    type="radio"
+                                    name="icon"
+                                    value={icon.id}
+                                    checked={selectedIcon.id === icon.id}
+                                    onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
+                                />
+                                <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
+                            </label>
+                        ))}
                     </div>
                     <div>
                         <button type="submit" className="btn btn-primary">
