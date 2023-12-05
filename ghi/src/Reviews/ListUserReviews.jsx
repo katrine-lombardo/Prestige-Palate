@@ -148,7 +148,7 @@ const ListUserReviews = () => {
                 >
                     <div className="nav-photos-container">
                         <div className="container mt-4">
-                            {username} is not following any palates
+                            {username} has not uploaded any photos, yet...
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-4">
-                        {username} has not uploaded any photos, yet...
+                        {username} is not following any palates
                     </div>
                 </div>
                 <div
