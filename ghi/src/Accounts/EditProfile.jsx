@@ -128,29 +128,31 @@ const EditProfile = () => {
                             onChange={(e) => setLastName(e.target.value)} required
                         />
                     </div>
-                    <div className="mb-3 icon-grid" style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px" }}>
-                        <label className="form-label" style={{ gridColumn: "span 8", marginBottom: "5px" }}>
+                    <div className="mb-3 icon-grid" style={{ overflowX: "auto", maxWidth: "100%" }}>
+                        <label className="form-label" style={{ marginBottom: "5px", gridColumn: "span 8" }}>
                             Select Your Icon:
                         </label>
-                        {icons.map((icon) => (
-                            <div key={icon.id} className="icon-container">
-                                <label className="icon-radio" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "5px", boxSizing: "border-box" }}>
-                                    <div>
-                                        <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
-                                    </div>
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <input
-                                            type="radio"
-                                            name="icon"
-                                            value={icon.id}
-                                            checked={selectedIcon.id === icon.id}
-                                            onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
-                                        />
-                                        <div className="icon-name" style={{ fontSize: "12px", marginLeft: "5px" }}>{icon.icon_name}</div>
-                                    </div>
-                                </label>
-                            </div>
-                        ))}
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px", padding: "5px", boxSizing: "border-box" }}>
+                            {icons.map((icon) => (
+                                <div key={icon.id} className="icon-container">
+                                    <label className="icon-radio" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "5px", boxSizing: "border-box" }}>
+                                        <div>
+                                            <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
+                                        </div>
+                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                            <input
+                                                type="radio"
+                                                name="icon"
+                                                value={icon.id}
+                                                checked={selectedIcon.id === icon.id}
+                                                onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
+                                            />
+                                            <div className="icon-name" style={{ fontSize: "12px", marginLeft: "5px" }}>{icon.icon_name}</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     <div>
                         <button type="submit" className="btn btn-primary">
