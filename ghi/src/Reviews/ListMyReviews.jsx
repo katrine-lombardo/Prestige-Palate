@@ -12,6 +12,7 @@ if (!tokenUrl) {
 const ListMyReviews = () => {
     const [username, setUsername] = useState("");
     const [reviews, setReviews] = useState([]);
+    const [place_id, setPlaceID] = useState("");
     const { token } = useAuthContext();
 
     useEffect(() => {
@@ -36,6 +37,7 @@ const ListMyReviews = () => {
                     .then((response) => response.json())
                     .then((data) => {
                         setReviews(data);
+                        setPlaceID(data.place_id)
                     })
                     .catch((error) => console.error(error));
             }
@@ -50,10 +52,9 @@ const ListMyReviews = () => {
 
     return (
         <div>
-            <div className="myreviews-title-container">
-                <h5>My reviews</h5>
+            <div className="container mb-4">
+                <h3>My reviews</h3>
             </div>
-            <div className="container mb-5"></div>
             <nav className="container mb-3">
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                     <button
@@ -115,30 +116,38 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        {reviews.length > 0 ? (
-                            reviews.map((review) => (
-                                <ReviewCard
-                                    key={review.place_id}
-                                    review={review}
-                                />
-                            ))
-                        ) : (
-                            <div>
-                                <div className="container mt-4">
-                                    ...What are you waiting for?
-                                </div>
-                                <div>
-                                    <Link to={`/`}>
-                                        <button
-                                            type="button"
-                                            className="btn btn-secondary mt-3 ms-2"
-                                        >
-                                            Start your culinary adventure now
-                                        </button>
-                                    </Link>
-                                </div>
-                            </div>
-                        )}
+                        <div>
+                            {reviews.map((review, index) => {
+                                return (
+                                    <div key={index} className="card border-0">
+                                        <div className="card-body">
+                                            <div className="card-title">
+                                                <div className="d-flex justify-content-between">
+                                                    <h5>{review.title}</h5>
+                                                    <div>
+                                                        {[1, 2, 3, 4, 5].map((star) => (
+                                                            <span key={star} style={{
+                                                                color: star <= review.rating ? "gold" : "gray",
+                                                            }}>★</span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="card-text">
+                                                <p>{review.text}</p>
+                                                <p className="card-subtitle mb-1 text-body-secondary">
+                                                    Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+                                                        year: "numeric",
+                                                        month: "long",
+                                                        day: "numeric",
+                                                    })}</p>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
                 <div
@@ -187,7 +196,7 @@ const ListMyReviews = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -62,7 +62,6 @@ const ReviewCard = ({ review }) => {
                                         </span>
                                     ))}
                                 </div>
-
                             </div>
                         </div>
                         <p>{text}</p>

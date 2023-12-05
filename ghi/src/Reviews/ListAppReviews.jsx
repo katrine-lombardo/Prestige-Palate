@@ -45,57 +45,38 @@ const ListAppReviews = () => {
 
     return (
         <div>
-            <h5>Reviews</h5>
             <div className="container mt-3">
-                {reviews.length > 0 ? (
-                    <div className="review-card">
-                        <div className="card mt-2">
-                            <div className="card-body">
-                                <div className="card-title">
-                                    <Link
-                                        to={`/restaurants/${place_id}`}
-                                        className="restaurant-details-link"
-                                    >
-                                        <h3>{restaurantName}</h3>
-                                    </Link>
-                                </div>
-                                <div className="card-text">
-                                    <div className="container">
+                <div>
+                    {reviews.map((review, index) => {
+                        return (
+                            <div key={index} className="card border-0">
+                                <div className="card-body">
+                                    <div className="card-title">
                                         <div className="d-flex justify-content-between">
-                                            <div>{username}</div>
+                                            <h5>{review.title}</h5>
+                                            <h5>{review.username}</h5>
                                             <div>
                                                 {[1, 2, 3, 4, 5].map((star) => (
-                                                    <span
-                                                        key={star}
-                                                        style={{
-                                                            color:
-                                                                star <= rating
-                                                                    ? "gold"
-                                                                    : "gray",
-                                                        }}
-                                                    >
-                                                        ★
-                                                    </span>
+                                                    <span key={star} style={{
+                                                        color: star <= review.rating ? "gold" : "gray",
+                                                    }}>★</span>
                                                 ))}
                                             </div>
                                         </div>
                                     </div>
-                                    <p>{text}</p>
-                                    <p className="card-subtitle mb-1 text-body-secondary">
-                                        Date posted:{" "}
-                                        {new Date(
-                                            publish_time
-                                        ).toLocaleDateString("en-US", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                        })}
-                                    </p>
+                                    <div className="card-text">
+                                        <p>{review.text}</p>
+                                        <p className="card-subtitle mb-1 text-body-secondary">
+                                            Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            })}</p>
+                                        <p></p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                ) : (
+                        ) : (
                     <div className="container">
                         <div className="container mt-4">
                             No Prestige Palate reviews here. Yet...
@@ -111,10 +92,8 @@ const ListAppReviews = () => {
                             </button>
                         </div>
                     </div>
-                )}
-            </div>
-        </div>
-    );
+                    )
+                    );
 };
 
-export default ListAppReviews;
+                    export default ListAppReviews;
