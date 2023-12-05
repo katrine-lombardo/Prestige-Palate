@@ -4,6 +4,7 @@ import SearchBar from "./Search/SearchBar";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import logoImage from "./imgs/logo_lightmode.png";
 import logoImage2 from "./imgs/logo_darkmode.png";
+import LineImage from "./imgs/sidebar.png";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -77,13 +78,7 @@ function Nav({ toggleSidebar }) {
                     >
                         {token ? (
                             <img
-                                src={loading ? (
-                                    < button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                        <span className="navbar-toggler-icon"></span>
-                                    </button>
-                                ) : (
-                                    icon_url
-                                )}
+                                src={loading ? LineImage : icon_url}
                                 alt="User"
                                 className="user-icon"
                                 style={{
@@ -97,9 +92,20 @@ function Nav({ toggleSidebar }) {
                                 loading={loading ? 'lazy' : 'eager'}
                             />
                         ) : (
-                            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <span className="navbar-toggler-icon"></span>
-                            </button>
+                            <img
+                                src={LineImage}
+                                alt="User"
+                                className="user-icon"
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '5%',
+                                    objectFit: 'cover',
+                                    margin: 'auto',
+                                    display: 'block',
+                                }}
+                                loading={loading ? 'lazy' : 'eager'}
+                            />
                         )}
                     </div>
                 </div>
