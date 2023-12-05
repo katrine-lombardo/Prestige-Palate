@@ -77,16 +77,10 @@ async def get_app_reviews_for_restaurant(
 async def get_reviews_by_account(
     username: str,
     reviews: ReviewQueries = Depends(),
-    current_user: AccountOut = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if not current_user:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User must be logged in to view app reviews",
-            )
         success = reviews.get_reviews_by_account(username)
-        if not success:
+        if not reviews:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="No reviews found for this user",
