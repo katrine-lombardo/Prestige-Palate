@@ -14,6 +14,7 @@
     "@galvanize-inc/jwtdown-for-react": "^0.2.2",
     "@react-google-maps/api": "^2.19.2",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0"
   },
