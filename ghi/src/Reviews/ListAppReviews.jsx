@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
@@ -10,6 +10,8 @@ if (!tokenUrl) {
 const ListAppReviews = () => {
     const { place_id } = useParams();
     const [reviews, setReviews] = useState([]);
+    const navigate = useNavigate();
+    const { token } = useAuthContext();
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -29,6 +31,13 @@ const ListAppReviews = () => {
         };
         fetchReviews();
     }, [place_id]);
+
+    const promptLogin = (message) => {
+        const confirmLogin = window.confirm(`${message} Please login to continue.`);
+        if (confirmLogin) {
+            navigate('/login');
+        }
+    };
 
     const addReview = () => {
         if (!token) {
