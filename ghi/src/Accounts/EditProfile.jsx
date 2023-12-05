@@ -112,7 +112,7 @@ const EditProfile = () => {
                             id="firstName"
                             className="form-control"
                             value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            onChange={(e) => setFirstName(e.target.value)} required
                         />
                     </div>
                     <div className="mb-3">
@@ -124,7 +124,7 @@ const EditProfile = () => {
                             id="lastName"
                             className="form-control"
                             value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            onChange={(e) => setLastName(e.target.value)} required
                         />
                     </div>
                     <div className="mb-3 icon-grid" style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px" }}>
