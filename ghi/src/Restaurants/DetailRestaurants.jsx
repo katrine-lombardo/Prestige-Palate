@@ -91,27 +91,28 @@ const DetailRestaurant = () => {
     return (
         <div className="container mt-4">
             {restaurantDetails && restaurantDetails.displayName &&
-                <h1 className="text-center">{restaurantDetails.displayName.text}</h1>
+                <h1 className="text-center mb-3">{restaurantDetails.displayName.text}</h1>
             }
             <div className="text-center mb-3">
                 <button className="btn btn-primary mr-2" onClick={addReview}>Add a Review</button>
                 <button className="btn btn-success" onClick={addToFavorites}>Add to Favorites</button>
             </div>
+
             <BigStarCard rating={restaurantDetails.rating} />
-            <h4 className="text-center mt-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
+            <h4 className="text-center my-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
 
             {restaurantDetails.websiteUri && (
-                <div className="text-center mt-3">
+                <div className="text-center mb-3">
                     <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
                         {restaurantDetails.websiteUri}
                     </a>
                 </div>
             )}
             <h2 className="mt-4">Google Reviews</h2>
-            <ul className="list-unstyled">
+            <ul className="list-unstyled mt-3">
                 {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
                     <li key={index} className="media my-4">
-                        <img src={review.authorAttribution?.photoUri} className="mr-3" alt="Author" style={{ width: '40px', height: '40px' }} />
+                        <img src={review.authorAttribution?.photoUri} className="mr-3 rounded-circle" alt="Author" style={{ width: '40px', height: '40px' }} />
                         <div className="media-body">
                             <h5 className="mt-0 mb-1">
                                 <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
