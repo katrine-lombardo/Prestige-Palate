@@ -154,7 +154,7 @@ class ReviewQueries:
                     # Build the UPDATE query
                     update_query = """
                         UPDATE reviews
-                        SET title = %s, text = %s, rating = %s, photo_url = %s
+                        SET title = %s, text = %s, rating = %s, photo_urls = %s
                         WHERE id = %s
                         RETURNING *;
                     """
@@ -166,7 +166,8 @@ class ReviewQueries:
                             updated_review["title"],
                             updated_review["text"],
                             updated_review["rating"],
-                            updated_review["photo_url"],
+                            updated_review["photo_urls"]
+                            or [],  # Handle the case where photo_urls is None
                             review_id,
                         ],
                     )
