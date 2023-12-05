@@ -27,25 +27,10 @@ const ListUserReviews = () => {
         fetchUserReviews();
     }, [username]);
 
-    if (!token) {
-        return <div>Please log in to see Prestige Palate reviews</div>;
-    }
-
     const renderNullReviews = () => {
         return <div>
             <div className="container mt-4">
                 No Prestige Palate reviews here. Yet...
-            </div>
-            <div>
-                <Link to={`/`}>
-                    <button
-                        style={{ marginRight: "5px" }}
-                        type="button"
-                        className="btn btn-secondary mt-3 ms-2"
-                    >
-                        Start your culinary adventure now
-                    </button>
-                </Link>
             </div>
         </div>;
     };
@@ -163,17 +148,7 @@ const ListUserReviews = () => {
                 >
                     <div className="nav-photos-container">
                         <div className="container mt-4">
-                            ...What are you waiting for?
-                        </div>
-                        <div>
-                            <Link to={`/`}>
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary mt-3 ms-2"
-                                >
-                                    Start your culinary adventure now
-                                </button>
-                            </Link>
+                            {username} is not following any palates
                         </div>
                     </div>
                 </div>
@@ -185,7 +160,7 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-4">
-                        Palates you follow will appear here
+                        {username} has not uploaded any photos, yet...
                     </div>
                 </div>
                 <div
@@ -196,7 +171,7 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-4">
-                        Palates following you will appear here
+                        No Palates following {username}, yet...
                     </div>
                 </div>
             </div>
