@@ -20,11 +20,6 @@ const About = ({ restaurantDetails }) => {
                     <p><strong>Phone Number:</strong> {restaurantDetails.internationalPhoneNumber}</p>
                     <p><strong>Price Level:</strong> {restaurantDetails.priceLevel.replace('_', ' ').toLowerCase()}</p>
                 </div>
-                <div className="other-recommendations">
-                    <h4>Other Recommendations</h4>
-                    {/* Assuming you have a list of recommended restaurants */}
-                    {/* This part could be another component or a list rendered here */}
-                </div>
             </div>
         </div>
     );

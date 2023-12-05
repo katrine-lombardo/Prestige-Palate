@@ -1,4 +1,16 @@
-## Tues, Nov 29
+## Mon, Dec 4
+Features/issues that you worked on and who you worked with:
+- I solved the non english city can’t show detail problem, fixed search bar, added filter,sort,page to favorite and search result
+
+## Fri, Dec 1
+Features/issues that you worked on and who you worked with:
+I finished favorite restaurants and do some error handling for backend code, and restaurant detail page 
+
+## Thur, Nov 30
+Features/issues that you worked on and who you worked with:
+I created favorite restaurant part for front end
+
+## Wed, Nov 29
 Features/issues that you worked on and who you worked with:
 - I worked with Michael to debug for the search part, and make Homepage now displays search results
 
@@ -6,7 +18,7 @@ Features/issues that you worked on and who you worked with:
 Features/issues that you worked on and who you worked with:
 - modeified [LoginForm][LogoutButton][SignupForm] and merge it to main branch
 
-## Tues, Nov 27
+## Mon, Nov 27
 Features/issues that you worked on and who you worked with:
 - I created [LoginForm][LogoutButton][SignupForm] component
 
