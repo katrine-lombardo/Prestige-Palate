@@ -23,6 +23,7 @@ const UpdateReview = () => {
     });
 
     const [fileInputValue, setFileInputValue] = useState("");
+    const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
     const [isReviewUpdated, setIsReviewUpdated] = useState(false);
     const { token } = useAuthContext();
     const fileInputRef = useRef(null);
@@ -42,7 +43,7 @@ const UpdateReview = () => {
                 return url;
             } catch (err) {
                 console.error("Error", err);
-                throw err; // Propagate the error
+                throw err;
             }
         });
 
@@ -50,7 +51,7 @@ const UpdateReview = () => {
             const urls = await Promise.all(uploadPromises);
             return urls;
         } catch (err) {
-            throw err; // Propagate the error
+            throw err;
         }
     };
 
@@ -61,13 +62,10 @@ const UpdateReview = () => {
                 ...prevReviewForm,
                 photo_urls: urls,
             }));
-            window.alert("Files uploaded successfully!");
-
-            // Do not reset the file input value here
+            setIsPhotoUploaded(true);
 
         } catch (err) {
             console.error("Upload failed:", err);
-            // Handle the error, e.g., display another notification
         }
     };
 
@@ -87,12 +85,11 @@ const UpdateReview = () => {
 
     const handlePhotoChange = (e) => {
         if (e.target.files.length > 0) {
-            // Use the spread operator to concatenate the new files with the existing ones
             setReviewForm((prevReviewForm) => ({
                 ...prevReviewForm,
                 photo_urls: [...prevReviewForm.photo_urls, ...e.target.files],
             }));
-            setFileInputValue(e.target.value); // Update file input value
+            setFileInputValue(e.target.value);
         }
     };
 
@@ -121,9 +118,9 @@ const UpdateReview = () => {
                     photo_urls: [],
                 });
                 setIsReviewUpdated(true);
-                setFileInputValue(""); // Reset file input value after successful post
+                setFileInputValue("");
                 if (fileInputRef.current) {
-                    fileInputRef.current.value = ""; // Reset the file input value
+                    fileInputRef.current.value = "";
                 }
             } else {
                 console.error("Error updating review:", response.statusText);
@@ -135,11 +132,11 @@ const UpdateReview = () => {
 
     return (
         <div className="card p-4 text-center">
-            <h2 className="mb-4">Write a Review</h2>
+            <h2 className="mb-4">Edit Review</h2>
 
-            {isReviewPosted && (
+            {isReviewUpdated && (
                 <div className="alert alert-success" role="alert">
-                    Your review has been posted!
+                    Your review has been updated!
                 </div>
             )}
 
@@ -159,9 +156,9 @@ const UpdateReview = () => {
                         onChange={handleInputChange}
                         className="form-control"
                         required
-                        style={{ width: '70%', marginBottom: '10px', marginRight: '10px' }}
+                        style={{ width: '70%', marginBottom: '10px', marginRight: '50px' }}
                     />
-                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px', marginLeft: '30px', marginBottom: '10px' }}>
                         {[1, 2, 3, 4, 5].map((star) => (
                             <span
                                 key={star}
@@ -169,9 +166,9 @@ const UpdateReview = () => {
                                 style={{
                                     cursor: "pointer",
                                     color: star <= reviewForm.rating ? "gold" : "gray",
-                                    fontSize: "20px", // Adjust the font size for larger stars
-                                    verticalAlign: 'middle', // Align stars vertically with the title input
-                                    marginBottom: '10px', // Adjust margin as needed
+                                    fontSize: "45px",
+                                    verticalAlign: 'middle',
+                                    marginBottom: '10px',
                                 }}
                             >
                                 ★
@@ -188,7 +185,6 @@ const UpdateReview = () => {
                         value={reviewForm.text}
                         onChange={handleInputChange}
                         className="form-control"
-                        required
                         style={{ width: '100%', height: '150px', marginBottom: '10px' }}
                     ></textarea>
                 </div>

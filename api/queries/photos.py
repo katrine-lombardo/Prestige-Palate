@@ -22,13 +22,30 @@ class PhotoQueries:
                             """,
                         [username],
                     )
-                    photo_urls = []
+                    photo_url_dict = {}  # To group photo URLs by username
                     for row in cur.fetchall():
                         row_dict = {
                             column.name: value
                             for column, value in zip(cur.description, row)
                         }
-                        photo_urls.append(PhotoOut(**row_dict))
+                        current_username = row_dict["username"]
+                        if current_username not in photo_url_dict:
+                            photo_url_dict[current_username] = {
+                                "username": current_username,
+                                "photo_urls": [],
+                            }
+                        photo_url_dict[current_username]["photo_urls"].extend(
+                            row_dict["photo_urls"]
+                        )
+
+                    # Convert the dictionary values to a list of PhotoOut objects
+                    photo_urls = [
+                        PhotoOut(
+                            username=data["username"],
+                            photo_urls=data["photo_urls"]
+                        )
+                        for data in photo_url_dict.values()
+                    ]
                     return photo_urls
         except Exception as e:
             print(f"Error in get_photo_urls_by_username: {e}")

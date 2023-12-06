@@ -44,7 +44,7 @@ const CreateReview = () => {
                 return url;
             } catch (err) {
                 console.error("Error", err);
-                throw err; // Propagate the error
+                throw err;
             }
         });
 
@@ -52,7 +52,7 @@ const CreateReview = () => {
             const urls = await Promise.all(uploadPromises);
             return urls;
         } catch (err) {
-            throw err; // Propagate the error
+            throw err;
         }
     };
 
@@ -63,11 +63,10 @@ const CreateReview = () => {
                 ...prevReviewForm,
                 photo_urls: urls,
             }));
-            setIsPhotoUploaded(true); // Set photo upload success state to true
+            setIsPhotoUploaded(true);
 
         } catch (err) {
             console.error("Upload failed:", err);
-            // Handle the error, e.g., display another notification
         }
     };
 
@@ -87,12 +86,11 @@ const CreateReview = () => {
 
     const handlePhotoChange = (e) => {
         if (e.target.files.length > 0) {
-            // Use the spread operator to concatenate the new files with the existing ones
             setReviewForm((prevReviewForm) => ({
                 ...prevReviewForm,
                 photo_urls: [...prevReviewForm.photo_urls, ...e.target.files],
             }));
-            setFileInputValue(e.target.value); // Update file input value
+            setFileInputValue(e.target.value);
         }
     };
 
@@ -118,9 +116,9 @@ const CreateReview = () => {
                     photo_urls: [],
                 });
                 setIsReviewPosted(true);
-                setFileInputValue(""); // Reset file input value after successful post
+                setFileInputValue("");
                 if (fileInputRef.current) {
-                    fileInputRef.current.value = ""; // Reset the file input value
+                    fileInputRef.current.value = "";
                 }
             } else {
                 console.error("Error posting review:", response.statusText);
@@ -155,9 +153,9 @@ const CreateReview = () => {
                         onChange={handleInputChange}
                         className="form-control"
                         required
-                        style={{ width: '70%', marginBottom: '10px', marginRight: '10px' }}
+                        style={{ width: '70%', marginBottom: '10px', marginRight: '50px' }}
                     />
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px', marginLeft: '30px', marginBottom: '10px' }}>
                         {[1, 2, 3, 4, 5].map((star) => (
                             <span
                                 key={star}
@@ -165,7 +163,9 @@ const CreateReview = () => {
                                 style={{
                                     cursor: "pointer",
                                     color: star <= reviewForm.rating ? "gold" : "gray",
-                                    fontSize: "40px", // Adjust the font size for larger stars
+                                    fontSize: "45px",
+                                    verticalAlign: 'middle',
+                                    marginBottom: '10px',
                                 }}
                             >
                                 ★
@@ -214,6 +214,5 @@ const CreateReview = () => {
         </div>
     );
 };
-
 
 export default CreateReview;
