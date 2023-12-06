@@ -16,7 +16,7 @@ const ListFollowers = ({ username }) => {
     useEffect(() => {
         const fetchFollowers = async () => {
             if (username) {
-                const url = `${tokenUrl}/api/accounts/following/${username}`;
+                const url = `${tokenUrl}/api/accounts/followers/${username}`;
                 fetch(url, {
                     credentials: "include",
                 })

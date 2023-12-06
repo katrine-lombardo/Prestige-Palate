@@ -4,6 +4,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import DeleteReview from "./DeleteReview";
 import PhotoCard from "./PhotoCard";
 import ListFollowers from "../Accounts/ListFollowers";
+import ListFollowing from "../Accounts/ListFollowing";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -339,7 +340,7 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container">
-                        Following
+                        <ListFollowing username={username} />
                     </div>
                 </div>
             </div>
