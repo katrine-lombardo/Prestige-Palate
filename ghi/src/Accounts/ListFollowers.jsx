@@ -63,12 +63,10 @@ const ListFollowers = ({ username }) => {
     return (
         <div>
             <div className="followers-list">
-                Followers card
                 {followers.length > 0
                     ? followers.map((follower, index) => (
                         <div key={index} className="follower-card">
-                            <p>{follower.follower_username}</p>
-                            <p>{follower.following_username}</p>
+                            <p>{follower}</p>
                         </div>
                     ))
                     : renderNullFollowers()}
