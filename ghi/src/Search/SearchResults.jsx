@@ -27,7 +27,7 @@ function SearchResults() {
 
     const fetchFavorites = async () => {
         if (!token) {
-            updateFavorites([]);
+            setFavorites([]);
             return;
         }
 
