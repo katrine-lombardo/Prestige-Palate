@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from queries.pool import pool
 from typing import List
 
+
 class FavoriteQueries:
     def __init__(self):
         self.pool = pool
@@ -23,3 +24,11 @@ class FavoriteQueries:
                 )
                 favorites = cur.fetchall()
                 return [{"place_id": fav[0]} for fav in favorites]
+
+    def remove_favorite(self, user_id: int, place_id: str):
+        with self.pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "DELETE FROM favorites WHERE user_id = %s AND place_id = %s;",
+                    (user_id, place_id),
+                )

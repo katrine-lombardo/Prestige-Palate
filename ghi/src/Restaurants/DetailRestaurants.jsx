@@ -1,18 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
-import { Link } from 'react-router-dom';
 import About from './About';
 import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
 import BigStarCard from './StarCardBig';
 import StarCard from './StarCard';
+import { useStore } from '../ContextStore';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
-
 
 const DetailRestaurant = () => {
     const { place_id } = useParams();
@@ -20,6 +19,7 @@ const DetailRestaurant = () => {
     const [restaurantDetails, setRestaurantDetails] = useState(null);
     const { token } = useAuthContext();
     const [activeTab, setActiveTab] = useState('reviews');
+    const { favorites, setFavorites } = useStore();
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -38,6 +38,36 @@ const DetailRestaurant = () => {
         fetchDetails();
     }, [place_id]);
 
+    const isFavorite = favorites.includes(place_id);
+
+    const toggleFavorite = async () => {
+        if (!token) {
+            promptLogin("Only logged-in users can add to favorites.");
+            return;
+        }
+
+        const method = isFavorite ? 'DELETE' : 'POST';
+        try {
+            const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/favorite`, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const updatedFavorites = isFavorite
+                    ? favorites.filter(id => id !== place_id)
+                    : [...favorites, place_id];
+                setFavorites(updatedFavorites);
+            } else {
+                throw new Error("Failed to update favorites");
+            }
+        } catch (error) {
+            console.error('Error updating favorites:', error);
+        }
+    };
+
     const promptLogin = (message) => {
         const confirmLogin = window.confirm(`${message} Please login to continue.`);
         if (confirmLogin) {
@@ -47,32 +77,6 @@ const DetailRestaurant = () => {
 
     const handleTabChange = (newActiveTab) => {
         setActiveTab(newActiveTab);
-    };
-
-    const addToFavorites = async () => {
-        if (!token) {
-            promptLogin("Only logged-in users can add to favorites.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/favorite`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const data = await response.json();
-            if (data.status === 'success') {
-                alert('Added to favorites!');
-            } else {
-                throw new Error(data.message);
-            }
-        } catch (error) {
-            console.error('Error adding to favorites:', error);
-            alert('Failed to add to favorites.');
-        }
     };
 
 
@@ -96,9 +100,16 @@ const DetailRestaurant = () => {
             }
             <div className="text-center mb-3">
                 <button className="btn btn-primary mr-2" onClick={addReview}>Add a Review</button>
-                <button className="btn btn-success" onClick={addToFavorites}>Add to Favorites</button>
+                <div className="switch">
+                    <input
+                        type="checkbox"
+                        id={`favorite-toggle-detail-${place_id}`}
+                        checked={isFavorite}
+                        onChange={toggleFavorite}
+                    />
+                    <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
+                </div>
             </div>
-
             <BigStarCard rating={restaurantDetails.rating} />
             <h4 className="text-center my-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
 
