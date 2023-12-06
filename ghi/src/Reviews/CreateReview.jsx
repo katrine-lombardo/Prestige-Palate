@@ -25,6 +25,7 @@ const CreateReview = () => {
     const [fileInputValue, setFileInputValue] = useState("");
     const [isReviewPosted, setIsReviewPosted] = useState(false);
     const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
+    const [isRatingSelected, setIsRatingSelected] = useState(true);
 
     const { token } = useAuthContext();
     const fileInputRef = useRef(null);
@@ -97,6 +98,16 @@ const CreateReview = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Check if the rating is not provided
+        if (reviewForm.rating === 0) {
+            // Display an error message
+            setIsRatingSelected(false);
+            return;
+        }
+
+        // Reset the rating validation status
+        setIsRatingSelected(true);
+
         try {
             const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/reviews/`, {
                 method: "POST",
@@ -116,9 +127,9 @@ const CreateReview = () => {
                     photo_urls: [],
                 });
                 setIsReviewPosted(true);
-                setFileInputValue("");
+                setFileInputValue(""); // Reset file input value after successful post
                 if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
+                    fileInputRef.current.value = ""; // Reset the file input value
                 }
             } else {
                 console.error("Error posting review:", response.statusText);
@@ -127,6 +138,7 @@ const CreateReview = () => {
             console.error("Error posting review:", error);
         }
     };
+
     return (
         <div className="card p-4 text-center">
             <h2 className="mb-4">Write a Review</h2>
@@ -136,6 +148,13 @@ const CreateReview = () => {
                     Your review has been posted!
                 </div>
             )}
+
+            {!isRatingSelected && (
+                <div className="alert alert-danger" role="alert">
+                    Please select a rating!
+                </div>
+            )}
+
 
             {isPhotoUploaded && (
                 <div className="alert alert-success" role="alert">
@@ -207,7 +226,7 @@ const CreateReview = () => {
                         </button>
                     </div>
                     <button type="submit" className="btn btn-primary">
-                        Post
+                        Post Review
                     </button>
                 </div>
             </form>

@@ -209,7 +209,7 @@ const UpdateReview = () => {
                         </button>
                     </div>
                     <button type="submit" className="btn btn-primary">
-                        Post
+                        Post Review
                     </button>
                 </div>
             </form>
