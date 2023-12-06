@@ -82,8 +82,37 @@ const ListAppReviews = () => {
                 return (
                     <div key={index} className="card border-0">
                         <div className="card-body">
-                            <div className="card-title">
-                                <div className="d-flex justify-content-between">
+                            <div className="row">
+                                <div className="col-2">
+                                    <div>
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <span key={star} style={{ color: star <= review.rating ? "gold" : "gray", }}>★</span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="col-10">
+                                    <div className="d-flex justify-content-between">
+                                        <div className="card-title">
+                                            <blockquote className="blockquote">
+                                                <p>{review.title}</p>
+                                            </blockquote>
+                                        </div>
+                                        <p className="card-subtitle mb-1 text-body-secondary">
+                                            Date posted:{" "}
+                                            {new Date(
+                                                review.publish_time
+                                            ).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                            })}
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-2">
                                     <img
                                         src={review.profile_icon_url}
                                         alt="User"
@@ -100,38 +129,12 @@ const ListAppReviews = () => {
                                     <Link to={`/${review.username}`}>
                                         <h5>{review.username}</h5>
                                     </Link>
-                                    <div>
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <span
-                                                key={star}
-                                                style={{
-                                                    color:
-                                                        star <= review.rating
-                                                            ? "gold"
-                                                            : "gray",
-                                                }}
-                                            >
-                                                ★
-                                            </span>
-                                        ))}
+                                </div>
+                                <div className="col-10">
+                                    <div className="card-text">
+                                        <p>{review.text}</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="card-text">
-                                <blockquote className="blockquote">
-                                    <p>{review.title}</p>
-                                </blockquote>
-                                <p>{review.text}</p>
-                                <p className="card-subtitle mb-1 text-body-secondary">
-                                    Date posted:{" "}
-                                    {new Date(
-                                        review.publish_time
-                                    ).toLocaleDateString("en-US", {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    })}
-                                </p>
                             </div>
                         </div>
                     </div>
