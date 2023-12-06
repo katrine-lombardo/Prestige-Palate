@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import ListFollowers from "../Accounts/ListFollowers";
 import ListFollowing from "../Accounts/ListFollowing";
+import PhotoCard from "./PhotoCard";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -125,6 +126,14 @@ const ListUserReviews = () => {
                                     return (
                                         <div key={index} className="card border-0">
                                             <div className="card-body">
+                                                <div className="col">
+                                                    <div className="row"></div>
+                                                    <div className="row"></div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="row"></div>
+                                                    <div className="row"></div>
+                                                </div>
                                                 <div className="card-title">
                                                     <Link to={`/restaurants/${review.place_id}`}>
                                                         <h4>{review.restaurantName}</h4>
@@ -167,8 +176,8 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="nav-photos-container">
-                        <div className="container mt-4">
-                            {username} has not uploaded any photos, yet...
+                        <div className="container">
+                            <PhotoCard key={username} username={username} />
                         </div>
                     </div>
                 </div>
