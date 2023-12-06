@@ -338,7 +338,9 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-following-tab"
                     tabIndex="0"
                 >
-                    <div className="container">Following</div>
+                    <div className="container">
+                        Following
+                    </div>
                 </div>
             </div>
             <div className="tab-content mt-3" id="nav-tabContent">
@@ -349,44 +351,12 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-followers-tab"
                     tabIndex="0"
                 >
-                    <div className="container">Followers
+                    <div className="container">
+                        <ListFollowers username={username} />
                     </div>
                 </div>
             </div>
-            <div className="tab-content mt-3" id="nav-tabContent">
-                <div
-                    className="tab-pane fade show mt-3"
-                    id="nav-photos"
-                    role="tabpanel"
-                    aria-labelledby="nav-photos-tab"
-                    tabIndex="0"
-                >
-                    <div className="container">Photos</div>
-                </div>
-            </div>
-            <div className="tab-content mt-3" id="nav-tabContent">
-                <div
-                    className="tab-pane fade show mt-3"
-                    id="nav-following"
-                    role="tabpanel"
-                    aria-labelledby="nav-following-tab"
-                    tabIndex="0"
-                >
-                    <div className="container">Following</div>
-                </div>
-            </div>
-            <div className="tab-content mt-3" id="nav-tabContent">
-                <div
-                    className="tab-pane fade show mt-3"
-                    id="nav-followers"
-                    role="tabpanel"
-                    aria-labelledby="nav-followers-tab"
-                    tabIndex="0"
-                >
-                    <div className="container">Followers
-                    </div>
-                </div>
-            </div>
+
         </div>
     );
 };
