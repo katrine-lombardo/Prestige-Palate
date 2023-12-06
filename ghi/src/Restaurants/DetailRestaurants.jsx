@@ -20,33 +20,36 @@ const DetailRestaurant = () => {
     const { token } = useAuthContext();
     const [activeTab, setActiveTab] = useState('reviews');
     const { favorites, setFavorites } = useStore();
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
     useEffect(() => {
-        const fetchDetails = async () => {
-            try {
-                const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}`);
-                if (!response.ok) {
-                    throw new Error('Could not fetch restaurant details');
-                }
-                const data = await response.json();
-                setRestaurantDetails(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchDetails();
+        fetchDetails(place_id);
     }, [place_id]);
+
+    const fetchDetails = async (id) => {
+        const tokenUrl = import.meta.env.VITE_APP_API_HOST || 'default_api_host';
+        try {
+            const response = await fetch(`${tokenUrl}/api/restaurants/${id}`);
+            if (!response.ok) {
+                throw new Error('Could not fetch restaurant details');
+            }
+            const data = await response.json();
+            setRestaurantDetails(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const isFavorite = favorites.includes(place_id);
 
     const toggleFavorite = async () => {
         if (!token) {
-            promptLogin("Only logged-in users can add to favorites.");
+            setShowLoginPrompt(true);
             return;
         }
 
         const method = isFavorite ? 'DELETE' : 'POST';
+        const tokenUrl = import.meta.env.VITE_APP_API_HOST || 'default_api_host';
         try {
             const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/favorite`, {
                 method: method,
@@ -69,10 +72,13 @@ const DetailRestaurant = () => {
     };
 
     const promptLogin = (message) => {
-        const confirmLogin = window.confirm(`${message} Please login to continue.`);
-        if (confirmLogin) {
-            navigate('/login');
-        }
+        setShowLoginPrompt(true);
+    };
+
+    const handleClose = () => setShowLoginPrompt(false);
+    const handleLogin = () => {
+        navigate('/login');
+        setShowLoginPrompt(false);
     };
 
     const handleTabChange = (newActiveTab) => {
@@ -87,7 +93,6 @@ const DetailRestaurant = () => {
         }
         navigate(`/create-review/${place_id}`);
     };
-
 
     if (!restaurantDetails) {
         return <div>Loading...</div>;
@@ -147,6 +152,23 @@ const DetailRestaurant = () => {
                 {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
                 {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
                 {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
+            </div>
+            <div className={`modal ${showLoginPrompt ? 'show' : ''}`} tabIndex="-1" style={{ display: showLoginPrompt ? 'block' : 'none' }}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Login Required</h5>
+                            <button type="button" className="btn-close" onClick={handleClose}></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>Only logged-in users can add to favorites. Please login to continue.</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
+                            <button type="button" className="btn btn-primary" onClick={handleLogin}>Login</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
