@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import DeleteReview from "./DeleteReview";
+import ListFollowers from "../Accounts/ListFollowers";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -27,7 +28,6 @@ const ListMyReviews = () => {
                     setUsername(data.account.username);
                 })
                 .catch((error) => console.error(error));
-
         };
         const fetchMyReviews = async () => {
             if (username) {
@@ -40,9 +40,16 @@ const ListMyReviews = () => {
                         const reviewsWithRestaurantNames = await Promise.all(
                             data.map(async (review) => {
                                 const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`;
-                                const restaurantResponse = await fetch(restaurantUrl);
-                                const restaurantData = await restaurantResponse.json();
-                                return { ...review, restaurantName: restaurantData.displayName.text };
+                                const restaurantResponse = await fetch(
+                                    restaurantUrl
+                                );
+                                const restaurantData =
+                                    await restaurantResponse.json();
+                                return {
+                                    ...review,
+                                    restaurantName:
+                                        restaurantData.displayName.text,
+                                };
                             })
                         );
                         setReviews(reviewsWithRestaurantNames);
@@ -62,6 +69,7 @@ const ListMyReviews = () => {
     const handleToggleEditButton = (reviewId) => {
         setActiveReviewId(activeReviewId === reviewId ? null : reviewId);
     };
+
     const handleDeleteReview = (review) => {
         setActiveReviewId(review.id);
         setDeleteModalOpen(true);
@@ -101,33 +109,33 @@ const ListMyReviews = () => {
         setDeleteModalOpen(false);
     };
 
-
     if (!token) {
         return <div>Please log in to see reviews</div>;
     }
 
     const renderNullReviews = () => {
-        return <div>
-            <div className="container mt-4">
-                No Prestige Palate reviews here. Yet...
-            </div>
+        return (
             <div>
-                <Link to={`/`}>
-                    <button
-                        style={{ marginRight: "5px" }}
-                        type="button"
-                        className="btn btn-secondary mt-3 ms-2"
-                    >
-                        Start your culinary adventure now
-                    </button>
-                </Link>
+                <div className="container mt-4">
+                    No Prestige Palate reviews here. Yet...
+                </div>
+                <div>
+                    <Link to={`/`}>
+                        <button
+                            style={{ marginRight: "5px" }}
+                            type="button"
+                            className="btn btn-secondary mt-3 ms-2"
+                        >
+                            Start your culinary adventure now
+                        </button>
+                    </Link>
+                </div>
             </div>
-        </div>;
+        );
     };
 
     return (
         <div>
-
             <div className="container mb-4">
                 <h3>My reviews</h3>
             </div>
@@ -200,8 +208,12 @@ const ListMyReviews = () => {
                                     <div key={index} className="card border-0">
                                         <div className="card-body">
                                             <div className="card-title">
-                                                <Link to={`/restaurants/${review.place_id}`}>
-                                                    <h4>{review.restaurantName}</h4>
+                                                <Link
+                                                    to={`/restaurants/${review.place_id}`}
+                                                >
+                                                    <h4>
+                                                        {review.restaurantName}
+                                                    </h4>
                                                 </Link>
                                                 <div className="d-flex justify-content-between">
                                                     <h5>{review.title}</h5>
@@ -301,6 +313,40 @@ const ListMyReviews = () => {
                                 ))}
                             </div>
                         )}
+                    </div>
+                </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-tabContent">
+                <div
+                    className="tab-pane fade show mt-3"
+                    id="nav-photos"
+                    role="tabpanel"
+                    aria-labelledby="nav-photos-tab"
+                    tabIndex="0"
+                >
+                    <div className="container">Photos</div>
+                </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-tabContent">
+                <div
+                    className="tab-pane fade show mt-3"
+                    id="nav-following"
+                    role="tabpanel"
+                    aria-labelledby="nav-following-tab"
+                    tabIndex="0"
+                >
+                    <div className="container">Following</div>
+                </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-tabContent">
+                <div
+                    className="tab-pane fade show mt-3"
+                    id="nav-followers"
+                    role="tabpanel"
+                    aria-labelledby="nav-followers-tab"
+                    tabIndex="0"
+                >
+                    <div className="container">Followers
                     </div>
                 </div>
             </div>
