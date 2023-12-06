@@ -200,8 +200,8 @@ const ListMyReviews = () => {
                                     <div key={index} className="card border-0">
                                         <div className="card-body">
                                             <div className="card-title">
+                                                <h4>{review.restaurantName}</h4>
                                                 <div className="d-flex justify-content-between">
-                                                    <h5>{review.restaurantName}</h5>
                                                     <h5>{review.title}</h5>
                                                     <div>
                                                         {[1, 2, 3, 4, 5].map(
