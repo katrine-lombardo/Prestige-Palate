@@ -211,3 +211,22 @@ class ReviewQueries:
                     return reviews
         except Exception as e:
             return Error(message="Failed to get app reviews")
+
+
+    def has_existing_review(self, place_id: str, username: str) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                            SELECT EXISTS(
+                                SELECT 1 FROM reviews
+                                WHERE place_id = %s AND username = %s
+                            );
+                            """,
+                        [place_id, username],
+                    )
+                    return cur.fetchone()[0]
+        except Exception as e:
+            # Log or handle the exception as needed
+            return False

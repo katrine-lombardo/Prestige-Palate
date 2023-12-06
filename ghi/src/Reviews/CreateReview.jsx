@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -15,6 +15,9 @@ const s3Client = new S3Client({
 
 const CreateReview = () => {
     const { place_id } = useParams();
+    const { token } = useAuthContext();
+    const fileInputRef = useRef(null);
+
     const [reviewForm, setReviewForm] = useState({
         title: "",
         text: "",
@@ -26,9 +29,35 @@ const CreateReview = () => {
     const [isReviewPosted, setIsReviewPosted] = useState(false);
     const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
     const [isRatingSelected, setIsRatingSelected] = useState(true);
+    const [existingReviewError, setExistingReviewError] = useState(false);
 
-    const { token } = useAuthContext();
-    const fileInputRef = useRef(null);
+    useEffect(() => {
+        const checkExistingReview = async () => {
+            try {
+                const response = await fetch(
+                    `http://localhost:8000/api/restaurants/${place_id}/reviews/check-existing`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (response.ok) {
+                    const { hasExistingReview } = await response.json();
+                    setExistingReviewError(hasExistingReview);
+                } else {
+                    console.error("Error checking existing review:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error checking existing review:", error);
+            }
+        };
+
+        // Perform the check when the component mounts
+        checkExistingReview();
+    }, [place_id, token]);
 
     const uploadToS3 = async (photos) => {
         const uploadPromises = photos.map(async (photo) => {
@@ -100,7 +129,6 @@ const CreateReview = () => {
 
         // Check if the rating is not provided
         if (reviewForm.rating === 0) {
-            // Display an error message
             setIsRatingSelected(false);
             return;
         }
@@ -108,15 +136,25 @@ const CreateReview = () => {
         // Reset the rating validation status
         setIsRatingSelected(true);
 
+        // Check if there's an existing review for the place_id
+        if (existingReviewError) {
+            // Display an error message
+            setExistingReviewError(true);
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/reviews/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify(reviewForm),
-            });
+            const response = await fetch(
+                `http://localhost:8000/api/restaurants/${place_id}/reviews/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(reviewForm),
+                }
+            );
 
             if (response.ok) {
                 console.log("Review posted successfully");
@@ -142,6 +180,12 @@ const CreateReview = () => {
     return (
         <div className="card p-4 text-center">
             <h2 className="mb-4">Write a Review</h2>
+
+            {existingReviewError && (
+                <div className="alert alert-danger" role="alert">
+                    You have already submitted a review for this restaurant.
+                </div>
+            )}
 
             {isReviewPosted && (
                 <div className="alert alert-success" role="alert">

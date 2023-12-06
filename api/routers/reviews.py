@@ -90,7 +90,6 @@ async def get_reviews_by_account(
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-
 @router.post(
     "/api/restaurants/{place_id}/reviews",
     response_model=Union[ReviewOut, Error],
@@ -183,3 +182,30 @@ async def delete_review(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Review not found",
         )
+
+
+@router.get(
+    "/api/restaurants/{place_id}/reviews/check-existing",
+    response_model=dict,
+)
+async def check_existing_review(
+    place_id: str,
+    reviews: ReviewQueries = Depends(),
+    current_user: AccountOut = Depends(
+        authenticator.try_get_current_account_data
+    ),
+):
+    try:
+        if not current_user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Cannot check existing review with these credentials",
+            )
+
+        has_existing_review = reviews.has_existing_review(
+            place_id, current_user["username"]
+        )
+
+        return {"hasExistingReview": has_existing_review}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
