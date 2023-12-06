@@ -10,6 +10,7 @@ if (!tokenUrl) {
 const ListUserReviews = () => {
     const { username } = useParams();
     const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { token } = useAuthContext();
 
     useEffect(() => {
@@ -32,6 +33,7 @@ const ListUserReviews = () => {
                 })
                 .catch((error) => console.error(error));
         };
+        setLoading(false);
         fetchUserReviews();
     }, [username]);
 
@@ -42,6 +44,10 @@ const ListUserReviews = () => {
             </div>
         </div>;
     };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>
