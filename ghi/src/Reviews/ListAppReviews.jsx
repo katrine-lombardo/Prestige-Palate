@@ -13,6 +13,8 @@ const ListAppReviews = () => {
     const navigate = useNavigate();
     const { token } = useAuthContext();
     const [loading, setLoading] = useState(true)
+    const [icons, setIcons] = useState([]);
+    const [selectedIcon, setSelectedIcon] = useState({ id: "", icon_url: "" });
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -25,8 +27,21 @@ const ListAppReviews = () => {
                     throw new Error(errorData.detail);
                 }
                 const data = await response.json();
+
+                for (const review of data) {
+                    const userIconResponse = await fetch(`${tokenUrl}/api/icons?username=${review.username}`);
+                    if (userIconResponse.ok) {
+                        const userData = await userIconResponse.json();
+                        if (!userData.iconUrl) {
+                            review.iconUrl = 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png'
+                        } else {
+                            review.iconUrl = userData.iconUrl;
+                        }
+                    }
+                }
+
                 setReviews(data);
-                setLoading(false)
+                setLoading(false);
             } catch (error) {
                 console.error(error.message);
             }
@@ -83,6 +98,19 @@ const ListAppReviews = () => {
                         <div className="card-body">
                             <div className="card-title">
                                 <div className="d-flex justify-content-between">
+                                    <img
+                                        src={review.icon_url}
+                                        alt="User"
+                                        className="user-icon"
+                                        style={{
+                                            width: '40px',
+                                            height: '40px',
+                                            borderRadius: '5%',
+                                            objectFit: 'cover',
+                                            margin: 'auto',
+                                            display: 'block',
+                                        }}
+                                    />
                                     <Link to={`/${review.username}`}>
                                         <h5>{review.username}</h5>
                                     </Link>
