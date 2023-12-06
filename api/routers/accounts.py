@@ -13,7 +13,9 @@ from queries.accounts import (
     DuplicateAccountError,
     ChangePassword,
     EditProfile,
-    Icon
+    Icon,
+    FollowIn,
+    FollowOut,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
@@ -115,14 +117,12 @@ async def change_password(
             detail="User not authenticated.",
         )
     email = current_account_data.get("email")
-    # Retrieve the hashed password from the database based on the email
     current_account = queries.get_account_by_email(email)
     if current_account is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found.",
         )
-    # Verify current password
     valid = authenticator.verify_password(
         change_password.current_password, current_account.hashed_password
     )
@@ -131,13 +131,11 @@ async def change_password(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect current password.",
         )
-    # Check new password and confirm password
     if change_password.new_password != change_password.confirm_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Password confirmation does not match the new password.",
         )
-    # Change password
     hashed_password = authenticator.hash_password(change_password.new_password)
     queries.change_password(hashed_password, email)
     return {
@@ -174,3 +172,81 @@ async def delete_account(
     accounts: AccountQueries = Depends(),
 ) -> bool:
     return accounts.delete_account(account_id)
+
+
+@router.post(
+    "/api/accounts/follow/{following_username}", response_model=Follow
+)
+async def follow_account(
+    following_username: str,
+    follow_request: FollowRequest,
+    accounts: AccountQueries = Depends(),
+    current_user: Token = Depends(authenticator.try_get_current_account_data),
+) -> Follow:
+    if not current_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Cannot follow an account with these credentials",
+        )
+
+    if current_user.username == following_username:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot follow yourself.",
+        )
+
+    follow_info = Follow(
+        follower_username=current_user.username,
+        following_username=follow_request.following_username,
+    )
+    return accounts.follow_account(follow_info)
+
+
+@router.delete(
+    "/api/accounts/{follower_username}/unfollow/{following_username}",
+    response_model=bool,
+)
+async def unfollow_account(
+    follower_username: str,
+    following_username: str,
+    accounts: AccountQueries = Depends(),
+) -> bool:
+    return accounts.unfollow_account(follower_username, following_username)
+
+
+@router.get(
+    "/api/accounts/{username}/followers",
+    response_model=List[AccountOut] | Error,
+)
+async def get_followers_by_username(
+    username: str,
+    accounts: AccountQueries = Depends(),
+) -> List[AccountOut]:
+    try:
+        followers = accounts.get_followers_by_username(username)
+        return followers
+    except Exception as e:
+        # Handle the exception and return an appropriate error response
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error",
+        )
+
+
+@router.get(
+    "/api/accounts/{username}/following",
+    response_model=List[AccountOut] | Error,
+)
+async def get_following_by_username(
+    username: str,
+    accounts: AccountQueries = Depends(),
+) -> List[AccountOut]:
+    try:
+        following = accounts.get_following_by_username(username)
+        return following
+    except Exception as e:
+        # Handle the exception and return an appropriate error response
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error",
+        )

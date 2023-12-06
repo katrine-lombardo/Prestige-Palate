@@ -50,6 +50,15 @@ class ChangePassword(BaseModel):
     confirm_password: str
 
 
+class FollowIn(BaseModel):
+    following_username: str
+
+
+class FollowOut(BaseModel):
+    follower_username: str
+    following_username: str
+
+
 class AccountQueries:
     def get_all_icons(self) -> Union[Error, List[Icon]]:
         try:
@@ -203,3 +212,84 @@ class AccountQueries:
                     """,
                     params,
                 )
+
+
+    def follow_account(self, info: Follow) -> Follow:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                params = [
+                    info.follower_username,
+                    info.following_username,
+                ]
+                cur.execute(
+                    """
+                    INSERT INTO follows (follower_username, following_username)
+                    VALUES (%s, %s)
+                    RETURNING id, follower_username, following_username;
+                    """,
+                    params,
+                )
+                record = None
+                row = cur.fetchone()
+                if row is not None:
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    return Follow(**record)
+                else:
+                    return None
+
+
+    def unfollow_account(
+        self, follower_username: str, following_username: str
+    ) -> bool:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    DELETE FROM follows
+                    WHERE follower_username = %s AND following_username = %s;
+                    """,
+                    [follower_username, following_username],
+                )
+                return cur.rowcount > 0
+
+    def get_followers_by_username(self, username: str) -> List[AccountOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT accounts.*
+                    FROM accounts
+                    JOIN follows ON accounts.username = follows.follower_username
+                    WHERE follows.following_username = %s;
+                    """,
+                    [username],
+                )
+                followers = []
+                for row in cur.fetchall():
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    followers.append(AccountOut(**record))
+                return followers
+
+    def get_following_by_username(self, username: str) -> List[AccountOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT accounts.*
+                    FROM accounts
+                    JOIN follows ON accounts.username = follows.following_username
+                    WHERE follows.follower_username = %s;
+                    """,
+                    [username],
+                )
+                following = []
+                for row in cur.fetchall():
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    following.append(AccountOut(**record))
+                return following
