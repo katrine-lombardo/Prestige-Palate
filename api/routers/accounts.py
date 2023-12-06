@@ -169,12 +169,12 @@ async def edit_profile(
 
 @router.delete("/api/accounts/{account_id}", response_model=bool)
 async def delete_account(
-    request: Request,
-    response: Response,
+    # request: Request,
+    # response: Response,
     account_id: int,
     accounts: AccountQueries = Depends(),
 ) -> bool:
-    print(accounts)
+    # print(accounts)
     # await authenticator.logout(request, response, jwt)
     return accounts.delete_account(account_id)
 
