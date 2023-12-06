@@ -60,9 +60,9 @@ const DeleteProfile = () => {
             <div className="card-body">
                 <form onSubmit={handleDelete}>
                     {updateError && (
-                    <div className="alert alert-danger" role="alert">
-                        We're sorry. We had difficulty deleting your account. Try again later.
-                    </div> 
+                        <div className="alert alert-danger" role="alert">
+                            We're sorry. We had difficulty deleting your account. Try again later.
+                        </div>
                     )}
                     {!deleteSuccess ? (
                         <>
@@ -77,11 +77,11 @@ const DeleteProfile = () => {
                             </button>
                         </>
                     ) : (
-                    <div>
-                        Sorry to see you go. We'll be here if you need us again!
-                    </div>
+                        <div>
+                            Sorry to see you go. We'll be here if you need us again!
+                        </div>
                     )}
-                    
+
                 </form>
             </div>
         </div>

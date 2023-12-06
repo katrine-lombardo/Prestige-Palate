@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import RestaurantCard from '../Restaurants/RestaurantCard';
+import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import Map from '../Map';
+import { useStore } from '../ContextStore';
 
 function SearchResults() {
+    const { token } = useAuthContext();
     const location = useLocation();
     const initialResults = location.state?.results || [];
     const locationData = location.state?.locationData;
@@ -15,6 +18,69 @@ function SearchResults() {
     const [filterName, setFilterName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
+    const { favorites, setFavorites } = useStore();
+
+    const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+    if (!tokenUrl) {
+        throw error("VITE_APP_API_HOST was undefined.")
+    }
+
+    const fetchFavorites = async () => {
+        if (!token) {
+            updateFavorites([]);
+            return;
+        }
+
+        try {
+            const response = await fetch(`${tokenUrl}/api/user/favorites`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (response.ok) {
+                const favoriteData = await response.json();
+                setFavorites(favoriteData.map(fav => fav.place_id));
+            }
+        } catch (error) {
+            console.error('Error fetching favorites:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchFavorites();
+    }, []);
+
+    const toggleFavorite = async (restaurantId) => {
+        if (!token) {
+            return;
+        }
+
+        const isFavorite = favorites.includes(restaurantId);
+        const method = isFavorite ? 'DELETE' : 'POST';
+        const url = `${tokenUrl}/api/restaurants/${restaurantId}/favorite`;
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                let updatedFavoritesList;
+                if (isFavorite) {
+                    updatedFavoritesList = favorites.filter(id => id !== restaurantId);
+                } else {
+                    updatedFavoritesList = [...favorites, restaurantId];
+                }
+                setFavorites(updatedFavoritesList);
+
+            } else {
+                throw new Error("Failed to update favorites");
+            }
+        } catch (error) {
+            console.error('Error updating favorites:', error);
+        }
+    };
 
     const sortedAndFilteredResults = () => {
         return results
@@ -123,7 +189,6 @@ function SearchResults() {
                         </select>
                     </div>
                 </div>
-
                 <div className="row mb-3">
                     <div className="col">
                         <input type="number" className="form-control" placeholder="Filter by rating" value={filterRating} onChange={handleFilterRatingChange} />
@@ -138,14 +203,15 @@ function SearchResults() {
                         <input type="text" className="form-control" placeholder="Filter by state" value={filterState} onChange={handleFilterStateChange} />
                     </div>
                 </div>
-
                 {currentItems.map(restaurant => (
-                    <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                    <RestaurantCard
+                        key={restaurant.id}
+                        restaurant={restaurant}
+                        isFavorite={favorites.includes(restaurant.id)}
+                        onToggleFavorite={toggleFavorite}
+                        showFavorite={!!token} />
                 ))}
-
                 {currentItems.length === 0 && <div className="alert alert-warning">No restaurants found.</div>}
-
-
             </div>
         </div>
     );
