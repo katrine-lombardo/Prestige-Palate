@@ -193,8 +193,10 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT id, username, place_id, publish_time, title, text, rating, profile_icon_id, account_id
-                        FROM reviews
+                        SELECT r.*, a.id as account_id, i.icon_url as profile_icon_url
+                        FROM reviews r
+                        JOIN accounts a ON r.username = a.username
+                        JOIN icons i ON a.profile_icon_id = i.id
                         WHERE place_id = %s;
                         """,
                         [place_id],

@@ -89,7 +89,7 @@ const ListAppReviews = () => {
                             <div className="card-title">
                                 <div className="d-flex justify-content-between">
                                     <img
-                                        src={review.profile_icon_id}
+                                        src={review.profile_icon_url}
                                         alt="User"
                                         className="user-icon"
                                         style={{
