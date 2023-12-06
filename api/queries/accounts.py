@@ -1,6 +1,6 @@
 from queries.pool import pool
 from pydantic import BaseModel
-from typing import List, Dict, Optional, Union
+from typing import List, Optional, Union
 
 
 class Error(BaseModel):
@@ -190,7 +190,6 @@ class AccountQueries:
     def edit_profile(self, email: str, edit_profile: EditProfile):
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                # Validate profile_icon_id
                 if not (1 <= edit_profile.profile_icon_id <= 16):
                     raise ValueError(
                         "Invalid icon_id. It must be between 1 and 16."
@@ -213,19 +212,19 @@ class AccountQueries:
                     params,
                 )
 
-
-    def follow_account(self, info: Follow) -> Follow:
+    def follow_account(self, info: FollowIn, username: str) -> FollowOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
+                follower_username = username
                 params = [
-                    info.follower_username,
+                    follower_username,
                     info.following_username,
                 ]
                 cur.execute(
                     """
                     INSERT INTO follows (follower_username, following_username)
                     VALUES (%s, %s)
-                    RETURNING id, follower_username, following_username;
+                    RETURNING follower_username, following_username
                     """,
                     params,
                 )
@@ -235,61 +234,50 @@ class AccountQueries:
                     record = {}
                     for i, column in enumerate(cur.description):
                         record[column.name] = row[i]
-                    return Follow(**record)
-                else:
-                    return None
+                    return FollowOut(**record)
 
-
-    def unfollow_account(
-        self, follower_username: str, following_username: str
-    ) -> bool:
+    def unfollow_account(self, info: FollowIn, username: str) -> bool:
         with pool.connection() as conn:
             with conn.cursor() as cur:
+                follower_username = username
+                params = [
+                    follower_username,
+                    info.following_username,
+                ]
                 cur.execute(
                     """
                     DELETE FROM follows
-                    WHERE follower_username = %s AND following_username = %s;
+                    WHERE follower_username = %s AND following_username = %s
+                    RETURNING follower_username, following_username
                     """,
-                    [follower_username, following_username],
+                    params,
                 )
                 return cur.rowcount > 0
 
-    def get_followers_by_username(self, username: str) -> List[AccountOut]:
+    def get_followers_by_username(self, username: str) -> List[str]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT accounts.*
-                    FROM accounts
-                    JOIN follows ON accounts.username = follows.follower_username
-                    WHERE follows.following_username = %s;
+                    SELECT follower_username
+                    FROM follows
+                    WHERE following_username = %s;
                     """,
                     [username],
                 )
-                followers = []
-                for row in cur.fetchall():
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                    followers.append(AccountOut(**record))
+                followers = [row[0] for row in cur.fetchall()]
                 return followers
 
-    def get_following_by_username(self, username: str) -> List[AccountOut]:
+    def get_following_by_username(self, username: str) -> List[str]:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    SELECT accounts.*
-                    FROM accounts
-                    JOIN follows ON accounts.username = follows.following_username
-                    WHERE follows.follower_username = %s;
+                    SELECT following_username
+                    FROM follows
+                    WHERE follower_username = %s;
                     """,
                     [username],
                 )
-                following = []
-                for row in cur.fetchall():
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                    following.append(AccountOut(**record))
+                following = [row[0] for row in cur.fetchall()]
                 return following

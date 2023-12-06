@@ -63,6 +63,7 @@ async def get_token(
         "account": account,
     }
 
+
 @router.get("/api/icons", response_model=Union[List[Icon], Error])
 async def get_all_icons(
     accounts: AccountQueries = Depends(),
@@ -174,79 +175,55 @@ async def delete_account(
     return accounts.delete_account(account_id)
 
 
-@router.post(
-    "/api/accounts/follow/{following_username}", response_model=Follow
-)
+@router.post("/api/accounts/follow/", response_model=Union[FollowOut, Error])
 async def follow_account(
-    following_username: str,
-    follow_request: FollowRequest,
+    info: FollowIn,
     accounts: AccountQueries = Depends(),
-    current_user: Token = Depends(authenticator.try_get_current_account_data),
-) -> Follow:
+    current_user: dict = Depends(authenticator.try_get_current_account_data),
+):
     if not current_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Cannot follow an account with these credentials",
+            detail="User not authenticated.",
         )
-
-    if current_user.username == following_username:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot follow yourself.",
-        )
-
-    follow_info = Follow(
-        follower_username=current_user.username,
-        following_username=follow_request.following_username,
-    )
-    return accounts.follow_account(follow_info)
+    try:
+        result = accounts.follow_account(info, current_user["username"])
+        return result
+    except Exception as e:
+        return {"message": f"Error: {str(e)}"}
 
 
-@router.delete(
-    "/api/accounts/{follower_username}/unfollow/{following_username}",
-    response_model=bool,
-)
+@router.delete("/api/accounts/unfollow/", response_model=bool)
 async def unfollow_account(
-    follower_username: str,
-    following_username: str,
+    info: FollowIn,
     accounts: AccountQueries = Depends(),
-) -> bool:
-    return accounts.unfollow_account(follower_username, following_username)
+    current_user: dict = Depends(authenticator.try_get_current_account_data),
+):
+    if not current_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not authenticated.",
+        )
+    try:
+        result = accounts.unfollow_account(info, current_user["username"])
+        return result
+    except Exception as e:
+        return {"message": f"Error: {str(e)}"}
 
 
-@router.get(
-    "/api/accounts/{username}/followers",
-    response_model=List[AccountOut] | Error,
-)
+@router.get("/api/accounts/followers/{username}", response_model=List[str])
 async def get_followers_by_username(
     username: str,
     accounts: AccountQueries = Depends(),
-) -> List[AccountOut]:
-    try:
-        followers = accounts.get_followers_by_username(username)
-        return followers
-    except Exception as e:
-        # Handle the exception and return an appropriate error response
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal Server Error",
-        )
+):
+    followers = accounts.get_followers_by_username(username)
+    return followers
 
 
-@router.get(
-    "/api/accounts/{username}/following",
-    response_model=List[AccountOut] | Error,
-)
+@router.get("/api/accounts/following/{username}", response_model=List[str])
 async def get_following_by_username(
     username: str,
     accounts: AccountQueries = Depends(),
-) -> List[AccountOut]:
-    try:
-        following = accounts.get_following_by_username(username)
-        return following
-    except Exception as e:
-        # Handle the exception and return an appropriate error response
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal Server Error",
-        )
+):
+    following = accounts.get_following_by_username(username)
+    return following

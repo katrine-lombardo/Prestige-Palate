@@ -1,3 +1,10 @@
+## Tues, Dec 5
+Features/issues that you worked on and who you worked with:
+- Completed Following/Followers back end (GET following by username, GET followers by username, POST following- only for users who are logged in, and DELETE following - only for users who are logged in.)
+
+A reflection on any design conversations that you had:
+- Still discussing re: Referral Logic. Thinking of creating 5 accounts in the migration table using INSERT and only allow current users to refer to sign up. Thinking of limiting user referrals upto 3 referrals per users, etc. Conflicted on how to add the data in given there's hashed password.
+
 ## Mon, Dec 4
 Features/issues that you worked on and who you worked with:
 - Completed Delete Profile front end independently.
