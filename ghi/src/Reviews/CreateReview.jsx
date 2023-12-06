@@ -22,7 +22,9 @@ const CreateReview = () => {
         photo_urls: [],
     });
 
+    const [fileInputValue, setFileInputValue] = useState("");
     const [isReviewPosted, setIsReviewPosted] = useState(false);
+    const [isPhotoUploaded, setIsPhotoUploaded] = useState(false);
 
     const { token } = useAuthContext();
     const fileInputRef = useRef(null);
@@ -36,7 +38,7 @@ const CreateReview = () => {
                 ContentType: photo.type,
             };
             try {
-                const data = await s3Client.send(new PutObjectCommand(params));
+                await s3Client.send(new PutObjectCommand(params));
                 const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`;
                 console.log("Success", url);
                 return url;
@@ -61,12 +63,8 @@ const CreateReview = () => {
                 ...prevReviewForm,
                 photo_urls: urls,
             }));
-            window.alert("Files uploaded successfully!");
+            setIsPhotoUploaded(true); // Set photo upload success state to true
 
-            // Reset the file input value after successful upload
-            if (fileInputRef.current) {
-                fileInputRef.current.value = "";
-            }
         } catch (err) {
             console.error("Upload failed:", err);
             // Handle the error, e.g., display another notification
@@ -94,6 +92,7 @@ const CreateReview = () => {
                 ...prevReviewForm,
                 photo_urls: [...prevReviewForm.photo_urls, ...e.target.files],
             }));
+            setFileInputValue(e.target.value); // Update file input value
         }
     };
 
@@ -119,6 +118,10 @@ const CreateReview = () => {
                     photo_urls: [],
                 });
                 setIsReviewPosted(true);
+                setFileInputValue(""); // Reset file input value after successful post
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = ""; // Reset the file input value
+                }
             } else {
                 console.error("Error posting review:", response.statusText);
             }
@@ -126,20 +129,23 @@ const CreateReview = () => {
             console.error("Error posting review:", error);
         }
     };
-
     return (
         <div className="card p-4 text-center">
             <h2 className="mb-4">Write a Review</h2>
 
-            {isReviewPosted && ( // Render the success message conditionally
+            {isReviewPosted && (
                 <div className="alert alert-success" role="alert">
                     Your review has been posted!
                 </div>
             )}
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="title" className="form-label d-block mx-auto">
-                    </label>
+
+            {isPhotoUploaded && (
+                <div className="alert alert-success" role="alert">
+                    Photo uploaded successfully!
+                </div>
+            )}
+            <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+                <div className="mb-3" style={{ display: 'flex', alignItems: 'center' }}>
                     <input
                         id="title"
                         name="title"
@@ -147,15 +153,28 @@ const CreateReview = () => {
                         placeholder="Title"
                         value={reviewForm.title}
                         onChange={handleInputChange}
-                        className="form-control mx-auto"
+                        className="form-control"
                         required
-                        style={{ width: '50%' }} // Set the width as needed
+                        style={{ width: '70%', marginBottom: '10px', marginRight: '10px' }}
                     />
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                onClick={() => handleStarClick(star)}
+                                style={{
+                                    cursor: "pointer",
+                                    color: star <= reviewForm.rating ? "gold" : "gray",
+                                    fontSize: "40px", // Adjust the font size for larger stars
+                                }}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="description" className="form-label">
-                    </label>
                     <textarea
                         id="description"
                         placeholder="Write your thoughts here...."
@@ -164,27 +183,12 @@ const CreateReview = () => {
                         onChange={handleInputChange}
                         className="form-control"
                         required
-                        style={{ height: '150px' }} // Set the height as needed
+                        style={{ width: '100%', height: '150px', marginBottom: '10px' }}
                     ></textarea>
                 </div>
-                <div className="mb-3" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div style={{ marginRight: '10px' }}>
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span
-                                key={star}
-                                onClick={() => handleStarClick(star)}
-                                style={{
-                                    cursor: "pointer",
-                                    color: star <= reviewForm.rating ? "gold" : "gray",
-                                }}
-                            >
-                                ★
-                            </span>
-                        ))}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <label htmlFor="photo_url" className="form-label" style={{ marginLeft: '10px' }}>
-                        </label>
+
+                <div className="mb-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                         <input
                             placeholder="photo_url"
                             type="file"
@@ -194,20 +198,22 @@ const CreateReview = () => {
                             className="form-control"
                             onChange={handlePhotoChange}
                             multiple
-                            ref={fileInputRef} // Assign the ref to the file input
-                            style={{ marginLeft: '10px' }}
+                            ref={fileInputRef}
+                            value={fileInputValue}
+                            style={{ marginRight: '10px' }}
                         />
-                        <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ marginLeft: '10px' }}>
+                        <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ width: '175px', marginRight: '10px' }}>
                             Upload Photo
                         </button>
                     </div>
+                    <button type="submit" className="btn btn-primary">
+                        Post
+                    </button>
                 </div>
-                <button type="submit" className="btn btn-primary">
-                    Post
-                </button>
             </form>
         </div>
     );
 };
+
 
 export default CreateReview;

@@ -6,7 +6,7 @@ from typing import List, Optional
 
 class PhotoOut(BaseModel):
     username: str
-    photo_url: Optional[str]
+    photo_urls: Optional[List[str]]
 
 
 class PhotoQueries:
@@ -16,9 +16,9 @@ class PhotoQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                            SELECT username, photo_url
+                            SELECT username, photo_urls
                             FROM reviews
-                            WHERE username = %s AND photo_url IS NOT NULL;
+                            WHERE username = %s AND photo_urls IS NOT NULL;
                             """,
                         [username],
                     )
@@ -40,9 +40,9 @@ class PhotoQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                            SELECT username, photo_url
+                            SELECT username, photo_urls
                             FROM reviews
-                            WHERE place_id = %s AND photo_url IS NOT NULL;
+                            WHERE place_id = %s AND photo_urls IS NOT NULL;
                         """,
                         [place_id],
                     )
