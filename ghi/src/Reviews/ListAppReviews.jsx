@@ -12,10 +12,14 @@ const ListAppReviews = () => {
     const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
     const { token } = useAuthContext();
+    const [loading, setLoading] = useState(true)
+    const [icons, setIcons] = useState([]);
+    const [selectedIcon, setSelectedIcon] = useState({ id: "", icon_url: "" });
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
+                setLoading(true);
                 const url = `${tokenUrl}/api/restaurants/${place_id}/reviews`;
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -23,7 +27,21 @@ const ListAppReviews = () => {
                     throw new Error(errorData.detail);
                 }
                 const data = await response.json();
+
+                for (const review of data) {
+                    const iconResponse = await fetch(`${tokenUrl}/api/icons?username=${review.username}`);
+                    if (iconResponse.ok) {
+                        const iconData = await iconResponse.json();
+                        console.log(iconData)
+                        if (!iconData.iconUrl) {
+                            review.icon_url = 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png'
+                        } else {
+                            review.icon_url = iconData.icon_url;
+                        }
+                    }
+                }
                 setReviews(data);
+                setLoading(false);
             } catch (error) {
                 console.error(error.message);
             }
@@ -47,6 +65,10 @@ const ListAppReviews = () => {
         }
         navigate(`/create-review/${place_id}`);
     };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (reviews.length === 0) {
         return (
@@ -76,6 +98,19 @@ const ListAppReviews = () => {
                         <div className="card-body">
                             <div className="card-title">
                                 <div className="d-flex justify-content-between">
+                                    <img
+                                        src={review.icon_url}
+                                        alt="User"
+                                        className="user-icon"
+                                        style={{
+                                            width: '40px',
+                                            height: '40px',
+                                            borderRadius: '5%',
+                                            objectFit: 'cover',
+                                            margin: 'auto',
+                                            display: 'block',
+                                        }}
+                                    />
                                     <Link to={`/${review.username}`}>
                                         <h5>{review.username}</h5>
                                     </Link>

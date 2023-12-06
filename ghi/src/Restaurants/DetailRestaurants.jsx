@@ -13,6 +13,7 @@ if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
 
+
 const DetailRestaurant = () => {
     const { place_id } = useParams();
     const navigate = useNavigate();
