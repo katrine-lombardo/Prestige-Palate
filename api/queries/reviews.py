@@ -28,6 +28,8 @@ class ReviewOut(BaseModel):
     text: str
     rating: float
     photo_urls: Optional[List[str]]
+    profile_icon_id: Optional[int]
+    account_id: Optional[int]
 
 
 class ReviewUpdate(BaseModel):
@@ -44,8 +46,11 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT * FROM reviews
-                        WHERE username = (SELECT username FROM accounts WHERE username = %s);
+                        SELECT r.*, a.id as account_id, i.icon_url as profile_icon_url
+                        FROM reviews r
+                        JOIN accounts a ON r.username = a.username
+                        JOIN icons i ON a.profile_icon_id = i.id
+                        WHERE r.username = %s;
                         """,
                         [username],
                     )
@@ -188,7 +193,8 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT * FROM reviews
+                        SELECT id, username, place_id, publish_time, title, text, rating, profile_icon_id, account_id
+                        FROM reviews
                         WHERE place_id = %s;
                         """,
                         [place_id],
