@@ -57,7 +57,6 @@ const PhotoCard = ({ username }) => {
 
     return (
         <div>
-            <h3>{username}'s Photos</h3>
             <div className="photo-list">
                 {photos.length > 0 ? (
                     photos.map((photo) => (
