@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
 from routers import accounts, restaurants, photos, reviews, reviews, favorites
-from queries.accounts import AccountIn, AccountOut, AccountQueries
 
 app = FastAPI()
 
@@ -27,16 +26,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.get("/api/launch-details")
-def launch_details():
-    return {
-        "launch_details": {
-            "module": 3,
-            "week": 17,
-            "day": 5,
-            "hour": 19,
-            "min": "00",
-        }
-    }
