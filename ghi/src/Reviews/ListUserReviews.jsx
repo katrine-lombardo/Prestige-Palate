@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import ListFollowers from "../Accounts/ListFollowers";
+import ListFollowing from "../Accounts/ListFollowing";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -179,7 +180,7 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-4">
-                        {username} is not following any palates, yet...
+                        <ListFollowing username={username} />
                     </div>
                 </div>
                 <div
