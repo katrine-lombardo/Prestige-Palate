@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import DeleteReview from "./DeleteReview";
+import PhotoCard from "./PhotoCard";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -127,7 +128,6 @@ const ListMyReviews = () => {
 
     return (
         <div>
-
             <div className="container mb-4">
                 <h3>My reviews</h3>
             </div>
@@ -301,6 +301,42 @@ const ListMyReviews = () => {
                                 ))}
                             </div>
                         )}
+                    </div>
+                </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-tabContent">
+                <div
+                    className="tab-pane fade show mt-3"
+                    id="nav-photos"
+                    role="tabpanel"
+                    aria-labelledby="nav-photos-tab"
+                    tabIndex="0"
+                >
+                    <div className="container">
+                        <PhotoCard key={username} username={username} />
+                    </div>
+                </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-tabContent">
+                <div
+                    className="tab-pane fade show mt-3"
+                    id="nav-following"
+                    role="tabpanel"
+                    aria-labelledby="nav-following-tab"
+                    tabIndex="0"
+                >
+                    <div className="container">Following</div>
+                </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-tabContent">
+                <div
+                    className="tab-pane fade show mt-3"
+                    id="nav-followers"
+                    role="tabpanel"
+                    aria-labelledby="nav-followers-tab"
+                    tabIndex="0"
+                >
+                    <div className="container">Followers
                     </div>
                 </div>
             </div>
