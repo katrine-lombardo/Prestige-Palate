@@ -22,7 +22,6 @@ const ListFollowers = ({ username }) => {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        console.log(data);
                         setFollowers(data);
                         setLoading(false);
                     })
