@@ -11,8 +11,7 @@ const DeleteProfile = () => {
     const [deleteSuccess, setDeleteSuccess] = useState(false);
     const [id, setAccountId] = useState("");
     const [updateError, setError] = useState(false);
-    const { token } = useAuthContext();
-    const { logout } = useToken();
+    const { token, setToken } = useAuthContext();
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -42,7 +41,7 @@ const DeleteProfile = () => {
 
             if (response.ok) {
                 setDeleteSuccess(true);
-                logout()
+                setToken(null)
             } else {
                 throw new Error("Failed to delete account.");
             }
