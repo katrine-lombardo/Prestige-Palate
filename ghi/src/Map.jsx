@@ -8,8 +8,6 @@ const containerStyle = {
 };
 
 const Map = ({ restaurants, viewport }) => {
-    console.log("viewport: ", viewport)
-    console.log("restaurants: ", restaurants)
     const navigate = useNavigate();
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
     const mapRef = useRef(null);
@@ -25,7 +23,6 @@ const Map = ({ restaurants, viewport }) => {
 
     useEffect(() => {
         if (viewport && mapRef.current) {
-            console.log('Setting viewport bounds:', viewport);
             const bounds = new window.google.maps.LatLngBounds(
                 new window.google.maps.LatLng(viewport.southwest.lat, viewport.southwest.lng),
                 new window.google.maps.LatLng(viewport.northeast.lat, viewport.northeast.lng)
