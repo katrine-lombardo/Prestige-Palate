@@ -28,7 +28,7 @@ class ReviewOut(BaseModel):
     text: str
     rating: float
     photo_urls: Optional[List[str]]
-    profile_icon_id: Optional[int]
+    profile_icon_url: Optional[str]
     account_id: Optional[int]
 
 

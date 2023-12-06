@@ -27,10 +27,9 @@ const ListAppReviews = () => {
                     throw new Error(errorData.detail);
                 }
                 const data = await response.json();
-                console.log("review data: ", data)
 
                 setReviews(data);
-                console.log("review data: ", data)
+                console.log(data)
                 setLoading(false);
             } catch (error) {
                 console.error(error.message);
