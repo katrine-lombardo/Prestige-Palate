@@ -15,6 +15,7 @@ const ListUserReviews = () => {
 
     useEffect(() => {
         const fetchUserReviews = async () => {
+            setLoading(true);
             const url = `${tokenUrl}/api/accounts/${username}/reviews`;
             fetch(url, {
                 credentials: "include",
@@ -30,24 +31,24 @@ const ListUserReviews = () => {
                         })
                     );
                     setReviews(reviewsWithRestaurantNames);
+                    setLoading(false);
                 })
                 .catch((error) => console.error(error));
         };
-        setLoading(false);
         fetchUserReviews();
     }, [username]);
+
+    if (loading) {
+        return <div>Loading prestiguous palate...</div>;
+    }
 
     const renderNullReviews = () => {
         return <div>
             <div className="container mt-4">
-                No Prestige Palate reviews here. Yet...
+                No Prestige Palate reviews by this user, yet...
             </div>
         </div>;
     };
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div>
