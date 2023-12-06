@@ -20,35 +20,35 @@ function Nav({ toggleSidebar }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const accountUrl = `${tokenUrl}/token`;
-            const accountResponse = await fetch(accountUrl, { credentials: "include" });
-            const accountData = await accountResponse.json();
-            if (accountData && token) {
-                setAccountId(accountData.account.id);
-                const iconUrl = `${tokenUrl}/api/accounts/${accountData.account.id}`;
-                const iconResponse = await fetch(iconUrl, { credentials: "include" });
-                const iconData = await iconResponse.json();
+        const fetchData = async () => {
+            try {
+                const accountUrl = `${tokenUrl}/token`;
+                const accountResponse = await fetch(accountUrl, { credentials: "include" });
+                const accountData = await accountResponse.json();
+                if (accountData && token) {
+                    setAccountId(accountData.account.id);
+                    const iconUrl = `${tokenUrl}/api/accounts/${accountData.account.id}`;
+                    const iconResponse = await fetch(iconUrl, { credentials: "include" });
+                    const iconData = await iconResponse.json();
 
-                const iconsUrl = `${tokenUrl}/api/icons`;
-                const iconsResponse = await fetch(iconsUrl, { credentials: "include" });
-                const iconsData = await iconsResponse.json();
+                    const iconsUrl = `${tokenUrl}/api/icons`;
+                    const iconsResponse = await fetch(iconsUrl, { credentials: "include" });
+                    const iconsData = await iconsResponse.json();
 
-                setIconId(iconData.profile_icon_id);
-                setIconUrl(iconsData[iconData.profile_icon_id - 1]?.icon_url);
-                setLoading(false);
-            } else {
+                    setIconId(iconData.profile_icon_id);
+                    setIconUrl(iconsData[iconData.profile_icon_id - 1]?.icon_url);
+                    setLoading(false);
+                } else {
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error(error);
                 setLoading(false);
             }
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-        }
-    };
+        };
 
-    fetchData();
-}, [token]);
+        fetchData();
+    }, [token]);
 
     return (
         <>
