@@ -29,17 +29,17 @@ const ListAppReviews = () => {
                 const data = await response.json();
 
                 for (const review of data) {
-                    const userIconResponse = await fetch(`${tokenUrl}/api/icons?username=${review.username}`);
-                    if (userIconResponse.ok) {
-                        const userData = await userIconResponse.json();
-                        if (!userData.iconUrl) {
-                            review.iconUrl = 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png'
+                    const iconResponse = await fetch(`${tokenUrl}/api/icons?username=${review.username}`);
+                    if (iconResponse.ok) {
+                        const iconData = await iconResponse.json();
+                        console.log(iconData)
+                        if (!iconData.iconUrl) {
+                            review.icon_url = 'https://cdn-icons-png.flaticon.com/512/9131/9131529.png'
                         } else {
-                            review.iconUrl = userData.iconUrl;
+                            review.icon_url = iconData.icon_url;
                         }
                     }
                 }
-
                 setReviews(data);
                 setLoading(false);
             } catch (error) {
