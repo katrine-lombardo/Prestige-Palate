@@ -1,3 +1,42 @@
+#### Wed, Dec 6
+
+Features/issues that you worked on and who you worked with:
+* 
+
+A reflection on any design conversations that you had
+* 
+ 
+At least one ah-ha! moment:
+* 
+
+---
+
+#### Tues, Dec 5
+
+Features/issues that you worked on and who you worked with:
+* Today I was able to integrate user icons into our list app reviews, and further refined how reviews appear. I spent a good amount of time on error handling, but most time was spent on correcting data fetches and increasing the loading speed, which still needs work.
+
+A reflection on any design conversations that you had
+* We are starting to get into more stylising spaces so now we're finding ourselves having to prioritise those areas where the functionality is more important than the design. We're down to the wire so the pressure is building, and we have to keep our heads above water...
+ 
+At least one ah-ha! moment:
+* It was really exciting when I was able to figure out a smarter way to fetch data (specifically fetching an account username from within fetching for reviews)
+
+---
+
+#### Mon, Dec 4
+
+Features/issues that you worked on and who you worked with:
+* Over the weekend and today I was able to make major headway on front end developement of MyReview and ListAppReviews. I also spent some time converting our standup notes into Gitlab's issues board and wrote the milestones.
+
+A reflection on any design conversations that you had
+* We reviewed the original design discussions we had earlier and have been making more comparisons to the wireframe as we get deeper into our frontend development. 
+ 
+At least one ah-ha! moment:
+* It was wonderful to see my backend code finally working on the frontend, it's starting to feel like a real project now.
+
+---
+
 #### Fri, Dec 1
 
 Features/issues that you worked on and who you worked with:
