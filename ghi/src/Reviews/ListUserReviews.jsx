@@ -10,27 +10,42 @@ if (!tokenUrl) {
 const ListUserReviews = () => {
     const { username } = useParams();
     const [reviews, setReviews] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { token } = useAuthContext();
 
     useEffect(() => {
         const fetchUserReviews = async () => {
+            setLoading(true);
             const url = `${tokenUrl}/api/accounts/${username}/reviews`;
             fetch(url, {
                 credentials: "include",
             })
                 .then((response) => response.json())
-                .then((data) => {
-                    setReviews(data);
+                .then(async (data) => {
+                    const reviewsWithRestaurantNames = await Promise.all(
+                        data.map(async (review) => {
+                            const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`;
+                            const restaurantResponse = await fetch(restaurantUrl);
+                            const restaurantData = await restaurantResponse.json();
+                            return { ...review, restaurantName: restaurantData.displayName.text };
+                        })
+                    );
+                    setReviews(reviewsWithRestaurantNames);
+                    setLoading(false);
                 })
                 .catch((error) => console.error(error));
         };
         fetchUserReviews();
     }, [username]);
 
+    if (loading) {
+        return <div>Loading prestiguous palate...</div>;
+    }
+
     const renderNullReviews = () => {
         return <div>
             <div className="container mt-4">
-                No Prestige Palate reviews here. Yet...
+                No Prestige Palate reviews by this user, yet...
             </div>
         </div>;
     };
@@ -109,6 +124,9 @@ const ListUserReviews = () => {
                                         <div key={index} className="card border-0">
                                             <div className="card-body">
                                                 <div className="card-title">
+                                                    <Link to={`/restaurants/${review.place_id}`}>
+                                                        <h4>{review.restaurantName}</h4>
+                                                    </Link>
                                                     <div className="d-flex justify-content-between">
                                                         <h5>{review.title}</h5>
                                                         <div>
@@ -160,7 +178,7 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-4">
-                        {username} is not following any palates
+                        {username} is not following any palates, yet...
                     </div>
                 </div>
                 <div

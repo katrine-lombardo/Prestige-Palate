@@ -36,8 +36,16 @@ const ListMyReviews = () => {
                     credentials: "include",
                 })
                     .then((response) => response.json())
-                    .then((data) => {
-                        setReviews(data);
+                    .then(async (data) => {
+                        const reviewsWithRestaurantNames = await Promise.all(
+                            data.map(async (review) => {
+                                const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`;
+                                const restaurantResponse = await fetch(restaurantUrl);
+                                const restaurantData = await restaurantResponse.json();
+                                return { ...review, restaurantName: restaurantData.displayName.text };
+                            })
+                        );
+                        setReviews(reviewsWithRestaurantNames);
                     })
                     .catch((error) => console.error(error));
             }
@@ -192,6 +200,9 @@ const ListMyReviews = () => {
                                     <div key={index} className="card border-0">
                                         <div className="card-body">
                                             <div className="card-title">
+                                                <Link to={`/restaurants/${review.place_id}`}>
+                                                    <h4>{review.restaurantName}</h4>
+                                                </Link>
                                                 <div className="d-flex justify-content-between">
                                                     <h5>{review.title}</h5>
                                                     <div>

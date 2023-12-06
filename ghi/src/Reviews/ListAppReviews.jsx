@@ -13,8 +13,6 @@ const ListAppReviews = () => {
     const navigate = useNavigate();
     const { token } = useAuthContext();
     const [loading, setLoading] = useState(true)
-    const [icons, setIcons] = useState([]);
-    const [selectedIcon, setSelectedIcon] = useState({ id: "", icon_url: "" });
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -29,7 +27,6 @@ const ListAppReviews = () => {
                 const data = await response.json();
 
                 setReviews(data);
-                console.log(data)
                 setLoading(false);
             } catch (error) {
                 console.error(error.message);
