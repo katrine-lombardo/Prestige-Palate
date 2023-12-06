@@ -59,6 +59,14 @@ class FollowOut(BaseModel):
     following_username: str
 
 
+class FollowersOut(BaseModel):
+    follower_username: str
+
+
+class FollowingOut(BaseModel):
+    following_username: str
+
+
 class AccountQueries:
     def get_all_icons(self) -> Union[Error, List[Icon]]:
         try:
@@ -254,7 +262,7 @@ class AccountQueries:
                 )
                 return cur.rowcount > 0
 
-    def get_followers_by_username(self, username: str) -> List[str]:
+    def get_followers_by_username(self, username: str) -> FollowersOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
