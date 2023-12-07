@@ -22,7 +22,6 @@ import ListUserReviews from "./Reviews/ListUserReviews";
 import { LoadScript } from '@react-google-maps/api';
 import ContextProvider from "./ContextStore";
 
-
 const libraries = ['places'];
 
 const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;

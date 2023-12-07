@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import Loading from '../Loading'
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -53,7 +54,7 @@ const ListAppReviews = () => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>{Loading}</div>;
     }
 
     if (reviews.length === 0) {

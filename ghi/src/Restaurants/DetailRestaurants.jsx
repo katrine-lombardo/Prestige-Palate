@@ -7,6 +7,7 @@ import RestaurantPhotos from './RestaurantPhotos';
 import BigStarCard from './StarCardBig';
 import StarCard from './StarCard';
 import { useStore } from '../ContextStore';
+import Loading from '../Loading'
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -142,7 +143,7 @@ const DetailRestaurant = () => {
 
 
     if (!restaurantDetails) {
-        return <div>Loading...</div>;
+        return <div>{Loading}</div>;
     }
 
     return (
