@@ -15,12 +15,12 @@ function SearchBar({ onSearch }) {
     const handleSearch = async (event) => {
         event.preventDefault();
         if (searchTerm) {
+            setIsLoading(true);
             const url = new URL(`${tokenUrl}/api/restaurants`);
             url.searchParams.append('location', searchTerm);
 
             try {
                 const response = await fetch(url);
-                setIsLoading(true);
                 if (response.ok) {
                     const data = await response.json();
 
@@ -34,17 +34,10 @@ function SearchBar({ onSearch }) {
             } catch (error) {
                 console.error("search error:", error)
                 navigate('/search-results', { state: { results: [], locationData: null } });
+            } finally {
+                setIsLoading(false);
             }
-            setIsLoading(false);
-        } else {
-            console.log("None")
         }
-
-
-    }
-
-    if (isLoading) {
-        return <Loading />;
     }
 
     return (
@@ -60,6 +53,11 @@ function SearchBar({ onSearch }) {
                     aria-label="Search"
                     style={{ width: '500px' }}
                 />
+                {isLoading && (
+                    <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
+                        <Loading />
+                    </div>
+                )}
             </div>
         </form>
     );
