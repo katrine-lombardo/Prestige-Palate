@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, status, Query
-from queries.geocode import LocationSearchIn, geocode_location_search, api_key
+from fastapi import APIRouter, HTTPException, Query
+from queries.geocode import geocode_location_search, api_key
 import requests
 import json
 
@@ -30,7 +30,7 @@ async def search_restaurants_by_location(
             "location_data": location_result,
             "restaurants": restaurant_results,
         }
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
@@ -103,6 +103,7 @@ async def restaurant_details(place_id: str):
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/api/restaurants/{place_id}/photos")
 async def restaurant_photos(place_id: str):

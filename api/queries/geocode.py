@@ -41,7 +41,7 @@ def geocode_location_search(location: str, api_key: str) -> LocationSearchOut:
     else:
         raise ConnectionError(
             f"""
-            Failed to connect to Geocoding API 
+            Failed to connect to Geocoding API
             (Status Code: {response.status_code})
             """
         )
