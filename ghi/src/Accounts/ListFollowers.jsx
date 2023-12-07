@@ -87,7 +87,7 @@ const ListFollowers = ({ username }) => {
             });
 
             if (response.ok) {
-                console.log(`Successfully followed ${followerUsername}`);
+                console.log(`You are now following ${followerUsername}`);
             } else {
                 console.error(`Failed to follow ${followerUsername}`);
             }
