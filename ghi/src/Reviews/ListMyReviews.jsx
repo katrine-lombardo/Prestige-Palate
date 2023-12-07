@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import DeleteReview from "./DeleteReview";
 import ListFollowers from "../Accounts/ListFollowers";
+import ListFollowing from "../Accounts/ListFollowing";
+import Loading from "../Loading";
 import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -16,7 +18,7 @@ const ListMyReviews = () => {
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const navigate = useNavigate();
     const [activeReviewId, setActiveReviewId] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const { token } = useAuthContext();
 
     useEffect(() => {
@@ -58,12 +60,17 @@ const ListMyReviews = () => {
                         setReviews(reviewsWithRestaurantNames);
                     })
                     .catch((error) => console.error(error));
+                setIsLoading(false);
             }
         };
-
+        setIsLoading(false);
         handleFetchWithAPI();
         fetchMyReviews();
     }, [token, username]);
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     const handleEditReview = (review) => {
         setActiveReviewId(null);
@@ -73,10 +80,8 @@ const ListMyReviews = () => {
     const renderNullPhotos = () => (
         <div>
             <div className="container mt-4">
-                {loading ? "Loading photos..." : "No photos here. Yet..."}
-            </div>
-            {!loading && (
-                <div>
+                {isLoading ? "Loading photos..." : <div className="container">
+                    <p>No photos here. Yet...</p>
                     <Link to={`/`}>
                         <button
                             style={{ marginRight: "5px" }}
@@ -86,8 +91,8 @@ const ListMyReviews = () => {
                             Start your culinary adventure now
                         </button>
                     </Link>
-                </div>
-            )}
+                </div>}
+            </div>
         </div>
     );
 
@@ -162,7 +167,7 @@ const ListMyReviews = () => {
     return (
         <div>
             <div className="container mb-4">
-                <h3>My reviews</h3>
+                <h3>My Prestigious Palate</h3>
             </div>
             <nav className="container mb-3">
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
@@ -266,12 +271,35 @@ const ListMyReviews = () => {
                                             <div className="card-text">
                                                 <p>{review.text}</p>
                                                 <div className="review-photos">
-                                                    {Array.isArray(review.photo_urls) && review.photo_urls.length > 0 ? (
-                                                        review.photo_urls.map((url, photoIndex) => (
-                                                            <img key={photoIndex} src={url} alt={`Photo by ${username}`} />
-                                                        ))
+                                                    {Array.isArray(
+                                                        review.photo_urls
+                                                    ) &&
+                                                        review.photo_urls.length >
+                                                        0 ? (
+                                                        review.photo_urls.map(
+                                                            (
+                                                                url,
+                                                                photoIndex
+                                                            ) => (
+                                                                <img
+                                                                    key={
+                                                                        photoIndex
+                                                                    }
+                                                                    src={url}
+                                                                    alt={`Photo by ${username}`}
+                                                                />
+                                                            )
+                                                        )
                                                     ) : (
-                                                        <p>No photos available for this review</p>
+                                                        <p>
+                                                            <small>
+                                                                <em>
+                                                                    No photos
+                                                                    attached to
+                                                                    this review
+                                                                </em>
+                                                            </small>
+                                                        </p>
                                                     )}
                                                 </div>
                                                 <p className="card-subtitle mb-1 text-body-secondary">
@@ -361,28 +389,38 @@ const ListMyReviews = () => {
                 >
                     <div className="container">
                         <div className="photo-grid">
-                            {reviews.length > 0 ? (
-                                reviews.map((review, index) => (
+                            {reviews.length > 0
+                                ? reviews.map((review, index) => (
                                     <div key={index} className="photo-item">
-                                        {Array.isArray(review.photo_urls) && review.photo_urls.length > 0 ? (
+                                        {Array.isArray(review.photo_urls) &&
+                                            review.photo_urls.length > 0 ? (
                                             <div className="photo-card">
-                                                {review.photo_urls.map((url, photoIndex) => (
-                                                    <div key={photoIndex}>
-                                                        <img src={url} alt={`Photo by ${username}`} />
-                                                        <Link to={`/restaurants/${review.place_id}`}>
-                                                            <h4>{review.restaurantName}</h4>
-                                                        </Link>
-                                                    </div>
-                                                ))}
+                                                {review.photo_urls.map(
+                                                    (url, photoIndex) => (
+                                                        <div key={photoIndex}>
+                                                            <img
+                                                                src={url}
+                                                                alt={`Photo by ${username}`}
+                                                            />
+                                                            <Link
+                                                                to={`/restaurants/${review.place_id}`}
+                                                            >
+                                                                <h4>
+                                                                    {
+                                                                        review.restaurantName
+                                                                    }
+                                                                </h4>
+                                                            </Link>
+                                                        </div>
+                                                    )
+                                                )}
                                             </div>
                                         ) : (
-                                            <p>No photos available for this review</p>
+                                            renderNullPhotos()
                                         )}
                                     </div>
                                 ))
-                            ) : (
-                                renderNullPhotos()
-                            )}
+                                : renderNullPhotos()}
                         </div>
                     </div>
                 </div>
@@ -396,7 +434,7 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container">
-                        Following
+                        <ListFollowing username={username} />
                     </div>
                 </div>
             </div>

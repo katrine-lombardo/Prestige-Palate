@@ -10,7 +10,6 @@ if (!tokenUrl) {
 const ListFollowing = ({ username }) => {
     const [followers, setFollowers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { token } = useAuthContext();
 
     useEffect(() => {
