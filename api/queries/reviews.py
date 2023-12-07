@@ -46,10 +46,7 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT (
-                            r.*, a.id as account_id,
-                            i.icon_url as profile_icon_url
-                        )
+                        SELECT r.*, a.id as account_id, i.icon_url as profile_icon_url
                         FROM reviews r
                         JOIN accounts a ON r.username = a.username
                         JOIN icons i ON a.profile_icon_id = i.id
@@ -82,7 +79,7 @@ class ReviewQueries:
                         [review_id],
                     )
                     return cur.rowcount > 0
-        except Exception:
+        except Exception as e:
             return Error(message="Failed to get delete review")
 
     def create_review(
@@ -94,13 +91,7 @@ class ReviewQueries:
                     # Use unnest to convert the array of photo URLs to rows
                     cur.execute(
                         """
-                                INSERT INTO reviews (
-                                    username,
-                                    place_id,
-                                    title, text,
-                                    rating,
-                                    photo_url
-                                )
+                                INSERT INTO reviews (username, place_id, title, text, rating, photo_urls)
                                 VALUES (%s, %s, %s, %s, %s, %s)
                                 RETURNING *;
                                 """,
@@ -193,7 +184,7 @@ class ReviewQueries:
                         return ReviewOut(**updated_review)
                     else:
                         return ValueError("Failed to update review")
-        except Exception:
+        except Exception as e:
             return ValueError("Failed to update review")
 
     def get_app_reviews_for_restaurant(self, place_id: str) -> List[ReviewOut]:
@@ -202,11 +193,7 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT (
-                            r.*,
-                            a.id as account_id,
-                            i.icon_url as profile_icon_url
-                        )
+                        SELECT r.*, a.id as account_id, i.icon_url as profile_icon_url
                         FROM reviews r
                         JOIN accounts a ON r.username = a.username
                         JOIN icons i ON a.profile_icon_id = i.id
@@ -222,7 +209,7 @@ class ReviewQueries:
                         }
                         reviews.append(ReviewOut(**row_dict))
                     return reviews
-        except Exception:
+        except Exception as e:
             return Error(message="Failed to get app reviews")
 
     def has_existing_review(self, place_id: str, username: str) -> bool:
@@ -239,7 +226,7 @@ class ReviewQueries:
                         [place_id, username],
                     )
                     return cur.fetchone()[0]
-        except Exception:
+        except Exception as e:
             return False
 
     def get_existing_review_id(
@@ -257,5 +244,5 @@ class ReviewQueries:
                     )
                     result = cur.fetchone()
                     return result[0] if result else None
-        except Exception:
+        except Exception as e:
             return None
