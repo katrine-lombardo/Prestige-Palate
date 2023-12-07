@@ -7,9 +7,11 @@ const RestaurantPhotos = () => {
     const { place_id } = useParams();
     const [restaurantPhotos, setRestaurantPhotos] = useState(null);
     const { token } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchPhotos = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/photos`);
                 if (!response.ok) {
@@ -20,13 +22,17 @@ const RestaurantPhotos = () => {
             } catch (error) {
                 console.error(error);
             }
+            setIsLoading(false);
         };
 
         fetchPhotos();
     }, [place_id]);
 
+    if (isLoading) {
+        return <Loading />;
+    }
     if (!restaurantPhotos) {
-        return <div>{Loading}</div>;
+        return null;
     }
 
     return (

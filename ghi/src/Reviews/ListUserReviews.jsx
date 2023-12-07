@@ -4,6 +4,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import ListFollowers from "../Accounts/ListFollowers";
 import ListFollowing from "../Accounts/ListFollowing";
 import PhotoCard from "./PhotoCard";
+import Loading from "../Loading";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -13,12 +14,12 @@ if (!tokenUrl) {
 const ListUserReviews = () => {
     const { username } = useParams();
     const [reviews, setReviews] = useState([]);
-    const [loading, setLoading] = useState(true);
     const { token } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchUserReviews = async () => {
-            setLoading(true);
+            setIsLoading(true);
             const url = `${tokenUrl}/api/accounts/${username}/reviews`;
             fetch(url, {
                 credentials: "include",
@@ -34,15 +35,15 @@ const ListUserReviews = () => {
                         })
                     );
                     setReviews(reviewsWithRestaurantNames);
-                    setLoading(false);
+                    setIsLoading(false);
                 })
                 .catch((error) => console.error(error));
         };
         fetchUserReviews();
     }, [username]);
 
-    if (loading) {
-        return <div>Loading prestiguous palate...</div>;
+    if (isLoading) {
+        return <Loading />;
     }
 
     const renderNullReviews = () => {

@@ -24,12 +24,14 @@ const DetailRestaurant = () => {
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const [showEditReviewModal, setShowEditReviewModal] = useState(false);
     const [existingReviewId, setExistingReviewId] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchDetails(place_id);
     }, [place_id]);
 
     const fetchDetails = async (id) => {
+        setIsLoading(true);
         const tokenUrl = import.meta.env.VITE_APP_API_HOST || 'default_api_host';
         try {
             const response = await fetch(`${tokenUrl}/api/restaurants/${id}`);
@@ -40,6 +42,8 @@ const DetailRestaurant = () => {
             setRestaurantDetails(data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -142,8 +146,12 @@ const DetailRestaurant = () => {
     };
 
 
+    if (isLoading) {
+        return <Loading />;
+    }
+    
     if (!restaurantDetails) {
-        return <div>{Loading}</div>;
+        return null;
     }
 
     return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import RestaurantCard from './RestaurantCard';
+import Loading from '../Loading';
 
 const FavoriteRestaurants = () => {
     const [favorites, setFavorites] = useState([]);
@@ -13,6 +14,7 @@ const FavoriteRestaurants = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const { token } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const sortedAndFilteredFavorites = () => {
@@ -57,6 +59,7 @@ const FavoriteRestaurants = () => {
 
     useEffect(() => {
         const fetchFavorites = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch('http://localhost:8000/api/user/favorites', {
                     headers: {
@@ -71,13 +74,14 @@ const FavoriteRestaurants = () => {
             } catch (error) {
                 console.error('Error fetching favorites:', error);
             }
+            setIsLoading(false);
         };
-
         fetchFavorites();
     }, [token]);
 
     useEffect(() => {
         const fetchFavoriteDetails = async () => {
+            setIsLoading(true);
             if (!favorites.length) return;
 
             try {
@@ -94,6 +98,7 @@ const FavoriteRestaurants = () => {
             } catch (error) {
                 console.error('Failed to fetch favorite details', error);
             }
+            setIsLoading(false);
         };
 
         fetchFavoriteDetails();
@@ -128,6 +133,9 @@ const FavoriteRestaurants = () => {
         setItemsPerPage(Number(e.target.value));
     };
 
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <div className="container mt-4">
