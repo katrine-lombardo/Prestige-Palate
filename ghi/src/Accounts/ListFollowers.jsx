@@ -79,11 +79,10 @@ const ListFollowers = ({ username }) => {
         <div>
             <div className="followers-list">
                 <div className="row row-cols-1 row-cols-md-3 g-4">
-                    <div className="col">
-                        {followers.length > 0
-                            ? followers.map((follower, index) => (
-                                <div key={index} className="follower-card">
-
+                    {followers.length > 0
+                        ? followers.map((follower, index) => (
+                            <div key={index} className="col">
+                                <div className="follower-card">
                                     <div className="card h-90">
                                         <div className="card-body mt-4">
                                             <img
@@ -104,6 +103,11 @@ const ListFollowers = ({ username }) => {
                                             <h5 className="card-title text-center mb-4">{follower.follower}</h5>
                                             <div className="card-text text-center">
                                                 <p>Average Rating: {follower.average_rating.toFixed(1)}</p>
+                                                <div>
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <span key={star} style={{ color: star <= follower.average_rating ? "gold" : "gray", }}>★</span>
+                                                    ))}
+                                                </div>
                                                 <p>Total Reviews: {follower.total_reviews}</p>
                                                 <Link to="">
                                                     <button type="button" className="btn btn-light"><small>+ Follow back</small></button>
@@ -112,9 +116,9 @@ const ListFollowers = ({ username }) => {
                                         </div>
                                     </div>
                                 </div>
-                            ))
-                            : renderNullFollowers()}
-                    </div>
+                            </div>
+                        ))
+                        : renderNullFollowers()}
                 </div>
             </div>
         </div>
