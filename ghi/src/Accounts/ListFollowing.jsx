@@ -71,7 +71,7 @@ const ListFollowing = ({ username }) => {
         return <Loading />;
     }
 
-    const handleFollow = async (followerUsername) => {
+    const handleFollow = async (followingUsername) => {
         try {
             const followUrl = `${tokenUrl}/api/accounts/follow/`;
             const response = await fetch(followUrl, {
@@ -81,14 +81,14 @@ const ListFollowing = ({ username }) => {
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    following_username: followerUsername,
+                    following_username: followingUsername,
                 }),
             });
 
             if (response.ok) {
-                console.log(`You are now following ${followerUsername}`);
+                console.log(`You are now following ${followingUsername}`);
             } else {
-                console.error(`Failed to follow ${followerUsername}`);
+                console.error(`Failed to follow ${followingUsername}`);
             }
         } catch (error) {
             console.error("Error following:", error);
