@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../Loading';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw error("VITE_APP_API_HOST was undefined.");
+}
+
 function SearchBar({ onSearch }) {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -10,7 +15,7 @@ function SearchBar({ onSearch }) {
     const handleSearch = async (event) => {
         event.preventDefault();
         if (searchTerm) {
-            const url = new URL('http://localhost:8000/api/restaurants');
+            const url = new URL(`${tokenUrl}/api/restaurants`);
             url.searchParams.append('location', searchTerm);
 
             try {
@@ -41,7 +46,7 @@ function SearchBar({ onSearch }) {
     if (isLoading) {
         return <Loading />;
     }
-    
+
     return (
         <form onSubmit={handleSearch}>
             <div className="form-outline" data-mdb-input-init>
