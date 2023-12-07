@@ -29,7 +29,6 @@ const ListFollowing = ({ username }) => {
                         (error) => {
                             console.error(error);
                             setError(error.message);
-                            return error;
                         }
                     );
             }
@@ -43,19 +42,6 @@ const ListFollowing = ({ username }) => {
             <div className="container mt-4">
                 {loading ? "Loading following..." : `${username} is not following any palates. Yet...`}
             </div>
-            {!loading && (
-                <div>
-                    <Link to={`/`}>
-                        <button
-                            style={{ marginRight: "5px" }}
-                            type="button"
-                            className="btn btn-secondary mt-3 ms-2"
-                        >
-                            Start your culinary adventure now
-                        </button>
-                    </Link>
-                </div>
-            )}
         </div>
     );
 
@@ -70,7 +56,6 @@ const ListFollowing = ({ username }) => {
                     ))
                     : renderNullFollowing()}
             </div>
-            {error && <div>Error: {error}</div>}
         </div>
     );
 };
