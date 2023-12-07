@@ -2,8 +2,13 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
-const Sidebar = ({ isOpen }) => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
     const { token } = useAuthContext();
+    const closeSidebar = () => {
+        if (isOpen) {
+            toggleSidebar();
+        }
+    };
 
     return (
         <div className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -14,21 +19,21 @@ const Sidebar = ({ isOpen }) => {
             </div>
 
             <div className="sidebar-lower">
-                <NavLink className="nav-link" to="/">
+                <NavLink className="nav-link" to="/" onClick={closeSidebar}>
                     <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;Home
                 </NavLink>
                 {token ? (
                     <>
-                        <NavLink className="nav-link" to="/favorites">
+                        <NavLink className="nav-link" to="/favorites" onClick={closeSidebar}>
                             <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;Favorite
                         </NavLink>
-                        <NavLink className="nav-link" to="/myreviews">
+                        <NavLink className="nav-link" to="/myreviews" onClick={closeSidebar}>
                             <i className="fa-regular fa-pen-to-square" style={{ marginRight: '8px' }}></i>&nbsp;My Reviews
                         </NavLink>
-                        <NavLink className="nav-link" to="/friends">
+                        <NavLink className="nav-link" to="/friends" onClick={closeSidebar}>
                             <i className="fa-solid fa-user-group" style={{ marginRight: '8px' }}></i>&nbsp;Friends
                         </NavLink>
-                        <NavLink className="nav-link" to="/referral">
+                        <NavLink className="nav-link" to="/referral" onClick={closeSidebar}>
                             <i className="fa-solid fa-people-group" style={{ marginRight: '8px' }}></i>&nbsp;Refer a Friend
                         </NavLink>
                         
@@ -55,13 +60,13 @@ const Sidebar = ({ isOpen }) => {
                                     data-bs-parent="#accordionExample"
                                 >
                                     <div className="accordion-body text-left">
-                                        <NavLink className="nav-link" to="/editprofile">
+                                        <NavLink className="nav-link" to="/editprofile" onClick={closeSidebar}>
                                             <i className="fa-solid fa-user-pen" style={{ marginRight: '8px' }}></i>&nbsp;Edit Profile
                                         </NavLink>
-                                        <NavLink className="nav-link" to="/updatepassword">
+                                        <NavLink className="nav-link" to="/updatepassword" onClick={closeSidebar}>
                                             <i className="fa-solid fa-file-pen" style={{ marginRight: '8px' }}></i>&nbsp;&nbsp;Update Password
                                         </NavLink>
-                                        <NavLink className="nav-link" to="/deleteprofile">
+                                        <NavLink className="nav-link" to="/deleteprofile" onClick={closeSidebar}>
                                             <i className="fa-solid fa-user-xmark" style={{ marginRight: '8px' }}></i>&nbsp;Delete Profile
                                         </NavLink>
                                     </div>
@@ -75,10 +80,10 @@ const Sidebar = ({ isOpen }) => {
                     </>
                 ) : (
                     <>
-                        <NavLink className="nav-link" to="/login">
+                            <NavLink className="nav-link" to="/login" onClick={closeSidebar}>
                             <i className="fa-solid fa-arrow-right-to-bracket" style={{ marginRight: '8px' }}></i>&nbsp;Log In
                         </NavLink>
-                        <NavLink className="nav-link" to="/signup">
+                            <NavLink className="nav-link" to="/signup" onClick={closeSidebar}>
                             <i className="fa-solid fa-user-plus" style={{ marginRight: '8px' }}></i>&nbsp;Sign Up
                         </NavLink>
                     </>
