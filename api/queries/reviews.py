@@ -46,7 +46,7 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT 
+                        SELECT
                         r.*, a.id as account_id,
                         i.icon_url as profile_icon_url
                         FROM reviews r
@@ -94,7 +94,12 @@ class ReviewQueries:
                     cur.execute(
                         """
                                 INSERT INTO reviews
-                                (username, place_id, title, text, rating, photo_urls)
+                                (username,
+                                place_id,
+                                title,
+                                text,
+                                rating,
+                                photo_urls)
                                 VALUES (%s, %s, %s, %s, %s, %s)
                                 RETURNING *;
                                 """,

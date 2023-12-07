@@ -76,7 +76,7 @@ def text_search(
                 status_code=500,
                 detail=f"Request failed with status code {response.status_code}",
             )
-    except Exception:
+    except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
@@ -108,7 +108,9 @@ async def restaurant_details(place_id: str):
 @router.get("/api/restaurants/{place_id}/photos")
 async def restaurant_photos(place_id: str):
     try:
-        url = f"https://places.googleapis.com/v1/places/{place_id}"
+        url = \
+            f"https://places.googleapis.com/" \
+            f"v1/places/{place_id}"
 
         headers = {
             "Content-Type": "application/json",
@@ -123,13 +125,18 @@ async def restaurant_photos(place_id: str):
         else:
             raise HTTPException(
                 status_code=500,
-                detail=f"Request failed with status code {response.status_code}",
+                detail=f"Request failed with status code" \
+                f"{response.status_code}",
             )
         if "photos" in data:
             for photo in data["photos"]:
                 photo_reference = photo.get("name")
                 if photo_reference:
-                    photo_url = f"https://places.googleapis.com/v1/{photo_reference}/media?key={api_key}&maxHeightPx=1000&maxWidthPx=1000"
+                    photo_url = \
+                        f"https://places.googleapis.com/v1/" \
+                        f"{photo_reference}/media?" \
+                        f"key={api_key}" \
+                        f"&maxHeightPx=1000&maxWidthPx=1000"
                     photo_response = requests.get(
                         photo_url, allow_redirects=True
                     )
