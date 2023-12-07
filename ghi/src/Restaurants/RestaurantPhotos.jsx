@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
+import Loading from '../Loading'
 
 const RestaurantPhotos = () => {
     const { place_id } = useParams();
@@ -25,7 +26,7 @@ const RestaurantPhotos = () => {
     }, [place_id]);
 
     if (!restaurantPhotos) {
-        return <div>Loading...</div>;
+        return <div>{Loading}</div>;
     }
 
     return (
