@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from queries.geocode import LocationSearchIn, geocode_location_search, api_key
+from fastapi import APIRouter, HTTPException, Query
+from queries.geocode import geocode_location_search, api_key
 import requests
 import json
 
@@ -30,7 +30,7 @@ async def search_restaurants_by_location(
             "location_data": location_result,
             "restaurants": restaurant_results,
         }
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
@@ -47,7 +47,11 @@ def text_search(
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": "places.id,places.formattedAddress,places.rating,places.displayName.text,places.location",
+            "X-Goog-FieldMask": """
+            places.id,places.formattedAddress,
+            places.rating,
+            places.displayName.text,places.location
+            """,
         }
 
         request_body = {
@@ -74,9 +78,12 @@ def text_search(
         else:
             raise HTTPException(
                 status_code=500,
-                detail=f"Request failed with status code {response.status_code}",
+                detail=f"""
+                Request failed with status code 
+                {response.status_code}
+                """,
             )
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 

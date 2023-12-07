@@ -203,7 +203,8 @@ class ReviewQueries:
                     cur.execute(
                         """
                         SELECT (
-                            r.*, a.id as account_id, 
+                            r.*, 
+                            a.id as account_id,
                             i.icon_url as profile_icon_url
                         )
                         FROM reviews r
@@ -221,7 +222,7 @@ class ReviewQueries:
                         }
                         reviews.append(ReviewOut(**row_dict))
                     return reviews
-        except Exception as e:
+        except Exception:
             return Error(message="Failed to get app reviews")
 
     def has_existing_review(self, place_id: str, username: str) -> bool:

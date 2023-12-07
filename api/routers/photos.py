@@ -1,5 +1,5 @@
 from queries.photos import PhotoQueries, PhotoOut
-from typing import List, Optional
+from typing import List
 from fastapi import (
     APIRouter,
     HTTPException,

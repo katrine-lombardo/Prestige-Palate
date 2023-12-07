@@ -3,8 +3,6 @@ from queries.favorites import FavoriteQueries
 from fastapi import APIRouter, Depends, HTTPException
 from authenticator import authenticator
 
-from queries.pool import pool
-
 router = APIRouter()
 
 

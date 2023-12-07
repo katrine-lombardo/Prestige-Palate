@@ -35,7 +35,7 @@ async def refer_email(
     try:
         result = accounts.refer_email(info, current_user["email"])
         return result
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="This email has a referral to sign up.",
