@@ -1,3 +1,11 @@
+## Tuwede, Dec 6
+Features/issues that you worked on and who you worked with:
+I change the fetchFavorites to context store, I found use context can improve the performance for the app, especially we need to use toggle to show the restaurant is in favorite or not.
+
+## Tue, Dec 5
+Features/issues that you worked on and who you worked with:
+I added toggle for each restaurant in rearch result page and detai restaurant page, so that user can use toggle to favorite and unfavorite the restaurant. 
+
 ## Mon, Dec 4
 Features/issues that you worked on and who you worked with:
 - I solved the non english city can’t show detail problem, fixed search bar, added filter,sort,page to favorite and search result
