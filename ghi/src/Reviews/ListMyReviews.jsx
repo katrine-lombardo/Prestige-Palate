@@ -5,6 +5,7 @@ import DeleteReview from "./DeleteReview";
 import PhotoCard from "./PhotoCard";
 import ListFollowers from "../Accounts/ListFollowers";
 import ListFollowing from "../Accounts/ListFollowing";
+import Loading from "../Loading";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -18,9 +19,11 @@ const ListMyReviews = () => {
     const navigate = useNavigate();
     const [activeReviewId, setActiveReviewId] = useState(null);
     const { token } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
+            setIsLoading(true);
             const url = `${tokenUrl}/token`;
             fetch(url, {
                 credentials: "include",
@@ -30,10 +33,12 @@ const ListMyReviews = () => {
                     setUsername(data.account.username);
                 })
                 .catch((error) => console.error(error));
+            setIsLoading(false);
         };
         const fetchMyReviews = async () => {
             if (username) {
                 const url = `${tokenUrl}/api/accounts/${username}/reviews`;
+                setIsLoading(true);
                 fetch(url, {
                     credentials: "include",
                 })
@@ -58,6 +63,7 @@ const ListMyReviews = () => {
                     })
                     .catch((error) => console.error(error));
             }
+            setIsLoading(false);
         };
         handleFetchWithAPI();
         fetchMyReviews();
@@ -113,6 +119,10 @@ const ListMyReviews = () => {
 
     if (!token) {
         return <div>Please log in to see reviews</div>;
+    }
+
+    if (isLoading) {
+        return <Loading />;
     }
 
     const renderNullReviews = () => {
