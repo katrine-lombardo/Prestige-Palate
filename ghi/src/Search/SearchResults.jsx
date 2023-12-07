@@ -25,9 +25,9 @@ function SearchResults() {
         throw error("VITE_APP_API_HOST was undefined.")
     }
 
-    useEffect(() => {
-        setResults(location.state?.results || []);
-    }, [location.state]);
+    // useEffect(() => {
+    //     setResults(location.state?.results || []);
+    // }, [location.state]);
 
 
     const fetchFavorites = async () => {
