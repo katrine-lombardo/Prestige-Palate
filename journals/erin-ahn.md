@@ -1,5 +1,14 @@
 ## Tues, Dec 5
 Features/issues that you worked on and who you worked with:
+- Fixed the back end code of DELETE accounts to delete cookie. Previously, the token remained for a while until it timed out, so on the front end we had to add logout() under response.ok for the delete account feature.  But with this new change, we decided to delete the cookie and so on the front end, we set the setToken to null on the front end after the response.ok instead of logout().
+- Figured out how to from passlib.context import CryptContext on Thonny to generate some hashed_password for seed data. Looking to putting in initial 5 users in accounts table who are able to refer limited number of ppl to get signed up.
+- Got all the teammates to download necessary parts for logging in for deployment part. Looking into getting it all deployed slowly but surely.
+
+A reflection on any design conversations that you had:
+- Tested out different parts of the page (CREATE REVIEW and RESTAURANT DETAIL PAGE). Spoke with Katrine re: making sure the icons are dynamic to user icon and not hard coded in. Spoke with Trey re: various error messages that should pop up on the browser when create review fails. Spoke with Yaosheng re:Toggle v. Button and discussed which would work better (Yaosheng figured out how to load faster using UseContext).
+
+## Tues, Dec 5
+Features/issues that you worked on and who you worked with:
 - Completed Following/Followers back end (GET following by username, GET followers by username, POST following- only for users who are logged in, and DELETE following - only for users who are logged in.)
 
 A reflection on any design conversations that you had:

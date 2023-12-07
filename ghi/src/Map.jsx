@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, InfoWindow, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
 const containerStyle = {
@@ -10,46 +10,39 @@ const containerStyle = {
 const Map = ({ restaurants, viewport }) => {
     const navigate = useNavigate();
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-    const mapRef = useRef(null);
     const defaultCenter = { lat: -3.745, lng: -38.523 };
+
+    const [mapCenter, setMapCenter] = useState(defaultCenter);
+
+    useEffect(() => {
+        if (viewport) {
+            setMapCenter({
+                lat: (viewport.northeast.lat + viewport.southwest.lat) / 2,
+                lng: (viewport.northeast.lng + viewport.southwest.lng) / 2
+            });
+        }
+    }, [viewport]);
 
     const handleInfoWindowClick = (placeId) => {
         navigate(`/restaurants/${placeId}`);
     };
 
-    const onLoad = (map) => {
-        mapRef.current = map;
-    };
-
-    useEffect(() => {
-        if (viewport && mapRef.current) {
-            const bounds = new window.google.maps.LatLngBounds(
-                new window.google.maps.LatLng(viewport.southwest.lat, viewport.southwest.lng),
-                new window.google.maps.LatLng(viewport.northeast.lat, viewport.northeast.lng)
-            );
-            mapRef.current.fitBounds(bounds);
-        }
-    }, [viewport]);
-
     return (
         <GoogleMap
-            onLoad={onLoad}
             mapContainerStyle={containerStyle}
-            center={viewport ? undefined : defaultCenter}
+            center={mapCenter}
+            zoom={10}
         >
             {restaurants.map((restaurant) => (
-                restaurant.location?.latitude && restaurant.location?.longitude && (
-                    <Marker
-                        key={restaurant.id}
-                        position={{
-                            lat: restaurant.location?.latitude,
-                            lng: restaurant.location?.longitude
-                        }}
-                        onClick={() => setSelectedRestaurant(restaurant)}
-                    />
-                )
+                <MarkerF
+                    key={restaurant.id}
+                    position={{
+                        lat: restaurant.location.latitude,
+                        lng: restaurant.location.longitude
+                    }}
+                    onClick={() => setSelectedRestaurant(restaurant)}
+                />
             ))}
-
             {selectedRestaurant && (
                 <InfoWindow
                     position={{
@@ -58,13 +51,10 @@ const Map = ({ restaurants, viewport }) => {
                     }}
                     onCloseClick={() => setSelectedRestaurant(null)}
                 >
-                    <div
-                        style={{ textAlign: 'center', cursor: 'pointer' }}
-
-                    >
-                        <h2
-                            onClick={() => handleInfoWindowClick(selectedRestaurant.id)}
-                        >{selectedRestaurant.displayName.text}</h2>
+                    <div style={{ textAlign: 'center', cursor: 'pointer' }}>
+                        <h2 onClick={() => handleInfoWindowClick(selectedRestaurant.id)}>
+                            {selectedRestaurant.displayName.text}
+                        </h2>
                         <p>{selectedRestaurant.formattedAddress}</p>
                         <p>Rating: {selectedRestaurant.rating}</p>
                     </div>
