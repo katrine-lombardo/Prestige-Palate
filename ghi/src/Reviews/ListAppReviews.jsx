@@ -54,7 +54,7 @@ const ListAppReviews = () => {
     };
 
     if (loading) {
-        return <div>{Loading}</div>;
+        return <div><Loading /></div>;
     }
 
     if (reviews.length === 0) {
