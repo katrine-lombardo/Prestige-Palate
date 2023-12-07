@@ -17,7 +17,7 @@ const ListFollowing = ({ username }) => {
         const fetchFollowers = async () => {
             if (username) {
                 try {
-                    const url = `${tokenUrl}/api/accounts/followers/${username}`;
+                    const url = `${tokenUrl}/api/accounts/following/${username}`;
                     const response = await fetch(url, {
                         credentials: "include",
                     });
