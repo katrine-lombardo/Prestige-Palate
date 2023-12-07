@@ -54,10 +54,10 @@ const ReferralForm = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage("Submission unsuccessful.");
+                setMessage("Submission successful.");
                 setTimeout(() => {
                     setMessage("");
-                }, 1000);;
+                }, 3000);;
             } else {
                 setErrorMessage(data.detail || "Referral submission unsuccessful.");
             }
@@ -66,7 +66,7 @@ const ReferralForm = () => {
             setErrorMessage("Referral submission unsuccessful.");
             setTimeout(() => {
                 setErrorMessage("");
-            }, 1000);
+            }, 3000);
         }
     };
 

@@ -34,7 +34,10 @@ async def refer_email(
         result = accounts.refer_email(info, current_user["email"])
         return result
     except Exception as e:
-        return {"message": f"Error: {str(e)}"}
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error: {str(e)}",
+        )
 
 
 @router.get("/api/accounts/referred_by/{username}", response_model=List[str])
