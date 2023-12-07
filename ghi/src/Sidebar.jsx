@@ -21,11 +21,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </div>
             <div className="offcanvas-body d-flex flex-column">
                 <div>
-                    <NavLink className="nav-link" to="/" onClick={closeSidebar}>
-                        <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;Home
-                    </NavLink>
                     {token && (
                         <>
+                            <NavLink className="nav-link" to="/" onClick={closeSidebar}>
+                                <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;Home
+                            </NavLink>
                             <NavLink className="nav-link" to="/favorites" onClick={closeSidebar}>
                                 <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;Favorite
                             </NavLink>
@@ -42,7 +42,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     )}
                 </div>
                 <div className="mt-auto">
-                    {token && (
+                    {token ? (
                         <>
                             <div className="accordion text-left" id="accordionExample">
                                 <div className="accordion-item">
@@ -82,6 +82,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                             </div>
                             <NavLink className="nav-link" to="/logout" onClick={closeSidebar}>
                                 <i className="fa-solid fa-arrow-right-from-bracket" style={{ marginRight: '8px' }}></i>&nbsp;Log Out
+                            </NavLink>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink className="nav-link" to="/login" onClick={closeSidebar}>
+                                Log In
+                            </NavLink>
+                            <NavLink className="nav-link" to="/signup" onClick={closeSidebar}>
+                                Sign Up
                             </NavLink>
                         </>
                     )}
