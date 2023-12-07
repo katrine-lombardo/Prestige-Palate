@@ -49,7 +49,7 @@ const DeleteProfile = () => {
             setError(true);
             setTimeout(() => {
                 setError(false);
-            }, 1000);
+            }, 3000);
         }
     };
 

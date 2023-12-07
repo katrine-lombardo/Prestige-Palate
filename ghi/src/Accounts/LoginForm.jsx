@@ -47,7 +47,7 @@ const LoginForm = () => {
             setErrorMessage("An error occurred during login. Please try again.");
             setTimeout(() => {
                 setErrorMessage("");
-            }, 1000);
+            }, 3000);
         }
     };
 

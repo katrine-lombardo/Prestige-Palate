@@ -57,7 +57,7 @@ const UpdatePassword = () => {
             setPasswordMatchError("Passwords do not match. Please check and try again.");
             setTimeout(() => {
                 setPasswordMatchError("");
-            }, 1000);
+            }, 3000);
             return;
         } else {
             setPasswordMatchError("");
@@ -82,7 +82,7 @@ const UpdatePassword = () => {
                 setChangeSuccess(true);
                 setTimeout(() => {
                     setChangeSuccess(false);
-                }, 1000);
+                }, 3000);
             } else {
                 const data = await response.json();
                 throw new Error(data.detail || "An error occurred while changing the password.");
@@ -91,7 +91,7 @@ const UpdatePassword = () => {
             setChangeError(true);
             setTimeout(() => {
                 setChangeError(false);
-            }, 1000);
+            }, 3000);
         }
     };
 

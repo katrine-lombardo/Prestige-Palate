@@ -63,7 +63,7 @@ const SignupForm = () => {
             setErrorMessage("Failed to sign up.");
             setTimeout(() => {
                 setErrorMessage("");
-            }, 1000);
+            }, 3000);
         }
     };
 

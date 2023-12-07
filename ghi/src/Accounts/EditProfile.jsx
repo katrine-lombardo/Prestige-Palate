@@ -73,7 +73,7 @@ const EditProfile = () => {
                 setTimeout(() => {
                     setUpdateSuccess(false);
                     window.location.reload();
-                }, 1000);
+                }, 3000);
             } else {
                 const data = await response.json();
                 throw new Error(
@@ -85,7 +85,7 @@ const EditProfile = () => {
             setError(true);
             setTimeout(() => {
                 setError(false);
-            }, 1000);
+            }, 3000);
         }
     };
 
