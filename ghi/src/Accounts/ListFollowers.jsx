@@ -23,6 +23,7 @@ const ListFollowers = ({ username }) => {
                     .then((response) => response.json())
                     .then((data) => {
                         setFollowers(data);
+                        console.log(data)
                         setLoading(false);
                     })
                     .catch(
@@ -54,11 +55,8 @@ const ListFollowers = ({ username }) => {
                             <div className="row row-cols-1 row-cols-md-3 g-4">
                                 <div className="col">
                                     <div className="card h-100">
-                                        <img src="..." className="card-img-top" alt="..." />
                                         <div className="card-body">
-                                            <h5 className="card-title">{follower.follower_username}</h5>
-                                            {/* <p className="card-text">Total reviews: {follower.total_reviews}</p>
-                                            <p className="card-text">Average rating: {follower.average_rating}</p> */}
+                                            <h5 className="card-title">{follower}</h5>
                                         </div>
                                     </div>
                                 </div>
