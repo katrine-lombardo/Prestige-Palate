@@ -202,10 +202,13 @@ async def check_existing_review(
                 detail="Cannot check existing review with these credentials",
             )
 
-        has_existing_review = reviews.has_existing_review(
+        existing_review = reviews.get_existing_review_id(
             place_id, current_user["username"]
         )
 
-        return {"hasExistingReview": has_existing_review}
+        if existing_review:
+            return {"hasExistingReview": True, "reviewId": existing_review}
+        else:
+            return {"hasExistingReview": False, "reviewId": None}
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")

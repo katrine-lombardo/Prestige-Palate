@@ -21,6 +21,8 @@ const DetailRestaurant = () => {
     const [activeTab, setActiveTab] = useState('reviews');
     const { favorites, setFavorites } = useStore();
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [showEditReviewModal, setShowEditReviewModal] = useState(false);
+    const [existingReviewId, setExistingReviewId] = useState(null);
 
     useEffect(() => {
         fetchDetails(place_id);
@@ -85,14 +87,59 @@ const DetailRestaurant = () => {
         setActiveTab(newActiveTab);
     };
 
-
-    const addReview = () => {
+    const handleAddReview = async () => {
         if (!token) {
-            promptLogin("Only logged-in users can add reviews.");
-            return;
+            setShowLoginPrompt(true);
+        } else {
+            const data = await checkExistingReview();
+
+            if (data && data.hasExistingReview) {
+                setExistingReviewId(data.reviewId);
+                setShowEditReviewModal(true);
+            } else {
+                navigate(`/create-review/${place_id}`);
+            }
         }
-        navigate(`/create-review/${place_id}`);
     };
+
+    const checkExistingReview = async () => {
+        try {
+            const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/reviews/check-existing`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.hasExistingReview && data.reviewId) {
+                    setExistingReviewId(data.reviewId);
+                    setShowEditReviewModal(true);
+                    return data;
+                } else {
+                    setExistingReviewId(null);
+                    setShowEditReviewModal(false);
+                    return data;
+                }
+            } else {
+                console.error('Server responded with an error when checking for existing review');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error checking for existing review:', error);
+            return null;
+        }
+    };
+
+    const navigateToEditReview = () => {
+        if (existingReviewId) {
+            navigate(`/update-review/${existingReviewId}`);
+        } else {
+            console.error('No existing review ID found');
+        }
+        setShowEditReviewModal(false);
+    };
+
 
     if (!restaurantDetails) {
         return <div>Loading...</div>;
@@ -196,6 +243,27 @@ const DetailRestaurant = () => {
                     </div>
                 </div>
             </div>
+            {showEditReviewModal && existingReviewId && (
+            <div className={`modal ${showEditReviewModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showEditReviewModal ? 'block' : 'none' }}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Edit Review</h5>
+                            <button type="button" className="btn-close" onClick={() => setShowEditReviewModal(false)}></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>You have already reviewed this restaurant. Would you like to edit your review?</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={navigateToEditReview}>
+                                Edit Review
+                            </button>
+                            <button type="button" className="btn btn-secondary" onClick={() => setShowEditReviewModal(false)}>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            )}
         </div>
     );
 
