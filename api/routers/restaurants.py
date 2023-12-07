@@ -42,19 +42,17 @@ def text_search(
     lo_lon: float = None,
 ):
     try:
-        url = \
-            f"https://places.googleapis.com/" \
-            f"v1/places:searchText"
+        url = "https://places.googleapis.com/v1/places:searchText"
 
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": \
-                f"places.id," \
-                f"places.formattedAddress," \
-                f"places.rating," \
-                f"places.displayName.text," \
-                f"places.location",
+            "X-Goog-FieldMask":
+                "places.id,"
+                "places.formattedAddress,"
+                "places.rating,"
+                "places.displayName.text,"
+                "places.location",
         }
 
         request_body = {
@@ -98,7 +96,19 @@ async def restaurant_details(place_id: str):
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": "id,types,internationalPhoneNumber,formattedAddress,rating,websiteUri,regularOpeningHours.weekdayDescriptions,priceLevel,userRatingCount,displayName,primaryType,reviews",
+            "X-Goog-FieldMask":
+                "id,"
+                "types,"
+                "internationalPhoneNumber,"
+                "formattedAddress,"
+                "rating,"
+                "websiteUri,"
+                "regularOpeningHours.weekdayDescriptions,"
+                "priceLevel,"
+                "userRatingCount,"
+                "displayName,"
+                "primaryType,"
+                "reviews",
         }
 
         response = requests.get(url, headers=headers)
