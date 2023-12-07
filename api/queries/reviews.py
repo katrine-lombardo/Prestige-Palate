@@ -79,7 +79,7 @@ class ReviewQueries:
                         [review_id],
                     )
                     return cur.rowcount > 0
-        except Exception as e:
+        except Exception:
             return Error(message="Failed to get delete review")
 
     def create_review(
@@ -184,7 +184,7 @@ class ReviewQueries:
                         return ReviewOut(**updated_review)
                     else:
                         return ValueError("Failed to update review")
-        except Exception as e:
+        except Exception:
             return ValueError("Failed to update review")
 
     def get_app_reviews_for_restaurant(self, place_id: str) -> List[ReviewOut]:
@@ -209,7 +209,7 @@ class ReviewQueries:
                         }
                         reviews.append(ReviewOut(**row_dict))
                     return reviews
-        except Exception as e:
+        except Exception:
             return Error(message="Failed to get app reviews")
 
     def has_existing_review(self, place_id: str, username: str) -> bool:
@@ -226,7 +226,7 @@ class ReviewQueries:
                         [place_id, username],
                     )
                     return cur.fetchone()[0]
-        except Exception as e:
+        except Exception:
             return False
 
     def get_existing_review_id(
@@ -244,5 +244,5 @@ class ReviewQueries:
                     )
                     result = cur.fetchone()
                     return result[0] if result else None
-        except Exception as e:
+        except Exception:
             return None
