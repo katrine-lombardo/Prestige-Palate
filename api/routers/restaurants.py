@@ -42,12 +42,19 @@ def text_search(
     lo_lon: float = None,
 ):
     try:
-        url = "https://places.googleapis.com/v1/places:searchText"
+        url = \
+            f"https://places.googleapis.com/" \
+            f"v1/places:searchText"
 
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": "places.id,places.formattedAddress,places.rating,places.displayName.text,places.location",
+            "X-Goog-FieldMask": \
+                f"places.id," \
+                f"places.formattedAddress," \
+                f"places.rating," \
+                f"places.displayName.text," \
+                f"places.location",
         }
 
         request_body = {
@@ -77,7 +84,7 @@ def text_search(
                 detail=f"Request failed with status code"
                 f"{response.status_code}",
             )
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
@@ -101,7 +108,8 @@ async def restaurant_details(place_id: str):
         else:
             raise HTTPException(
                 status_code=500,
-                detail=f"Request failed with status code {response.status_code}",
+                detail=f"Request failed with status code" 
+                f"{response.status_code}",
             )
         return data
     except Exception as e:
@@ -111,7 +119,7 @@ async def restaurant_details(place_id: str):
 @router.get("/api/restaurants/{place_id}/photos")
 async def restaurant_photos(place_id: str):
     try:
-        url = f"https://places.googleapis.com/" f"v1/places/{place_id}"
+        url = f"https://places.googleapis.com/v1/places/{place_id}"
 
         headers = {
             "Content-Type": "application/json",
