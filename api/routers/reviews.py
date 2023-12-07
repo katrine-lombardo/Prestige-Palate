@@ -14,7 +14,8 @@ from fastapi import (
     status,
 )
 from authenticator import authenticator
-import requests, os
+import requests
+import os
 
 router = APIRouter()
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -41,7 +42,7 @@ async def get_google_reviews_for_restaurant(place_id: str):
                 status_code=500,
                 detail=f"Request failed with status code {response.status_code}",
             )
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=500, detail="Not a valid restaurant place id"
         )
@@ -63,7 +64,7 @@ async def get_app_reviews_for_restaurant(
                 detail="No app reviews for this restaurant",
             )
         return success
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No reviews found for this restaurant",
@@ -86,7 +87,7 @@ async def get_reviews_by_account(
                 detail="No reviews found for this user",
             )
         return success
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
@@ -119,7 +120,7 @@ async def create_review(
         return reviews.create_review(
             place_id, review, current_user["username"]
         )
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
@@ -145,7 +146,7 @@ async def update_review(
                 detail="Review not found",
             )
         return success
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Review not found",
@@ -177,7 +178,7 @@ async def delete_review(
             "status_code": status.HTTP_204_NO_CONTENT,
             "detail": "Review successfully deleted.",
         }
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Review not found",
@@ -210,5 +211,5 @@ async def check_existing_review(
             return {"hasExistingReview": True, "reviewId": existing_review}
         else:
             return {"hasExistingReview": False, "reviewId": None}
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
