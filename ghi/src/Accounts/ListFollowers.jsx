@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import Loading from '../Loading';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -9,7 +10,7 @@ if (!tokenUrl) {
 
 const ListFollowers = ({ username }) => {
     const [followers, setFollowers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const { token } = useAuthContext();
 
@@ -56,21 +57,49 @@ const ListFollowers = ({ username }) => {
                         })
                     );
                     setFollowers(followersWithReviewData);
-                    setLoading(false);
+                    setIsLoading(false);
                 } catch (error) {
                     console.error("Fetch error:", error);
                     setError(error.message);
-                    setLoading(false);
+                    setIsLoading(false);
                 }
             }
         };
         fetchFollowers();
     }, [token, username]);
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    const handleFollow = async (followerUsername) => {
+        try {
+            const followUrl = `${tokenUrl}/api/accounts/follow/`;
+            const response = await fetch(followUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    following_username: followerUsername,
+                }),
+            });
+
+            if (response.ok) {
+                console.log(`You are now following ${followerUsername}`);
+            } else {
+                console.error(`Failed to follow ${followerUsername}`);
+            }
+        } catch (error) {
+            console.error("Error following:", error);
+        }
+    };
+
     const renderNullFollowers = () => (
         <div>
             <div className="container mt-4">
-                {loading ? "Loading followers..." : "No followers here. Yet..."}
+                {<Loading /> ? "Loading followers..." : "No followers here. Yet..."}
             </div>
         </div>
     );
@@ -78,12 +107,12 @@ const ListFollowers = ({ username }) => {
     return (
         <div>
             <div className="followers-list">
-                {followers.length > 0
-                    ? followers.map((follower, index) => (
-                        <div key={index} className="follower-card">
-                            <div className="row row-cols-1 row-cols-md-3 g-4">
-                                <div className="col">
-                                    <div className="card h-100">
+                <div className="row row-cols-1 row-cols-md-3 g-4">
+                    {followers.length > 0
+                        ? followers.map((follower, index) => (
+                            <div key={index} className="col">
+                                <div className="follower-card">
+                                    <div className="card h-90">
                                         <div className="card-body mt-4">
                                             <img
                                                 src={follower.profile_icon_url || "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"}
@@ -103,15 +132,27 @@ const ListFollowers = ({ username }) => {
                                             <h5 className="card-title text-center mb-4">{follower.follower}</h5>
                                             <div className="card-text text-center">
                                                 <p>Average Rating: {follower.average_rating.toFixed(1)}</p>
+                                                <div>
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <span key={star} style={{ color: star <= follower.average_rating ? "gold" : "gray", }}>★</span>
+                                                    ))}
+                                                </div>
                                                 <p>Total Reviews: {follower.total_reviews}</p>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-light"
+                                                    onClick={() => handleFollow(follower.follower)}
+                                                >
+                                                    <small>+ Follow {follower.follower}</small>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
-                    : renderNullFollowers()}
+                        ))
+                        : renderNullFollowers()}
+                </div>
             </div>
         </div>
     );

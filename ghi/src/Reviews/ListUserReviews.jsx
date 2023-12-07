@@ -42,6 +42,30 @@ const ListUserReviews = () => {
         fetchUserReviews();
     }, [username]);
 
+    const handleFollow = async (followerUsername) => {
+        try {
+            const followUrl = `${tokenUrl}/api/accounts/follow/`;
+            const response = await fetch(followUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    following_username: followerUsername,
+                }),
+            });
+
+            if (response.ok) {
+                console.log(`You are now following ${followerUsername}`);
+            } else {
+                console.error(`Failed to follow ${followerUsername}`);
+            }
+        } catch (error) {
+            console.error("Error following:", error);
+        }
+    };
+
     if (isLoading) {
         return <Loading />;
     }
@@ -56,9 +80,36 @@ const ListUserReviews = () => {
 
     return (
         <div>
-
             <div className="container mb-4">
-                <h3>{username}'s Prestigious Palate</h3>
+                <div className="row">
+                    <div className="col-1">
+                        <img
+                            src={reviews.length > 0 ? reviews[0].profile_icon_url : 'default-profile-icon-url'}
+                            alt="User"
+                            className="user-icon"
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                border: '2px solid black',
+                                borderRadius: '50%',
+                                padding: '2px',
+                                objectFit: 'cover',
+                                margin: 'auto',
+                                display: 'block',
+                            }}
+                        />
+                    </div>
+                    <div className="col-7">
+                        <h3>{username}'s Prestigious Palate</h3>
+                        <button
+                            type="button"
+                            className="btn btn-light"
+                            onClick={() => handleFollow(username)}
+                        >
+                            <small>+ Follow {username}</small>
+                        </button>
+                    </div>
+                </div>
             </div>
             <nav className="container mb-3">
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
