@@ -51,7 +51,6 @@ class ChangePassword(BaseModel):
     confirm_password: str
 
 
-
 class AccountQueries:
     def get_all_icons(self) -> Union[Error, List[Icon]]:
         try:
@@ -71,7 +70,7 @@ class AccountQueries:
                             record[column.name] = row[i]
                         accounts.append(Icon(**record))
                     return accounts
-        except Exception as e:
+        except Exception:
             return {"message": "Could not get all account information"}
 
     def get_account_by_email(
@@ -96,9 +95,10 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 except Exception:
                     return {
-                        "message": "Could not get accounts record for this accounts email"
+                        "message":
+                        "Could not get accounts record for this accounts email"
                     }
-                
+
     def email_exists_in_referral(self, email: str) -> bool:
         with pool.connection() as conn:
             with conn.cursor() as cur:
