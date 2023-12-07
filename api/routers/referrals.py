@@ -9,13 +9,15 @@ from queries.referrals import (
 )
 from authenticator import authenticator
 from pydantic import BaseModel
-from typing import Union
+from typing import Union, List
+
 
 class Error(BaseModel):
     message: str
 
 
 router = APIRouter()
+
 
 @router.post("/api/accounts/refer/", response_model=Union[ReferralOut, Error])
 async def refer_email(
@@ -33,3 +35,12 @@ async def refer_email(
         return result
     except Exception as e:
         return {"message": f"Error: {str(e)}"}
+
+
+@router.get("/api/accounts/referred_by/{username}", response_model=List[str])
+async def get_referrals_given(
+    email: str,
+    accounts: ReferralQueries = Depends(),
+):
+    followers = accounts.get_referrals_given(email)
+    return followers

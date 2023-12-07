@@ -105,7 +105,7 @@ class AccountQueries:
                 cur.execute(
                     """
                     SELECT COUNT(*)
-                    FROM referral
+                    FROM referrals
                     WHERE referred = %s;
                     """,
                     [email],

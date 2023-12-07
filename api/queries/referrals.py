@@ -1,5 +1,6 @@
 from queries.pool import pool
 from pydantic import BaseModel
+from typing import List
 
 
 class Error(BaseModel):
@@ -16,7 +17,6 @@ class ReferralOut(BaseModel):
 
 
 class ReferralQueries:
-
     def refer_email(self, info: ReferralIn, email: str) -> ReferralOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -27,7 +27,7 @@ class ReferralQueries:
                 ]
                 cur.execute(
                     """
-                    INSERT INTO referral (existing_user, referred)
+                    INSERT INTO referrals (existing_user, referred)
                     VALUES (%s, %s)
                     RETURNING existing_user, referred
                     """,
@@ -40,3 +40,17 @@ class ReferralQueries:
                     for i, column in enumerate(cur.description):
                         record[column.name] = row[i]
                     return ReferralOut(**record)
+
+    def get_referrals_given(self, email: str) -> List[str]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT referred
+                    FROM referrals
+                    WHERE existing_user = %s;
+                    """,
+                    [email],
+                )
+                referred = [row[0] for row in cur.fetchall()]
+                return referred
