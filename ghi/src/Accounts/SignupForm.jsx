@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const SignupForm = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -32,7 +37,7 @@ const SignupForm = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8000/api/accounts", {
+            const response = await fetch(`${tokenUrl}/api/accounts`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

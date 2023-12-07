@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Nav from "./Nav";
 import HomePage from "./HomePage";
+import ReferralForm from "./Accounts/ReferralForm"
 import SignupForm from "./Accounts/SignupForm";
 import LoginForm from "./Accounts/LoginForm";
 import EditProfile from "./Accounts/EditProfile";
@@ -54,6 +55,7 @@ function App() {
                                 <Route path="/login" element={<LoginForm />} />
                                 <Route path="/logout" element={<LogoutButton />} />
                                 <Route path="/sidebar" element={<Sidebar />} />
+                                <Route path="/referral" element={<ReferralForm />} />
                                 <Route path="/editprofile" element={<EditProfile />} />
                                 <Route path="/deleteprofile" element={<DeleteProfile />} />
                                 <Route path="/updatepassword" element={<UpdatePassword />} />
