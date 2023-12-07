@@ -148,6 +148,7 @@ async def restaurant_photos(place_id: str):
                 f"{response.status_code}",
             )
         if "photos" in data:
+            data["photos"] = data["photos"][:4]
             for photo in data["photos"]:
                 photo_reference = photo.get("name")
                 if photo_reference:
