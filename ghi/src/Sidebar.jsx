@@ -9,17 +9,18 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             toggleSidebar();
         }
     };
+    const handleCloseClick = () => {
+        toggleSidebar();
+    };
 
     return (
-        <div className={`sidebar ${isOpen ? "open" : ""}`}>
-            <div className="sidebar-upper">
-                <button style={{ backgroundColor: 'rgba(255, 255, 255, 0)', border: 'none'}} className="close-btn">
-                    &times;
-                </button>
+        <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden' }}>
+            <div className="offcanvas-header">
+                <h5 className="offcanvas-title">Menu</h5>
+                <button type="button" className="btn-close text-reset" aria-label="Close" onClick={handleCloseClick}></button>
             </div>
-
-            <div className="sidebar-lower">
-                <NavLink className="nav-link" to="/" onClick={closeSidebar}>
+            <div className="offcanvas-body">
+                <NavLink className="nav-link" to="/" onClick={handleCloseClick}>
                     <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;Home
                 </NavLink>
                 {token ? (
@@ -36,7 +37,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         <NavLink className="nav-link" to="/referral" onClick={closeSidebar}>
                             <i className="fa-solid fa-people-group" style={{ marginRight: '8px' }}></i>&nbsp;Refer a Friend
                         </NavLink>
-                        
+
                         <div className="accordion text-left" id="accordionExample">
                             <div className="accordion-item">
                                 <div className="accordion-header" id="headingSettings">
@@ -80,10 +81,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     </>
                 ) : (
                     <>
-                            <NavLink className="nav-link" to="/login" onClick={closeSidebar}>
+                        <NavLink className="nav-link" to="/login" onClick={closeSidebar}>
                             <i className="fa-solid fa-arrow-right-to-bracket" style={{ marginRight: '8px' }}></i>&nbsp;Log In
                         </NavLink>
-                            <NavLink className="nav-link" to="/signup" onClick={closeSidebar}>
+                        <NavLink className="nav-link" to="/signup" onClick={closeSidebar}>
                             <i className="fa-solid fa-user-plus" style={{ marginRight: '8px' }}></i>&nbsp;Sign Up
                         </NavLink>
                     </>

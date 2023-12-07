@@ -37,6 +37,11 @@ if (!tokenUrl) {
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+    const closeSidebar = () => {
+        if (isSidebarOpen) {
+            setIsSidebarOpen(false);
+        }
+    };
     return (
         <LoadScript
             googleMapsApiKey={googleApiKey}
@@ -46,8 +51,23 @@ function App() {
                 <AuthProvider baseUrl={tokenUrl}>
                     <ContextProvider>
                         <Nav toggleSidebar={toggleSidebar} />
-                        <Sidebar isOpen={isSidebarOpen} />
-                        <div className="container">
+                        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+                        {isSidebarOpen && (
+                            <div
+                                className="backdrop"
+                                onClick={closeSidebar}
+                                style={{
+                                    position: 'fixed',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: 'rgba(0,0,0,0.5)',
+                                    zIndex: 2
+                                }}
+                            />
+                        )}
+                        <div className="container" onClick={closeSidebar}>
                             <Routes>
                                 <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
                                 <Route path="/signup" element={<SignupForm />} />
