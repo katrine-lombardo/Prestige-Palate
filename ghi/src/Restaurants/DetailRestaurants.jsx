@@ -151,7 +151,7 @@ const DetailRestaurant = () => {
     }
 
     if (!restaurantDetails) {
-        return null;
+        return <div><Loading /></div>;
     }
 
     return (
