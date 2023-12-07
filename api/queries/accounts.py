@@ -1,6 +1,7 @@
 from queries.pool import pool
 from pydantic import BaseModel
 from typing import List, Optional, Union
+from fastapi import HTTPException, status
 
 
 class Error(BaseModel):
@@ -50,22 +51,6 @@ class ChangePassword(BaseModel):
     confirm_password: str
 
 
-class FollowIn(BaseModel):
-    following_username: str
-
-
-class FollowOut(BaseModel):
-    follower_username: str
-    following_username: str
-
-
-class FollowersOut(BaseModel):
-    follower_username: str
-
-
-class FollowingOut(BaseModel):
-    following_username: str
-
 
 class AccountQueries:
     def get_all_icons(self) -> Union[Error, List[Icon]]:
@@ -113,10 +98,29 @@ class AccountQueries:
                     return {
                         "message": "Could not get accounts record for this accounts email"
                     }
+                
+    def email_exists_in_referral(self, email: str) -> bool:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT COUNT(*)
+                    FROM referral
+                    WHERE referred = %s;
+                    """,
+                    [email],
+                )
+                count = cur.fetchone()[0]
+                return count > 0
 
     def create_account(
         self, info: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
+        if not self.email_exists_in_referral(info.email):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="This email is not eligible for account creation.",
+            )
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 params = [
@@ -136,7 +140,6 @@ class AccountQueries:
                     """,
                     params,
                 )
-
                 record = None
                 row = cur.fetchone()
                 if row is not None:
@@ -166,6 +169,27 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 else:
                     return None
+
+    def get_all_accounts(self) -> Union[Error, List[AccountOutWithPassword]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT *
+                        FROM accounts
+                        ORDER BY username;
+                        """
+                    )
+                    accounts = []
+                    for row in cur.fetchall():
+                        record = {}
+                        for i, column in enumerate(cur.description):
+                            record[column.name] = row[i]
+                        accounts.append(AccountOutWithPassword(**record))
+                    return accounts
+        except Exception as e:
+            return {"message": "Could not get all account information"}
 
     def delete_account(self, account_id: int) -> bool:
         with pool.connection() as conn:
@@ -219,73 +243,3 @@ class AccountQueries:
                     """,
                     params,
                 )
-
-    def follow_account(self, info: FollowIn, username: str) -> FollowOut:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                follower_username = username
-                params = [
-                    follower_username,
-                    info.following_username,
-                ]
-                cur.execute(
-                    """
-                    INSERT INTO follows (follower_username, following_username)
-                    VALUES (%s, %s)
-                    RETURNING follower_username, following_username
-                    """,
-                    params,
-                )
-                record = None
-                row = cur.fetchone()
-                if row is not None:
-                    record = {}
-                    for i, column in enumerate(cur.description):
-                        record[column.name] = row[i]
-                    return FollowOut(**record)
-
-    def unfollow_account(self, info: FollowIn, username: str) -> bool:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                follower_username = username
-                params = [
-                    follower_username,
-                    info.following_username,
-                ]
-                cur.execute(
-                    """
-                    DELETE FROM follows
-                    WHERE follower_username = %s AND following_username = %s
-                    RETURNING follower_username, following_username
-                    """,
-                    params,
-                )
-                return cur.rowcount > 0
-
-    def get_followers_by_username(self, username: str) -> FollowersOut:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT follower_username
-                    FROM follows
-                    WHERE following_username = %s;
-                    """,
-                    [username],
-                )
-                followers = [row[0] for row in cur.fetchall()]
-                return followers
-
-    def get_following_by_username(self, username: str) -> List[str]:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT following_username
-                    FROM follows
-                    WHERE follower_username = %s;
-                    """,
-                    [username],
-                )
-                following = [row[0] for row in cur.fetchall()]
-                return following

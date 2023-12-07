@@ -2,12 +2,14 @@ from fastapi import FastAPI, APIRouter, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
-from routers import accounts, restaurants, photos, reviews, reviews, favorites
+from routers import accounts, follow, referrals, restaurants, photos, reviews, reviews, favorites
 
 app = FastAPI()
 
 app.include_router(authenticator.router)
+app.include_router(follow.router, tags=["Follow"])
 app.include_router(accounts.router, tags=["Accounts"])
+app.include_router(referrals.router, tags=["Referrals"])
 app.include_router(photos.router, tags=["Photos"])
 app.include_router(reviews.router, tags=["Reviews"])
 app.include_router(restaurants.router, tags=["Restaurants"])

@@ -9,18 +9,17 @@ from fastapi import (
 from queries.accounts import (
     AccountIn,
     AccountOut,
+    AccountOutWithPassword,
     AccountQueries,
     DuplicateAccountError,
     ChangePassword,
     EditProfile,
     Icon,
-    FollowIn,
-    FollowOut,
 )
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 from pydantic import BaseModel
-from typing import Union, List, Dict, Optional
+from typing import Union, List
 
 
 class AccountForm(BaseModel):
@@ -90,6 +89,17 @@ async def create_account(
     form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, accounts)
     return AccountToken(account=account, **token.dict())
+
+
+@router.get(
+    "/api/accounts",
+    response_model=Union[List[AccountOutWithPassword], Error],
+)
+async def get_all_accounts(
+    accounts: AccountQueries = Depends(),
+    account_data: dict = Depends(authenticator.try_get_current_account_data),
+):
+    return accounts.get_all_accounts()
 
 
 @router.get("/api/accounts/{account_id}", response_model=AccountOut)
@@ -182,57 +192,3 @@ async def delete_account(
         secure=secure,
     )
     return accounts.delete_account(account_id)
-
-
-@router.post("/api/accounts/follow/", response_model=Union[FollowOut, Error])
-async def follow_account(
-    info: FollowIn,
-    accounts: AccountQueries = Depends(),
-    current_user: dict = Depends(authenticator.try_get_current_account_data),
-):
-    if not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not authenticated.",
-        )
-    try:
-        result = accounts.follow_account(info, current_user["username"])
-        return result
-    except Exception as e:
-        return {"message": f"Error: {str(e)}"}
-
-
-@router.delete("/api/accounts/unfollow/", response_model=bool)
-async def unfollow_account(
-    info: FollowIn,
-    accounts: AccountQueries = Depends(),
-    current_user: dict = Depends(authenticator.try_get_current_account_data),
-):
-    if not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not authenticated.",
-        )
-    try:
-        result = accounts.unfollow_account(info, current_user["username"])
-        return result
-    except Exception as e:
-        return {"message": f"Error: {str(e)}"}
-
-
-@router.get("/api/accounts/followers/{username}", response_model=List[str])
-async def get_followers_by_username(
-    username: str,
-    accounts: AccountQueries = Depends(),
-):
-    followers = accounts.get_followers_by_username(username)
-    return followers
-
-
-@router.get("/api/accounts/following/{username}", response_model=List[str])
-async def get_following_by_username(
-    username: str,
-    accounts: AccountQueries = Depends(),
-):
-    following = accounts.get_following_by_username(username)
-    return following
