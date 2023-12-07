@@ -21,6 +21,9 @@ const Sidebar = ({ isOpen }) => {
                         <NavLink className="nav-link" to="/friends" onClick={isOpen}>
                             Friends
                         </NavLink>
+                        <NavLink className="nav-link" to="/referral" onClick={isOpen}>
+                            Refer a Friend
+                        </NavLink>
                         <NavLink className="nav-link" to="/myreviews" onClick={isOpen}>
                             My Reviews
                         </NavLink>
