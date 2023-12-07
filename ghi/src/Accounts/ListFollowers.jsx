@@ -9,7 +9,6 @@ if (!tokenUrl) {
 
 const ListFollowers = ({ username }) => {
     const [followers, setFollowers] = useState([]);
-    const [followerReviewData, setFollowerReviewData] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { token } = useAuthContext();
@@ -43,7 +42,6 @@ const ListFollowers = ({ username }) => {
                         })
                     );
                     setFollowers(reviewsWithFollowerData);
-                    console.log("reviews with follower data: ", reviewsWithFollowerData)
                     setLoading(false);
                 } catch (error) {
                     console.error("Fetch error:", error);
