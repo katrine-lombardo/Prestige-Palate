@@ -38,7 +38,7 @@ async def refer_email(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"This email has a referral to sign up.",
+            detail="This email has a referral to sign up.",
         )
 
 
