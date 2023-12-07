@@ -19,12 +19,12 @@ steps = [
     [
         """
         INSERT INTO accounts
-        (username, first_name, last_name, email, hashed_password) VALUES 
-        ('erin_ahn', 'Erin', 'Ahn', 'erin.ahn@example.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
-        ('michael_boateng', 'Michael', 'Boateng', 'michael.boateng@example.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
-        ('katrine_lombardo', 'Katrine', 'Lombardo', 'katrine.lombardo@example.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
-        ('trey_mcgee', 'Trey', 'McGee', 'trey.mcgee@example.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
-        ('yaosheng_yin', 'Yaosheng', 'Yin', 'yaosheng.yin@example.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu');
+        (username, first_name, last_name, email, hashed_password) VALUES
+        ('erin_ahn', 'Erin', 'Ahn', 'erin_ahn@email.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
+        ('michael_boateng', 'Michael', 'Boateng', 'michael_boateng@email.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
+        ('katrine_lombardo', 'Katrine', 'Lombardo', 'katrine_lombardo@email.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
+        ('trey_mcgee', 'Trey', 'McGee', 'trey_mcgee@email.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu'),
+        ('yaosheng_yin', 'Yaosheng', 'Yin', 'yaosheng_yin@email.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu');
         """,
         """
         """
