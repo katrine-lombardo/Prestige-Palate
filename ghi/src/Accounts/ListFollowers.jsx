@@ -23,8 +23,6 @@ const ListFollowers = ({ username }) => {
                         credentials: "include",
                     });
                     const data = await response.json();
-                    console.log("data: ", data);
-
                     const reviewsWithFollowerData = await Promise.all(
                         data.map(async (follower_username) => {
                             try {
@@ -39,7 +37,7 @@ const ListFollowers = ({ username }) => {
                                 console.error("Error fetching review:", error);
                                 return {
                                     follower: follower_username,
-                                    profile_icon_url: null, // Set a default value or handle the error as needed
+                                    profile_icon_url: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
                                 };
                             }
                         })
@@ -76,9 +74,25 @@ const ListFollowers = ({ username }) => {
                                 <div className="col">
                                     <div className="card h-100">
                                         <div className="card-body">
+                                            <img
+                                                src={follower.profile_icon_url || "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"}
+                                                alt={follower.follower}
+                                                className="user-icon"
+                                                style={{
+                                                    width: '40px',
+                                                    height: '40px',
+                                                    borderRadius: '5%',
+                                                    objectFit: 'cover',
+                                                    margin: 'auto',
+                                                    display: 'block',
+                                                }}
+                                            />
                                             <h5 className="card-title">{follower.follower}</h5>
-                                            {/* <img src={follower.profile_icon_url} alt={follower.follower_username} /> */}
-                                            <p>{follower.profile_icon_url}</p>
+                                            <div className="card-text">
+                                                <p>{follower.profile_icon_url}</p>
+                                                <p>{follower.profile_icon_url}</p>
+                                                <p>{follower.follower}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
