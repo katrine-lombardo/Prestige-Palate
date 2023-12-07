@@ -64,7 +64,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                             <i className="fa-solid fa-user-pen" style={{ marginRight: '8px' }}></i>&nbsp;Edit Profile
                                         </NavLink>
                                         <NavLink className="nav-link" to="/updatepassword" onClick={closeSidebar}>
-                                            <i className="fa-solid fa-file-pen" style={{ marginRight: '8px' }}></i>&nbsp;&nbsp;Update Password
+                                            <i className="fa-solid fa-key" style={{ marginRight: '8px' }}></i>&nbsp;&nbsp;Update Password
                                         </NavLink>
                                         <NavLink className="nav-link" to="/deleteprofile" onClick={closeSidebar}>
                                             <i className="fa-solid fa-user-xmark" style={{ marginRight: '8px' }}></i>&nbsp;Delete Profile
