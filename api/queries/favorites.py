@@ -12,7 +12,7 @@ class FavoriteQueries:
                 cur.execute(
                     """
                     INSERT INTO favorites (user_id, place_id)
-                    VALUES (%s, %s) 
+                    VALUES (%s, %s)
                     ON CONFLICT DO NOTHING;
                     """,
                     (user_id, place_id),
@@ -37,9 +37,9 @@ class FavoriteQueries:
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                    DELETE 
-                    FROM favorites 
-                    WHERE user_id = %s 
+                    DELETE
+                    FROM favorites
+                    WHERE user_id = %s
                     AND place_id = %s;
                     """,
                     (user_id, place_id),

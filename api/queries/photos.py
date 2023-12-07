@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import List
 from queries.pool import pool
 from typing import List, Optional
 
@@ -22,7 +21,7 @@ class PhotoQueries:
                             """,
                         [username],
                     )
-                    photo_url_dict = {}  # To group photo URLs by username
+                    photo_url_dict = {}
                     for row in cur.fetchall():
                         row_dict = {
                             column.name: value
@@ -34,15 +33,15 @@ class PhotoQueries:
                                 "username": current_username,
                                 "photo_urls": [],
                             }
-                        photo_url_dict[current_username]["photo_urls"].extend(
-                            row_dict["photo_urls"]
+                        (
+                            photo_url_dict[current_username][
+                                "photo_urls"
+                            ].extend(row_dict["photo_urls"])
                         )
-
-                    # Convert the dictionary values to a list of PhotoOut objects
                     photo_urls = [
                         PhotoOut(
                             username=data["username"],
-                            photo_urls=data["photo_urls"]
+                            photo_urls=data["photo_urls"],
                         )
                         for data in photo_url_dict.values()
                     ]

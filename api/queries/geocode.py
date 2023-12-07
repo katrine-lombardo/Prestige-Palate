@@ -2,6 +2,7 @@ import os
 import requests
 from pydantic import BaseModel
 
+
 api_key = os.getenv('GOOGLE_API_KEY')
 
 
