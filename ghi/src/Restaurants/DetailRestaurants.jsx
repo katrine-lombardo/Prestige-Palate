@@ -4,8 +4,6 @@ import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import About from './About';
 import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
-import BigStarCard from './StarCardBig';
-import StarCard from './StarCard';
 import { useStore } from '../ContextStore';
 import Loading from '../Loading'
 
@@ -156,8 +154,56 @@ const DetailRestaurant = () => {
 
     return (
         <div className="container mt-4">
+            <div className="card">
+                <div className="row align-items-end">
+                    <div className="col-8"></div>
+                    <div className="col-2 align-items-end">
+                        <div className="switch">
+                            <input
+                                type="checkbox"
+                                id={`favorite-toggle-detail-${place_id}`}
+                                checked={isFavorite}
+                                onChange={toggleFavorite}
+                            />
+                            <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
+                        </div>
+                    </div>
+                </div>
+                <div className="row align-items-center">
+                    <div className="col-8">
+                        <h1>{restaurantDetails.displayName.text}</h1>
+                    </div>
+                    <div className="col-2">
+
+                    </div>
+                </div>
+                <div className="row align-items-center">
+                    <div className="col-8">
+                        <div className="text-center mb-3">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    style={{
+                                        color: star <= restaurantDetails.rating ? "gold" : "gray",
+                                        fontSize: '40px'
+                                    }}>
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="col-2">
+                        <div className="text-center mb-3">
+                            <button className="btn btn-primary mr-2" onClick={handleAddReview}>Add a Review</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             {restaurantDetails && restaurantDetails.displayName &&
-                <h1 className="text-center mb-3">{restaurantDetails.displayName.text}</h1>
+                <div className="row align-items-start">
+                    <h1 className="text-center mb-3">{restaurantDetails.displayName.text}</h1>
+                </div>
             }
             <div className="text-center mb-3">
                 <button className="btn btn-primary mr-2" onClick={handleAddReview}>Add a Review</button>
@@ -171,7 +217,18 @@ const DetailRestaurant = () => {
                     <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
                 </div>
             </div>
-            <BigStarCard rating={restaurantDetails.rating} />
+            <div className="text-center mb-3">
+                {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                        key={star}
+                        style={{
+                            color: star <= restaurantDetails.rating ? "gold" : "gray",
+                            fontSize: '40px'
+                        }}>
+                        ★
+                    </span>
+                ))}
+            </div>
             <h4 className="text-center my-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
 
             {restaurantDetails.websiteUri && (
@@ -181,7 +238,7 @@ const DetailRestaurant = () => {
                     </a>
                 </div>
             )}
-            <h2 className="mt-4">Google Reviews</h2>
+            <h2 className="mt-4">Google says...</h2>
             <ul className="list-unstyled mt-3">
                 {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
                     <li key={index} className="card border-0">
@@ -207,11 +264,8 @@ const DetailRestaurant = () => {
                             </div>
                             <div className="row">
                                 <div className="col-2 ">
-                                    <img src={review.authorAttribution?.photoUri} className="mr-3 rounded-circle" alt="Author" style={{ width: '40px', height: '40px' }} />
                                     <h5 className="mt-0 mb-1">
-                                        <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
-                                            {review.authorAttribution?.displayName || 'Unknown Author'}
-                                        </a>
+                                        <p>{review.authorAttribution?.displayName || 'Unknown Author'}</p>
                                     </h5>
                                 </div>
                                 <div className="col-10">
