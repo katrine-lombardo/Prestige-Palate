@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const Sidebar = ({ isOpen, toggleSidebar }) => {
     const { token } = useAuthContext();
+    const [firstName, setFirstName] = useState("");
+
     const closeSidebar = () => {
         if (isOpen) {
             toggleSidebar();
@@ -13,10 +20,25 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         toggleSidebar();
     };
 
+    useEffect(() => {
+        const handleFetchWithAPI = async () => {
+            const url = `${tokenUrl}/token`;
+            fetch(url, {
+                credentials: "include",
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setFirstName(data.account.first_name);
+                })
+                .catch((error) => console.error(error));
+        };
+        handleFetchWithAPI();
+    }, [token]);
+
     return (
         <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden' }}>
             <div className="offcanvas-header">
-                <h5 className="offcanvas-title">Menu</h5>
+                <h5 className="offcanvas-title">{token? `Welcome, ${firstName}` : ''}</h5>
                 <button type="button" className="btn-close text-reset" aria-label="Close" onClick={handleCloseClick}></button>
             </div>
             <div className="offcanvas-body d-flex flex-column">
