@@ -132,8 +132,13 @@ class AccountQueries:
                 ]
                 cur.execute(
                     """
-                    INSERT INTO accounts (username, first_name, last_name, email,
-                    hashed_password)
+                    INSERT INTO accounts (
+                        username,
+                        first_name,
+                        last_name,
+                        email,
+                        hashed_password
+                    )
                     VALUES (%s, %s, %s, %s, %s)
                     RETURNING id, username, first_name, last_name, email,
                     hashed_password, profile_icon_id
@@ -188,7 +193,7 @@ class AccountQueries:
                             record[column.name] = row[i]
                         accounts.append(AccountOutWithPassword(**record))
                     return accounts
-        except Exception as e:
+        except Exception:
             return {"message": "Could not get all account information"}
 
     def delete_account(self, account_id: int) -> bool:

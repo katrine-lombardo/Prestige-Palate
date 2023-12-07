@@ -38,4 +38,6 @@ def geocode_location_search(location: str, api_key: str) -> LocationSearchOut:
         else:
             raise ValueError("Invalid response data from Geocoding API")
     else:
-        raise ConnectionError(f"Failed to connect to Geocoding API (Status Code: {response.status_code})")
+        raise ConnectionError(
+            f"Failed to connect to Geocoding API (Status Code: {response.status_code})"
+        )

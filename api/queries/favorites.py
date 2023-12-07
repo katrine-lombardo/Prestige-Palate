@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from queries.pool import pool
 from typing import List
 
@@ -11,7 +10,11 @@ class FavoriteQueries:
         with self.pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO favorites (user_id, place_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
+                    """
+                    INSERT INTO favorites (user_id, place_id)
+                    VALUES (%s, %s) 
+                    ON CONFLICT DO NOTHING;
+                    """,
                     (user_id, place_id),
                 )
 
@@ -19,7 +22,11 @@ class FavoriteQueries:
         with self.pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "SELECT place_id FROM favorites WHERE user_id = %s;",
+                    """
+                    SELECT place_id
+                    FROM favorites
+                    WHERE user_id = %s;
+                    """,
                     (user_id,),
                 )
                 favorites = cur.fetchall()
@@ -29,6 +36,11 @@ class FavoriteQueries:
         with self.pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
-                    "DELETE FROM favorites WHERE user_id = %s AND place_id = %s;",
+                    """
+                    DELETE 
+                    FROM favorites 
+                    WHERE user_id = %s 
+                    AND place_id = %s;
+                    """,
                     (user_id, place_id),
                 )
