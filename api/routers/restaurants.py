@@ -76,7 +76,7 @@ def text_search(
                 status_code=500,
                 detail=f"Request failed with status code {response.status_code}",
             )
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 

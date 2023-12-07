@@ -46,7 +46,9 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT r.*, a.id as account_id, i.icon_url as profile_icon_url
+                        SELECT 
+                        r.*, a.id as account_id,
+                        i.icon_url as profile_icon_url
                         FROM reviews r
                         JOIN accounts a ON r.username = a.username
                         JOIN icons i ON a.profile_icon_id = i.id
@@ -91,7 +93,8 @@ class ReviewQueries:
                     # Use unnest to convert the array of photo URLs to rows
                     cur.execute(
                         """
-                                INSERT INTO reviews (username, place_id, title, text, rating, photo_urls)
+                                INSERT INTO reviews
+                                (username, place_id, title, text, rating, photo_urls)
                                 VALUES (%s, %s, %s, %s, %s, %s)
                                 RETURNING *;
                                 """,
@@ -193,7 +196,10 @@ class ReviewQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT r.*, a.id as account_id, i.icon_url as profile_icon_url
+                        SELECT
+                        r.*,
+                        a.id as account_id,
+                        i.icon_url as profile_icon_url
                         FROM reviews r
                         JOIN accounts a ON r.username = a.username
                         JOIN icons i ON a.profile_icon_id = i.id
