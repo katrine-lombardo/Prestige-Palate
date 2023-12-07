@@ -14,7 +14,6 @@ import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import ListMyReviews from "./Reviews/ListMyReviews";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import FavoriteRestaurants from "./Restaurants/FavoriteRestaurants";
-import ListRestaurants from "./Restaurants/ListRestaurants";
 import CreateReview from "./Reviews/CreateReview"
 import SearchResults from "./Search/SearchResults";
 import UpdateReview from "./Reviews/UpdateReview";
