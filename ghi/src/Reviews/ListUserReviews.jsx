@@ -57,7 +57,7 @@ const ListUserReviews = () => {
         <div>
 
             <div className="container mb-4">
-                <h3>{username}'s reviews</h3>
+                <h3>{username}'s Prestigious Palate</h3>
             </div>
             <nav className="container mb-3">
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">

@@ -29,7 +29,6 @@ const ListFollowers = ({ username }) => {
                         (error) => {
                             console.error(error);
                             setError(error.message);
-                            return error;
                         }
                     );
             }
@@ -57,7 +56,6 @@ const ListFollowers = ({ username }) => {
                     ))
                     : renderNullFollowers()}
             </div>
-            {error && <div>Error: {error}</div>}
         </div>
     );
 };
