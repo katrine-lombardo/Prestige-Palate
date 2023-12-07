@@ -22,26 +22,40 @@ const ListFollowers = ({ username }) => {
                         credentials: "include",
                     });
                     const data = await response.json();
-                    const reviewsWithFollowerData = await Promise.all(
+                    const followersWithReviewData = await Promise.all(
                         data.map(async (follower_username) => {
                             try {
                                 const reviewUrl = `${tokenUrl}/api/accounts/${follower_username}/reviews`;
                                 const reviewResponse = await fetch(reviewUrl);
                                 const followerReviewData = await reviewResponse.json();
+
+                                const totalReviews = followerReviewData.length;
+                                const averageRating =
+                                    totalReviews > 0
+                                        ? followerReviewData.reduce(
+                                            (sum, review) => sum + review.rating,
+                                            0
+                                        ) / totalReviews
+                                        : 0;
+
                                 return {
                                     follower: follower_username,
                                     profile_icon_url: followerReviewData.profile_icon_url,
+                                    total_reviews: totalReviews,
+                                    average_rating: averageRating,
                                 };
                             } catch (error) {
                                 console.error("Error fetching review:", error);
                                 return {
                                     follower: follower_username,
                                     profile_icon_url: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
+                                    total_reviews: 0,
+                                    average_rating: 0,
                                 };
                             }
                         })
                     );
-                    setFollowers(reviewsWithFollowerData);
+                    setFollowers(followersWithReviewData);
                     setLoading(false);
                 } catch (error) {
                     console.error("Fetch error:", error);
@@ -52,7 +66,6 @@ const ListFollowers = ({ username }) => {
         };
         fetchFollowers();
     }, [token, username]);
-
 
     const renderNullFollowers = () => (
         <div>
@@ -71,11 +84,11 @@ const ListFollowers = ({ username }) => {
                             <div className="row row-cols-1 row-cols-md-3 g-4">
                                 <div className="col">
                                     <div className="card h-100">
-                                        <div className="card-body">
+                                        <div className="card-body mt-4">
                                             <img
                                                 src={follower.profile_icon_url || "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"}
                                                 alt={follower.follower}
-                                                className="user-icon"
+                                                className="user-icon mb-3"
                                                 style={{
                                                     width: '40px',
                                                     height: '40px',
@@ -87,11 +100,10 @@ const ListFollowers = ({ username }) => {
                                                     display: 'block',
                                                 }}
                                             />
-                                            <h5 className="card-title text-center">{follower.follower}</h5>
+                                            <h5 className="card-title text-center mb-4">{follower.follower}</h5>
                                             <div className="card-text text-center">
-                                                <p>{follower.profile_icon_url}</p>
-                                                <p>{follower.profile_icon_url}</p>
-                                                <p>{follower.follower}</p>
+                                                <p>Average Rating: {follower.average_rating.toFixed(1)}</p>
+                                                <p>Total Reviews: {follower.total_reviews}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -101,7 +113,7 @@ const ListFollowers = ({ username }) => {
                     ))
                     : renderNullFollowers()}
             </div>
-        </div >
+        </div>
     );
 };
 
