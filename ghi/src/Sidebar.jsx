@@ -15,7 +15,7 @@ const Sidebar = ({ isOpen }) => {
                 </NavLink>
                 {token ? (
                     <>
-                        <NavLink className="nav-link" to="/favorites" onClick = {isOpen}>
+                        <NavLink className="nav-link" to="/favorites" onClick={isOpen}>
                             Favorite
                         </NavLink>
                         <NavLink className="nav-link" to="/friends" onClick={isOpen}>
@@ -27,15 +27,43 @@ const Sidebar = ({ isOpen }) => {
                         <NavLink className="nav-link" to="/myreviews" onClick={isOpen}>
                             My Reviews
                         </NavLink>
-                        <NavLink className="nav-link" to="/editprofile" onClick={isOpen}>
-                            Edit Profile
-                        </NavLink>
-                        <NavLink className="nav-link" to="/updatepassword" onClick={isOpen}>
-                            Update Password
-                        </NavLink>
-                        <NavLink className="nav-link" to="/deleteprofile" onClick={isOpen}>
-                            Delete Profile
-                        </NavLink>
+                        <div className="accordion text-left" id="accordionExample">
+                            <div className="accordion-item">
+                                <div className="accordion-header" id="headingSettings">
+                                    <h5 className="mb-0">
+                                        <button
+                                            className="btn accordion-button collapsed"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#collapseSettings"
+                                            aria-expanded="false"
+                                            aria-controls="collapseSettings"
+                                        >
+                                            Settings
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div
+                                    id="collapseSettings"
+                                    className="accordion-collapse collapse"
+                                    aria-labelledby="headingSettings"
+                                    data-bs-parent="#accordionExample"
+                                >
+                                    <div className="accordion-body text-left">
+                                        <NavLink className="nav-link" to="/editprofile" onClick={isOpen}>
+                                            Edit Profile
+                                        </NavLink>
+                                        <NavLink className="nav-link" to="/updatepassword" onClick={isOpen}>
+                                            Update Password
+                                        </NavLink>
+                                        <NavLink className="nav-link" to="/deleteprofile" onClick={isOpen}>
+                                            Delete Profile
+                                        </NavLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <NavLink className="nav-link" to="/logout" onClick={isOpen}>
                             Log Out
                         </NavLink>

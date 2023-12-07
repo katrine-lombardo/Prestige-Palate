@@ -1,6 +1,8 @@
 from fastapi import (
     Depends,
     APIRouter,
+    HTTPException,
+    status,
 )
 from queries.referrals import (
     ReferralQueries,
