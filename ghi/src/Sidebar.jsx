@@ -7,24 +7,28 @@ const Sidebar = ({ isOpen }) => {
 
     return (
         <div className={`sidebar ${isOpen ? "open" : ""}`}>
-            <div className="sidebar-upper"></div>
+            <div className="sidebar-upper">
+                <button className="close-btn">
+                    &times; close
+                </button>
+            </div>
 
             <div className="sidebar-lower">
-                <NavLink className="nav-link" to="/" onClick={isOpen}>
+                <NavLink className="nav-link" to="/">
                     Home
                 </NavLink>
                 {token ? (
                     <>
-                        <NavLink className="nav-link" to="/favorites" onClick={isOpen}>
+                        <NavLink className="nav-link" to="/favorites">
                             Favorite
                         </NavLink>
-                        <NavLink className="nav-link" to="/friends" onClick={isOpen}>
+                        <NavLink className="nav-link" to="/friends">
                             Friends
                         </NavLink>
-                        <NavLink className="nav-link" to="/referral" onClick={isOpen}>
+                        <NavLink className="nav-link" to="/referral">
                             Refer a Friend
                         </NavLink>
-                        <NavLink className="nav-link" to="/myreviews" onClick={isOpen}>
+                        <NavLink className="nav-link" to="/myreviews">
                             My Reviews
                         </NavLink>
                         <div className="accordion text-left" id="accordionExample">
@@ -39,7 +43,7 @@ const Sidebar = ({ isOpen }) => {
                                             aria-expanded="false"
                                             aria-controls="collapseSettings"
                                         >
-                                            Settings
+                                            <i className="fa-solid fa-gear"></i>&nbsp;Settings
                                         </button>
                                     </h5>
                                 </div>
@@ -50,13 +54,13 @@ const Sidebar = ({ isOpen }) => {
                                     data-bs-parent="#accordionExample"
                                 >
                                     <div className="accordion-body text-left">
-                                        <NavLink className="nav-link" to="/editprofile" onClick={isOpen}>
+                                        <NavLink className="nav-link" to="/editprofile">
                                             Edit Profile
                                         </NavLink>
-                                        <NavLink className="nav-link" to="/updatepassword" onClick={isOpen}>
+                                        <NavLink className="nav-link" to="/updatepassword">
                                             Update Password
                                         </NavLink>
-                                        <NavLink className="nav-link" to="/deleteprofile" onClick={isOpen}>
+                                        <NavLink className="nav-link" to="/deleteprofile">
                                             Delete Profile
                                         </NavLink>
                                     </div>
@@ -70,10 +74,10 @@ const Sidebar = ({ isOpen }) => {
                     </>
                 ) : (
                     <>
-                        <NavLink className="nav-link" to="/login" onClick={isOpen}>
+                        <NavLink className="nav-link" to="/login">
                             Log In
                         </NavLink>
-                        <NavLink className="nav-link" to="/signup" onClick={isOpen}>
+                        <NavLink className="nav-link" to="/signup">
                             Sign Up
                         </NavLink>
                     </>
