@@ -91,19 +91,7 @@ async def restaurant_details(place_id: str):
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": """
-            id,
-            types,
-            internationalPhoneNumber,
-            formattedAddress,
-            rating,
-            websiteUri,
-            regularOpeningHours.weekdayDescriptions,
-            priceLevel,
-            userRatingCount,
-            displayName,
-            primaryType,reviews
-            """,
+            "X-Goog-FieldMask": "id,types,internationalPhoneNumber,formattedAddress,rating,websiteUri,regularOpeningHours.weekdayDescriptions,priceLevel,userRatingCount,displayName,primaryType,reviews",
         }
 
         response = requests.get(url, headers=headers)
