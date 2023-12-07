@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import Loading from '../Loading';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -9,7 +10,7 @@ if (!tokenUrl) {
 
 const ListFollowers = ({ username }) => {
     const [followers, setFollowers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const { token } = useAuthContext();
 
@@ -56,21 +57,49 @@ const ListFollowers = ({ username }) => {
                         })
                     );
                     setFollowers(followersWithReviewData);
-                    setLoading(false);
+                    setIsLoading(false);
                 } catch (error) {
                     console.error("Fetch error:", error);
                     setError(error.message);
-                    setLoading(false);
+                    setIsLoading(false);
                 }
             }
         };
         fetchFollowers();
     }, [token, username]);
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    const handleFollow = async (followerUsername) => {
+        try {
+            const followUrl = `${tokenUrl}/api/accounts/follow/`;
+            const response = await fetch(followUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    following_username: followerUsername,
+                }),
+            });
+
+            if (response.ok) {
+                console.log(`Successfully followed ${followerUsername}`);
+            } else {
+                console.error(`Failed to follow ${followerUsername}`);
+            }
+        } catch (error) {
+            console.error("Error following:", error);
+        }
+    };
+
     const renderNullFollowers = () => (
         <div>
             <div className="container mt-4">
-                {loading ? "Loading followers..." : "No followers here. Yet..."}
+                {<Loading /> ? "Loading followers..." : "No followers here. Yet..."}
             </div>
         </div>
     );
@@ -109,9 +138,13 @@ const ListFollowers = ({ username }) => {
                                                     ))}
                                                 </div>
                                                 <p>Total Reviews: {follower.total_reviews}</p>
-                                                <Link to="">
-                                                    <button type="button" className="btn btn-light"><small>+ Follow back</small></button>
-                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-light"
+                                                    onClick={() => handleFollow(follower.follower)}
+                                                >
+                                                    <small>+ Follow {follower.follower}</small>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
