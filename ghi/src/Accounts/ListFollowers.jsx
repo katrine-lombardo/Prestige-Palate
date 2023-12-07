@@ -78,12 +78,13 @@ const ListFollowers = ({ username }) => {
     return (
         <div>
             <div className="followers-list">
-                {followers.length > 0
-                    ? followers.map((follower, index) => (
-                        <div key={index} className="follower-card">
-                            <div className="row row-cols-1 row-cols-md-3 g-4">
-                                <div className="col">
-                                    <div className="card h-100">
+                <div className="row row-cols-1 row-cols-md-3 g-4">
+                    <div className="col">
+                        {followers.length > 0
+                            ? followers.map((follower, index) => (
+                                <div key={index} className="follower-card">
+
+                                    <div className="card h-90">
                                         <div className="card-body mt-4">
                                             <img
                                                 src={follower.profile_icon_url || "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"}
@@ -104,14 +105,17 @@ const ListFollowers = ({ username }) => {
                                             <div className="card-text text-center">
                                                 <p>Average Rating: {follower.average_rating.toFixed(1)}</p>
                                                 <p>Total Reviews: {follower.total_reviews}</p>
+                                                <Link to="">
+                                                    <button type="button" className="btn btn-light"><small>+ Follow back</small></button>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))
-                    : renderNullFollowers()}
+                            ))
+                            : renderNullFollowers()}
+                    </div>
+                </div>
             </div>
         </div>
     );
