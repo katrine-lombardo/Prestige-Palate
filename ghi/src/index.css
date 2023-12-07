@@ -231,3 +231,47 @@ input:checked + .slider:before {
 }
 
 
+.photo-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted to use grid-template-rows */
+    gap: 16px;
+}
+
+.photo-item {
+    margin-bottom: 20px;
+}
+
+.photo-card {
+    display: flex;
+    flex-direction: row; /* Adjusted to display photos in a row */
+    align-items: center;
+    gap: 16px;
+}
+
+.photo-card img {
+    max-width: 100%; /* Ensures the image scales within the container */
+    height: auto; /* Maintains the aspect ratio of the image */
+    margin-bottom: 8px;
+}
+
+.photo-card h4 {
+    margin: 0; /* Remove margin to prevent extra space */
+}
+
+.review-photos {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.review-photos img {
+    max-width: 300px; /* Adjust the max-width based on your preference */
+    height: auto;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
