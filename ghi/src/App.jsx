@@ -80,7 +80,6 @@ function App() {
                                 <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
                                 <Route path="/myreviews" element={<ListMyReviews />} />
                                 <Route path="/favorites/" element={<FavoriteRestaurants />} />
-                                <Route path="/restaurants" element={<ListRestaurants />} />
                                 <Route path="/create-review/:place_id" element={<CreateReview />} />
                                 <Route path="/search-results" element={<SearchResults />} />
                                 <Route path="/update-review/:review_id" element={<UpdateReview />} />
