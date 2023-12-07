@@ -40,7 +40,8 @@ async def get_google_reviews_for_restaurant(place_id: str):
         else:
             raise HTTPException(
                 status_code=500,
-                detail=f"Request failed with status code {response.status_code}",
+                detail=f"Request failed with status code"
+                f" {response.status_code}",
             )
     except Exception:
         raise HTTPException(

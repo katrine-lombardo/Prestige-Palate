@@ -118,7 +118,7 @@ async def restaurant_details(place_id: str):
         else:
             raise HTTPException(
                 status_code=500,
-                detail=f"Request failed with status code" 
+                detail=f"Request failed with status code"
                 f"{response.status_code}",
             )
         return data
