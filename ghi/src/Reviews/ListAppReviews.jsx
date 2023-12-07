@@ -98,17 +98,18 @@ const ListAppReviews = () => {
                                             </blockquote>
                                         </div>
                                         <p className="card-subtitle mb-1 text-body-secondary">
-                                            Date posted:{" "}
-                                            {new Date(
-                                                review.publish_time
-                                            ).toLocaleDateString("en-US", {
-                                                year: "numeric",
-                                                month: "long",
-                                                day: "numeric",
-                                            })}
+                                            <small>
+                                                Date posted:{" "}
+                                                {new Date(
+                                                    review.publish_time
+                                                ).toLocaleDateString("en-US", {
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric",
+                                                })}
+                                            </small>
                                         </p>
                                     </div>
-
                                 </div>
                             </div>
                             <div className="row">

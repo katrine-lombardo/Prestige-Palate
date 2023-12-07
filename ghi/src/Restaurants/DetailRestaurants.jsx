@@ -128,18 +128,44 @@ const DetailRestaurant = () => {
             <h2 className="mt-4">Google Reviews</h2>
             <ul className="list-unstyled mt-3">
                 {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
-                    <li key={index} className="media my-4">
-                        <img src={review.authorAttribution?.photoUri} className="mr-3 rounded-circle" alt="Author" style={{ width: '40px', height: '40px' }} />
-                        <div className="media-body">
-                            <h5 className="mt-0 mb-1">
-                                <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
-                                    {review.authorAttribution?.displayName || 'Unknown Author'}
-                                </a>
-                            </h5>
-                            <StarCard rating={review.rating} />
-                            <p>{review.text?.text || "No review text available"}</p>
-                            <small>Date Posted: {new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
+                    <li key={index} className="card border-0">
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-2">
+                                    <div>
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <span key={star} style={{ color: star <= review.rating ? "gold" : "gray", }}>★</span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="col-10">
+                                    <div className="d-flex justify-content-between">
+                                        <div className="card-title">
+                                            <blockquote className="blockquote">Google Review Title</blockquote>
+                                        </div>
+                                        <p className="card-subtitle mb-1 text-body-secondary">
+                                            <small>Date Posted: {new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-2 ">
+                                    <img src={review.authorAttribution?.photoUri} className="mr-3 rounded-circle" alt="Author" style={{ width: '40px', height: '40px' }} />
+                                    <h5 className="mt-0 mb-1">
+                                        <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
+                                            {review.authorAttribution?.displayName || 'Unknown Author'}
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div className="col-10">
+                                    <div className="card-text">
+                                        <p>{review.text?.text || "No review text available"}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </li>
                 ))}
             </ul>
