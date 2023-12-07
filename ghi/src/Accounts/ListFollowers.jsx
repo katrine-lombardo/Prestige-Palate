@@ -27,7 +27,7 @@ const ListFollowers = ({ username }) => {
                     })
                     .catch(
                         (error) => {
-                            console.error(error);
+                            console.error("Fetch error: ", error);
                             setError(error.message);
                         }
                     );
@@ -35,7 +35,7 @@ const ListFollowers = ({ username }) => {
         };
         fetchFollowers();
 
-    }, [username, token]);
+    }, [token, username]);
 
     const renderNullFollowers = () => (
         <div>
@@ -51,12 +51,23 @@ const ListFollowers = ({ username }) => {
                 {followers.length > 0
                     ? followers.map((follower, index) => (
                         <div key={index} className="follower-card">
-                            <p>{follower}</p>
+                            <div className="row row-cols-1 row-cols-md-3 g-4">
+                                <div className="col">
+                                    <div className="card h-100">
+                                        <img src="..." className="card-img-top" alt="..." />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{follower.follower_username}</h5>
+                                            {/* <p className="card-text">Total reviews: {follower.total_reviews}</p>
+                                            <p className="card-text">Average rating: {follower.average_rating}</p> */}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))
                     : renderNullFollowers()}
             </div>
-        </div>
+        </div >
     );
 };
 
