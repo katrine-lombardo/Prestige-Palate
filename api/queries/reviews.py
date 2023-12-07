@@ -203,7 +203,7 @@ class ReviewQueries:
                     cur.execute(
                         """
                         SELECT (
-                            r.*, 
+                            r.*,
                             a.id as account_id,
                             i.icon_url as profile_icon_url
                         )

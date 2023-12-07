@@ -14,7 +14,10 @@ from fastapi import (
     status,
 )
 from authenticator import authenticator
-import requests, os
+import (
+    os,
+    requests
+)
 
 router = APIRouter()
 api_key = os.getenv("GOOGLE_API_KEY")

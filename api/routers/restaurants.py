@@ -79,7 +79,7 @@ def text_search(
             raise HTTPException(
                 status_code=500,
                 detail=f"""
-                Request failed with status code 
+                Request failed with status code:
                 {response.status_code}
                 """,
             )
@@ -95,7 +95,20 @@ async def restaurant_details(place_id: str):
         headers = {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": "id,types,internationalPhoneNumber,formattedAddress,rating,websiteUri,regularOpeningHours.weekdayDescriptions,priceLevel,userRatingCount,displayName,primaryType,reviews",
+            "X-Goog-FieldMask": """
+            id,
+            types,
+            internationalPhoneNumber,
+            formattedAddress,
+            rating,
+            websiteUri,
+            regularOpeningHours.weekdayDescriptions,
+            priceLevel,
+            userRatingCount,
+            displayName,
+            primaryType,
+            reviews
+            """,
         }
 
         response = requests.get(url, headers=headers)
@@ -105,7 +118,10 @@ async def restaurant_details(place_id: str):
         else:
             raise HTTPException(
                 status_code=500,
-                detail=f"Request failed with status code {response.status_code}",
+                detail=f"""
+                Request failed with status code:
+                {response.status_code}
+                """,
             )
         return data
     except Exception as e:
@@ -114,7 +130,10 @@ async def restaurant_details(place_id: str):
 @router.get("/api/restaurants/{place_id}/photos")
 async def restaurant_photos(place_id: str):
     try:
-        url = f"https://places.googleapis.com/v1/places/{place_id}"
+        url = f"""
+        https://places.googleapis.com/
+        v1/places/{place_id}
+        """
 
         headers = {
             "Content-Type": "application/json",
@@ -135,7 +154,12 @@ async def restaurant_photos(place_id: str):
             for photo in data["photos"]:
                 photo_reference = photo.get("name")
                 if photo_reference:
-                    photo_url = f"https://places.googleapis.com/v1/{photo_reference}/media?key={api_key}&maxHeightPx=1000&maxWidthPx=1000"
+                    photo_url = f"""
+                    https://places.googleapis.com/
+                    v1/{photo_reference}/
+                    media?key={api_key}
+                    &maxHeightPx=1000&maxWidthPx=1000
+                    """
                     photo_response = requests.get(
                         photo_url, allow_redirects=True
                     )
