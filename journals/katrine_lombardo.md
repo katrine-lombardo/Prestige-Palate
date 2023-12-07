@@ -1,4 +1,4 @@
-#### Wed, Dec 6
+#### Thurs, Dec 7
 
 Features/issues that you worked on and who you worked with:
 * 
@@ -8,6 +8,19 @@ A reflection on any design conversations that you had
  
 At least one ah-ha! moment:
 * 
+
+---
+
+#### Wed, Dec 6
+
+Features/issues that you worked on and who you worked with:
+* I worked with Trey to get photos loaded into user review pages. I updated MyReviews, UserAppReviews, and RestaurantDetails with stylising and bootstrap. I also added following/follower logic to the frontend that Erin developed on the backend.
+
+A reflection on any design conversations that you had
+* We are moving on to the look and feel of the site now, the majority of functionality is in there.
+ 
+At least one ah-ha! moment:
+* I was able to connect account_id and profile_icon_url to the reviews model by updating queries and not modifying the database. This would have saved me countless hours of work over the last two weeks had I just done this first!
 
 ---
 
