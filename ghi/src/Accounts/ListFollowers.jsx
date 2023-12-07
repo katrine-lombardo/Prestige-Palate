@@ -81,14 +81,16 @@ const ListFollowers = ({ username }) => {
                                                 style={{
                                                     width: '40px',
                                                     height: '40px',
-                                                    borderRadius: '5%',
+                                                    border: '2px solid black',
+                                                    borderRadius: '50%',
+                                                    padding: '2px',
                                                     objectFit: 'cover',
                                                     margin: 'auto',
                                                     display: 'block',
                                                 }}
                                             />
-                                            <h5 className="card-title">{follower.follower}</h5>
-                                            <div className="card-text">
+                                            <h5 className="card-title text-center">{follower.follower}</h5>
+                                            <div className="card-text text-center">
                                                 <p>{follower.profile_icon_url}</p>
                                                 <p>{follower.profile_icon_url}</p>
                                                 <p>{follower.follower}</p>
