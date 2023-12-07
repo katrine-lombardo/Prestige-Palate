@@ -2,15 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
-from routers import (
-    accounts,
-    follow,
-    referrals,
-    restaurants,
-    photos,
-    reviews,
-    favorites
-)
+from routers import accounts, follow, referrals
+from routers import restaurants, photos, reviews, favorites
+
 
 app = FastAPI()
 
