@@ -9,27 +9,27 @@ const Sidebar = ({ isOpen }) => {
         <div className={`sidebar ${isOpen ? "open" : ""}`}>
             <div className="sidebar-upper">
                 <button className="close-btn">
-                    &times; close
+                    &times;
                 </button>
             </div>
 
             <div className="sidebar-lower">
                 <NavLink className="nav-link" to="/">
-                    Home
+                    <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;Home
                 </NavLink>
                 {token ? (
                     <>
                         <NavLink className="nav-link" to="/favorites">
-                            Favorite
+                            <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;Favorite
                         </NavLink>
                         <NavLink className="nav-link" to="/friends">
-                            Friends
+                            <i className="fa-solid fa-user-group" style={{ marginRight: '8px' }}></i>&nbsp;Friends
                         </NavLink>
                         <NavLink className="nav-link" to="/referral">
-                            Refer a Friend
+                            <i className="fa-solid fa-people-group" style={{ marginRight: '8px' }}></i>&nbsp;Refer a Friend
                         </NavLink>
                         <NavLink className="nav-link" to="/myreviews">
-                            My Reviews
+                            <i className="fa-regular fa-pen-to-square" style={{ marginRight: '8px' }}></i>&nbsp;My Reviews
                         </NavLink>
                         <div className="accordion text-left" id="accordionExample">
                             <div className="accordion-item">
@@ -43,7 +43,7 @@ const Sidebar = ({ isOpen }) => {
                                             aria-expanded="false"
                                             aria-controls="collapseSettings"
                                         >
-                                            <i className="fa-solid fa-gear"></i>&nbsp;Settings
+                                            <i className="fa-solid fa-gear" style={{ marginRight: '8px' }}></i>&nbsp;Settings
                                         </button>
                                     </h5>
                                 </div>
@@ -55,13 +55,13 @@ const Sidebar = ({ isOpen }) => {
                                 >
                                     <div className="accordion-body text-left">
                                         <NavLink className="nav-link" to="/editprofile">
-                                            Edit Profile
+                                            <i className="fa-solid fa-user-pen" style={{ marginRight: '8px' }}></i>&nbsp;Edit Profile
                                         </NavLink>
                                         <NavLink className="nav-link" to="/updatepassword">
-                                            Update Password
+                                            <i className="fa-solid fa-file-pen" style={{ marginRight: '8px' }}></i>&nbsp;&nbsp;Update Password
                                         </NavLink>
                                         <NavLink className="nav-link" to="/deleteprofile">
-                                            Delete Profile
+                                            <i className="fa-solid fa-user-xmark" style={{ marginRight: '8px' }}></i>&nbsp;Delete Profile
                                         </NavLink>
                                     </div>
                                 </div>
@@ -69,16 +69,16 @@ const Sidebar = ({ isOpen }) => {
                         </div>
 
                         <NavLink className="nav-link" to="/logout" onClick={isOpen}>
-                            Log Out
+                            <i className="fa-solid fa-arrow-right-from-bracket" style={{ marginRight: '8px' }}></i>&nbsp;Log Out
                         </NavLink>
                     </>
                 ) : (
                     <>
                         <NavLink className="nav-link" to="/login">
-                            Log In
+                                <i className="fa-solid fa-arrow-right-to-bracket" style={{ marginRight: '8px' }}></i>&nbsp;Log In
                         </NavLink>
                         <NavLink className="nav-link" to="/signup">
-                            Sign Up
+                                <i className="fa-solid fa-user-plus" style={{ marginRight: '8px' }}></i>&nbsp;Sign Up
                         </NavLink>
                     </>
                 )}
