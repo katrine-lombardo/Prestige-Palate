@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import DeleteReview from "./DeleteReview";
-import PhotoCard from "./PhotoCard";
 import ListFollowers from "../Accounts/ListFollowers";
-import ListFollowing from "../Accounts/ListFollowing";
-import Loading from "../Loading";
+import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.");
+    throw new Error("VITE_APP_API_HOST was undefined.");
 }
 
 const ListMyReviews = () => {
@@ -18,12 +16,11 @@ const ListMyReviews = () => {
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const navigate = useNavigate();
     const [activeReviewId, setActiveReviewId] = useState(null);
+    const [loading, setLoading] = useState(true);
     const { token } = useAuthContext();
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
-            setIsLoading(true);
             const url = `${tokenUrl}/token`;
             fetch(url, {
                 credentials: "include",
@@ -33,12 +30,11 @@ const ListMyReviews = () => {
                     setUsername(data.account.username);
                 })
                 .catch((error) => console.error(error));
-            setIsLoading(false);
         };
+
         const fetchMyReviews = async () => {
             if (username) {
                 const url = `${tokenUrl}/api/accounts/${username}/reviews`;
-                setIsLoading(true);
                 fetch(url, {
                     credentials: "include",
                 })
@@ -63,8 +59,8 @@ const ListMyReviews = () => {
                     })
                     .catch((error) => console.error(error));
             }
-            setIsLoading(false);
         };
+
         handleFetchWithAPI();
         fetchMyReviews();
     }, [token, username]);
@@ -73,6 +69,27 @@ const ListMyReviews = () => {
         setActiveReviewId(null);
         navigate(`/update-review/${username}/${review.id}`);
     };
+
+    const renderNullPhotos = () => (
+        <div>
+            <div className="container mt-4">
+                {loading ? "Loading photos..." : "No photos here. Yet..."}
+            </div>
+            {!loading && (
+                <div>
+                    <Link to={`/`}>
+                        <button
+                            style={{ marginRight: "5px" }}
+                            type="button"
+                            className="btn btn-secondary mt-3 ms-2"
+                        >
+                            Start your culinary adventure now
+                        </button>
+                    </Link>
+                </div>
+            )}
+        </div>
+    );
 
     const handleToggleEditButton = (reviewId) => {
         setActiveReviewId(activeReviewId === reviewId ? null : reviewId);
@@ -119,10 +136,6 @@ const ListMyReviews = () => {
 
     if (!token) {
         return <div>Please log in to see reviews</div>;
-    }
-
-    if (isLoading) {
-        return <Loading />;
     }
 
     const renderNullReviews = () => {
@@ -249,8 +262,18 @@ const ListMyReviews = () => {
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div className="card-text">
                                                 <p>{review.text}</p>
+                                                <div className="review-photos">
+                                                    {Array.isArray(review.photo_urls) && review.photo_urls.length > 0 ? (
+                                                        review.photo_urls.map((url, photoIndex) => (
+                                                            <img key={photoIndex} src={url} alt={`Photo by ${username}`} />
+                                                        ))
+                                                    ) : (
+                                                        <p>No photos available for this review</p>
+                                                    )}
+                                                </div>
                                                 <p className="card-subtitle mb-1 text-body-secondary">
                                                     Date posted:{" "}
                                                     {new Date(
@@ -337,7 +360,30 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container">
-                        <PhotoCard key={username} username={username} />
+                        <div className="photo-grid">
+                            {reviews.length > 0 ? (
+                                reviews.map((review, index) => (
+                                    <div key={index} className="photo-item">
+                                        {Array.isArray(review.photo_urls) && review.photo_urls.length > 0 ? (
+                                            <div className="photo-card">
+                                                {review.photo_urls.map((url, photoIndex) => (
+                                                    <div key={photoIndex}>
+                                                        <img src={url} alt={`Photo by ${username}`} />
+                                                        <Link to={`/restaurants/${review.place_id}`}>
+                                                            <h4>{review.restaurantName}</h4>
+                                                        </Link>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p>No photos available for this review</p>
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                renderNullPhotos()
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -350,7 +396,7 @@ const ListMyReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container">
-                        <ListFollowing username={username} />
+                        Following
                     </div>
                 </div>
             </div>
