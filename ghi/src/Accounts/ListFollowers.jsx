@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from '../Loading';
 
@@ -28,9 +27,8 @@ const ListFollowers = ({ username }) => {
                             try {
                                 const reviewUrl = `${tokenUrl}/api/accounts/${follower_username}/reviews`;
                                 const reviewResponse = await fetch(reviewUrl);
-                                console.log("reviewResponse: ", reviewResponse)
                                 const followerReviewData = await reviewResponse.json();
-                                console.log("followers review data: ", followerReviewData)
+
                                 const totalReviews = followerReviewData.length;
                                 const averageRating =
                                     totalReviews > 0

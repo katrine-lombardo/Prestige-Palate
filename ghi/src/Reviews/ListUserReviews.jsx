@@ -21,14 +21,11 @@ const ListUserReviews = () => {
         const fetchUserReviews = async () => {
             setIsLoading(true);
             const url = `${tokenUrl}/api/accounts/${username}/reviews`;
-
             fetch(url, {
                 credentials: "include",
             })
                 .then((response) => response.json())
-
                 .then(async (data) => {
-                    console.log(data)
                     const reviewsWithRestaurantNames = await Promise.all(
                         data.map(async (review) => {
                             const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`;
