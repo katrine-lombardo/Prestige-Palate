@@ -12,7 +12,7 @@ fake_user_data = {
     "first_name": "Test",
     "last_name": "User",
     "profile_icon_id": 1,
-    "hashed_password": "$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu",
+    "hashed_password": "$2b$12$aXc",
 }
 
 client = TestClient(app)
@@ -92,5 +92,5 @@ def test_get_protected():
     ] = lambda: mock_account_data
     response = client.get("/api/protected")
     assert response.status_code == 200
-    assert response.json() == True
+    assert response.json() is True
     app.dependency_overrides.clear()
