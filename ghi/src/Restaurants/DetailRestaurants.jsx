@@ -155,47 +155,24 @@ const DetailRestaurant = () => {
     return (
         <main>
             <div className="container mt-4" style={{ border: '1px solid #ddd', borderRadius: '5px', padding: '20px', width: '100%' }}>
-                <div className="restaurant-banner-container" style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '5px', display: 'grid', gridTemplateColumns: 'auto auto', width: '100%', gap: '20px' }}>
-                    <div className="left-column">
-                        <div className="left-top">
-                            <h1 className="restaurant-name">{displayName && displayName.text}</h1>
-                        </div>
-                        <div className="left-bottom">
-                            {websiteUri && (
-                                <div className="website-link">
-                                    <a href={websiteUri} target="_blank" rel="noopener noreferrer">
-                                        {websiteUri}
-                                    </a>
-                                </div>
-                            )}
-                        </div>
+                <div className="restaurant-banner-container" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '20px', border: '1px solid #ddd', borderRadius: '8px', padding: '20px', width: '100%' }}>
+                    <div className="restaurant-name" style={{ gridColumn: '1', gridRow: '1', fontWeight: 'bold', fontSize: '40px' }}>{displayName && displayName.text}</div>
+                    <div className="big-star-card" style={{ gridColumn: '2', gridRow: '1', textAlign: 'right' }}>
+                        <BigStarCard rating={rating} />
                     </div>
-                    <div className="middle-column" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                        <div className="middle-top">
-                            <div className="switch">
-                                <input
-                                    type="checkbox"
-                                    id={`favorite-toggle-detail-${place_id}`}
-                                    checked={isFavorite}
-                                    onChange={toggleFavorite}
-                                />
-                                <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
-                            </div>
-                        </div>
-                        <div className="middle-bottom">
-                            <button className="btn btn-primary add-review-button" onClick={handleAddReview}>
-                                Add a Review
-                            </button>
-                        </div>
-                    </div>
-                    <div className="right-column">
-                        <div className="right-top" style={{ textAlign: 'right' }}>
-                            <BigStarCard rating={rating} />
-                        </div>
-                        <div className="right-bottom">
-                            <div className="rating-details" style={{ textAlign: 'right' }}>
-                                <h4>Rating: {rating} ({userRatingCount})</h4>
-                            </div>
+                    <h4 style={{ gridColumn: '2', gridRow: '2', textAlign: 'right' }}>Rating: {rating} ({userRatingCount})</h4>
+                    <div style={{ display: 'flex', gridColumn: '1 / span 2', justifyContent: 'flex-end', gap: '10px', paddingTop: '20px' }}>
+                        <button className="btn btn-primary add-review-button" onClick={handleAddReview}>
+                            Add a Review
+                        </button>
+                        <div className="switch" style={{ alignSelf: 'center' }}>
+                            <input
+                                type="checkbox"
+                                id={`favorite-toggle-detail-${place_id}`}
+                                checked={isFavorite}
+                                onChange={toggleFavorite}
+                            />
+                            <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
                         </div>
                     </div>
                 </div>
