@@ -3,11 +3,9 @@ from fastapi.testclient import TestClient
 from main import app
 from queries.photos import PhotoQueries, PhotoOut
 from authenticator import authenticator
+from typing import List
 
 fake_user_data = {"id": 1, "username": "testUser"}
-
-
-from typing import List
 
 
 class FakePhotoQueries:
