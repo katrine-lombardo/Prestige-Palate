@@ -14,7 +14,7 @@ lint-test-job:
     - pip install flake8
     - flake8 api
 
-# # Run the unit tests
+# Run the unit tests
 # api-unit-tests-job:
 #   image: python:3-bullseye
 #   stage: test
@@ -54,7 +54,6 @@ build-front-end-job:
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
     VITE_PUBLIC_URL: https://mambo-number-5.gitlab.io/module3-project-gamma/
     VITE_APP_API_HOST: https://aug-2023-5-pt-api.mod3projects.com/
-    VITE_API_HOST: https://DEPLOYED_API_SERVICE.mod3projects.com
   script:
     - cd ghi
     - npm install
