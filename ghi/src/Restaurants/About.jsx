@@ -10,7 +10,7 @@ const About = ({ restaurantDetails }) => {
         priceLevel,
     } = restaurantDetails;
 
-    const smallFontSize = '14px'; // Adjust the font size as needed
+    const smallFontSize = '14px'; 
 
     return (
         <div className="about-section">
