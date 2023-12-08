@@ -102,7 +102,7 @@ const ListAppReviews = () => {
                                     <div>{review.title}</div>
                                 </blockquote>
                             </div>
-                            <p className="card-subtitle mb-1 text-body-secondary">
+                            <div className="card-subtitle mb-1 text-body-secondary">
                                 <small>
                                     {new Date(review.publish_time).toLocaleDateString("en-US", {
                                         year: "numeric",
@@ -111,7 +111,7 @@ const ListAppReviews = () => {
                                     })}
                                 </small>
                                 {renderStars(review.rating)}
-                            </p>
+                            </div>
                         </div>
                         <div className="card-text text-start">
                             <p>{review.text}</p>
