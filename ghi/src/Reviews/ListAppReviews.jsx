@@ -36,6 +36,16 @@ const ListAppReviews = () => {
         fetchReviews();
     }, [place_id]);
 
+    const handleAddReview = async () => {
+        if (!token) {
+            setShowLoginPrompt(true);
+        } else {
+            {
+                navigate(`/create-review/${place_id}`);
+            }
+        }
+    };
+
     const promptLogin = (message) => {
         const confirmLogin = window.confirm(
             `${message} Please login to continue.`
@@ -124,7 +134,7 @@ const ListAppReviews = () => {
                 </div>
                 <div>
                     <button
-                        onClick={() => addReview()}
+                        onClick={handleAddReview}
                         style={{ marginRight: "5px" }}
                         type="button"
                         className="btn btn-secondary mt-3 ms-2"
