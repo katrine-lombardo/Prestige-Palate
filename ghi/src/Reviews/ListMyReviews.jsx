@@ -4,6 +4,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import DeleteReview from "./DeleteReview";
 import ListFollowers from "../Accounts/ListFollowers";
 import ListFollowing from "../Accounts/ListFollowing";
+import { useStore } from "../ContextStore";
 import Loading from "../Loading";
 import "./../index.css";
 
@@ -20,6 +21,7 @@ const ListMyReviews = () => {
     const [activeReviewId, setActiveReviewId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { token } = useAuthContext();
+    const { favorites, setFavorites } = useStore();
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
@@ -62,7 +64,10 @@ const ListMyReviews = () => {
                         );
                         setReviews(reviewsWithRestaurantNames);
                     } else {
-                        console.error("Error fetching reviews:", response.statusText);
+                        console.error(
+                            "Error fetching reviews:",
+                            response.statusText
+                        );
                     }
                 } catch (error) {
                     console.error("Error fetching reviews:", error);
@@ -76,12 +81,48 @@ const ListMyReviews = () => {
         fetchMyReviews();
     }, [token, username]);
 
+    const isFavorite = favorites.includes(reviews.place_id);
+    const toggleFavorite = async () => {
+        if (!token) {
+            setShowLoginPrompt(true);
+            return;
+        }
+
+        const method = isFavorite ? "DELETE" : "POST";
+        try {
+            const response = await fetch(
+                `${tokenUrl}/api/restaurants/${reviews.place_id}/favorite`,
+                {
+                    method: method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            if (response.ok) {
+                const updatedFavorites = isFavorite
+                    ? favorites.filter((id) => id !== reviews.place_id)
+                    : [...favorites, reviews.place_id];
+                setFavorites(updatedFavorites);
+            } else {
+                throw new Error("Failed to update favorites");
+            }
+        } catch (error) {
+            console.error("Error updating favorites:", error);
+        }
+    };
+
     if (isLoading) {
         return <Loading />;
     }
 
     if (!reviews) {
-        return <div><Loading /></div>;
+        return (
+            <div>
+                <Loading />
+            </div>
+        );
     }
 
     const handleEditReview = (review) => {
@@ -92,18 +133,22 @@ const ListMyReviews = () => {
     const renderNullPhotos = () => (
         <div>
             <div className="container mt-4">
-                {isLoading ? <Loading /> : <div className="container">
-                    <p>No photos here. Yet...</p>
-                    <Link to={`/`}>
-                        <button
-                            style={{ marginRight: "5px" }}
-                            type="button"
-                            className="btn btn-secondary mt-3 ms-2"
-                        >
-                            Start your culinary adventure now
-                        </button>
-                    </Link>
-                </div>}
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <div className="container">
+                        <p>No photos here. Yet...</p>
+                        <Link to={`/`}>
+                            <button
+                                style={{ marginRight: "5px" }}
+                                type="button"
+                                className="btn btn-secondary mt-3 ms-2"
+                            >
+                                Start your culinary adventure now
+                            </button>
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -111,18 +156,22 @@ const ListMyReviews = () => {
     const renderNullReviews = () => (
         <div>
             <div className="container mt-4">
-                {isLoading ? <Loading /> : <div className="container">
-                    <p>No Prestige Palate reviews here. Yet...</p>
-                    <Link to={`/`}>
-                        <button
-                            style={{ marginRight: "5px" }}
-                            type="button"
-                            className="btn btn-secondary mt-3 ms-2"
-                        >
-                            Start your culinary adventure now
-                        </button>
-                    </Link>
-                </div>}
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <div className="container">
+                        <p>No Prestige Palate reviews here. Yet...</p>
+                        <Link to={`/`}>
+                            <button
+                                style={{ marginRight: "5px" }}
+                                type="button"
+                                className="btn btn-secondary mt-3 ms-2"
+                            >
+                                Start your culinary adventure now
+                            </button>
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -170,8 +219,6 @@ const ListMyReviews = () => {
     if (!token) {
         return <div>Please log in to see reviews</div>;
     }
-
-
 
     return (
         <div>
@@ -247,14 +294,37 @@ const ListMyReviews = () => {
                                     <div key={index} className="card border-0">
                                         <div className="card-body">
                                             <div className="card-title">
-                                                <Link
-                                                    to={`/restaurants/${review.place_id}`}
-                                                >
-                                                    <h4>
-                                                        {review.restaurantName}
-                                                    </h4>
-                                                </Link>
                                                 <div className="d-flex justify-content-between">
+                                                    <Link
+                                                        to={`/restaurants/${review.place_id}`}
+                                                    >
+                                                        <h4>
+                                                            {review.restaurantName}
+                                                        </h4>
+                                                    </Link>
+                                                    <div
+                                                        className="switch"
+                                                        style={{
+                                                            alignSelf: "center",
+                                                        }}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`favorite-toggle-detail-${review.place_id}`}
+                                                            checked={isFavorite}
+                                                            onChange={
+                                                                toggleFavorite
+                                                            }
+                                                        />
+                                                        <label
+                                                            htmlFor={`favorite-toggle-detail-${review.place_id}`}
+                                                            className="slider round"
+                                                        ></label>
+                                                    </div>
+                                                </div>
+
+                                                <div className="d-flex justify-content-between">
+
                                                     <h5>{review.title}</h5>
                                                     <div>
                                                         {[1, 2, 3, 4, 5].map(
