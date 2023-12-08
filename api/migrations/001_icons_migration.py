@@ -31,5 +31,7 @@ steps = [
         ('Donut', 'https://cdn-icons-png.flaticon.com/512/12751/12751656.png?ga=GA1.1.161371894.1701626167'),
         ('Hotdog', 'https://cdn-icons-png.flaticon.com/512/411/411031.png?ga=GA1.1.161371894.1701626167');        
         """,
+        """
+        """,
     ],
 ]

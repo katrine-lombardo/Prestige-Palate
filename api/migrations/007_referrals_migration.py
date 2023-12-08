@@ -23,5 +23,7 @@ steps = [
         ('admin@email.com', 'trey_mcgee@email.com'),
         ('admin@email.com', 'yaosheng_yin@email.com');
         """,
+        """
+        """,
     ],
 ]
