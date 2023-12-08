@@ -119,12 +119,9 @@ const ListMyReviews = () => {
             );
 
             if (response.ok) {
-                // Update state to remove the deleted review
                 setReviews((prevReviews) =>
                     prevReviews.filter((review) => review.id !== activeReviewId)
                 );
-
-                // Close the delete modal
                 setDeleteModalOpen(false);
             } else {
                 console.error("Error deleting review:", response.statusText);

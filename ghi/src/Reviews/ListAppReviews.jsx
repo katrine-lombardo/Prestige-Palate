@@ -69,6 +69,16 @@ const ListAppReviews = () => {
                             src={review.profile_icon_url}
                             alt="User"
                             className="user-icon"
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                border: '2px solid black',
+                                borderRadius: '50%',
+                                padding: '1px',
+                                objectFit: 'cover',
+                                margin: 'auto',
+                                display: 'block',
+                            }}
                         />
                         <Link to={`/${review.username}`}>
                             <h5 className="mt-2">{review.username}</h5>
