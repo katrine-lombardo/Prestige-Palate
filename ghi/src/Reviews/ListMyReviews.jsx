@@ -81,17 +81,16 @@ const ListMyReviews = () => {
         fetchMyReviews();
     }, [token, username]);
 
-    const isFavorite = favorites.includes(reviews.place_id);
-    const toggleFavorite = async () => {
+    const toggleFavorite = async (place_id) => {
         if (!token) {
             setShowLoginPrompt(true);
             return;
         }
 
-        const method = isFavorite ? "DELETE" : "POST";
+        const method = favorites.includes(place_id) ? "DELETE" : "POST";
         try {
             const response = await fetch(
-                `${tokenUrl}/api/restaurants/${reviews.place_id}/favorite`,
+                `${tokenUrl}/api/restaurants/${place_id}/favorite`,
                 {
                     method: method,
                     headers: {
@@ -101,9 +100,9 @@ const ListMyReviews = () => {
                 }
             );
             if (response.ok) {
-                const updatedFavorites = isFavorite
-                    ? favorites.filter((id) => id !== reviews.place_id)
-                    : [...favorites, reviews.place_id];
+                const updatedFavorites = favorites.includes(place_id)
+                    ? favorites.filter((id) => id !== place_id)
+                    : [...favorites, place_id];
                 setFavorites(updatedFavorites);
             } else {
                 throw new Error("Failed to update favorites");
@@ -311,10 +310,8 @@ const ListMyReviews = () => {
                                                         <input
                                                             type="checkbox"
                                                             id={`favorite-toggle-detail-${review.place_id}`}
-                                                            checked={isFavorite}
-                                                            onChange={
-                                                                toggleFavorite
-                                                            }
+                                                            checked={favorites.includes(review.place_id)}
+                                                            onChange={() => toggleFavorite(review.place_id)}
                                                         />
                                                         <label
                                                             htmlFor={`favorite-toggle-detail-${review.place_id}`}
@@ -324,7 +321,6 @@ const ListMyReviews = () => {
                                                 </div>
 
                                                 <div className="d-flex justify-content-between">
-
                                                     <h5>{review.title}</h5>
                                                     <div>
                                                         {[1, 2, 3, 4, 5].map(
