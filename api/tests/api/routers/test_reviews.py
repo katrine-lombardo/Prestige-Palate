@@ -18,15 +18,21 @@ fake_review_data = {
 
 
 class FakeReviewQueries:
-    def get_google_reviews_for_restaurant(self, place_id: str):
-        if place_id != "testPlaceId":
-            return []
-        return [{"place_id": "testPlaceId"}]
-
     def get_app_reviews_for_restaurant(self, place_id: str):
         if place_id != "testPlaceId":
             return []
-        return [{"place_id": "testPlaceId"}]
+        return [
+            {
+                "id": 1,
+                "username": "testUser",
+                "place_id": "testPlaceId",
+                "publish_time": "2023-12-07T19:07:23.859056+00:00",
+                "title": "Test Title",
+                "text": "Test Review Text",
+                "rating": 5.0,
+                "photo_urls": ["testPhotoUrl1", "testPhotoUrl2"],
+            }
+        ]
 
     def create_review(self, username: str, place_id: str):
         if username != "username" or place_id != "testPlaceId":
@@ -58,15 +64,23 @@ def setup_tests():
     app.dependency_overrides.clear()
 
 
-def test_get_google_reviews_for_restaurant(placeId: str):
-    response = client.get("/api/restaurants/testPlaceId/googlereviews")
-    assert response.status_code == 200
-
-
-def test_get_app_reviews_for_restaurant(placeId: str):
+def test_get_app_reviews_for_restaurant():
     response = client.get("/api/restaurants/testPlaceId/reviews")
     assert response.status_code == 200
-    assert response.json() == [{"place_id": "testPlaceId"}]
+    assert response.json() == [
+        {
+            "id": 1,
+            "username": "testUser",
+            "place_id": "testPlaceId",
+            "publish_time": "2023-12-07T19:07:23.859056+00:00",
+            "title": "Test Title",
+            "text": "Test Review Text",
+            "rating": 5.0,
+            "photo_urls": ["testPhotoUrl1", "testPhotoUrl2"],
+            "profile_icon_url": None,
+            "account_id": None,
+        }
+    ]
 
 
 def create_review(self, username: str, placeId: str):
