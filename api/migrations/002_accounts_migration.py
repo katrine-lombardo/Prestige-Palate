@@ -20,7 +20,7 @@ steps = [
         """
         INSERT INTO accounts
         (username, first_name, last_name, email, hashed_password) VALUES
-        ('admin', 'Admin', 'User', 'admin@email.com', '$2b$12$aXcHj2LvRg3yAFMnCDJyXero1PBa/G/jinZ0aMyiUq.RdCURWMkKu');
+        ('admin', 'Admin', 'User', 'admin@email.com', '$2b$12$Kk98F1Nz7YYk92jvlqAqfeWa28BnB7AjXPQsSO.JsPHPZ6r0PBY1.');
         """,
         """
         """,
