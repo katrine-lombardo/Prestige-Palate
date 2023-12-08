@@ -8,7 +8,6 @@ const StarCard = ({ rating }) => {
     }
 
     if (rating < 5) {
-
         const partialStar = rating - fullStars;
 
         starArr.push(partialStar);
@@ -22,23 +21,24 @@ const StarCard = ({ rating }) => {
 
     const stars = starArr.map((val, i) => {
         return (
-            <div key={i}
+            <div
+                key={i}
                 className="starBox"
                 style={{
-                    fontSize: '140%',
+                    fontSize: '140%', 
                     width: '30px',
                     height: '30px',
-                    lineHeight: '10px',
+                    lineHeight: '30px', 
                     verticalAlign: 'top',
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: '6px',
+                    borderRadius: '50%',
                     color: '#FFD700',
                     margin: '0 1px',
-                    background: `linear-gradient(90deg, #800080
-                    ${val * 100}%, #bbbac0 ${val * 100}%)`
-                }}>
+                    background: `linear-gradient(90deg, #800080 ${val * 100}%, #bbbac0 ${val * 100}%)`
+                }}
+            >
                 ♛
             </div>
         );
@@ -50,4 +50,5 @@ const StarCard = ({ rating }) => {
         </div>
     );
 };
+
 export default StarCard;

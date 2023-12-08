@@ -111,8 +111,6 @@ function Nav({ toggleSidebar }) {
                     </div>
                 </div>
             </nav>
-            <main className="homepage-content">
-            </main>
         </>
     );
 }

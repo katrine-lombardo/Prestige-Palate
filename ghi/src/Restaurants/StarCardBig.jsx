@@ -8,7 +8,6 @@ const BigStarCard = ({ rating }) => {
     }
 
     if (rating < 5) {
-
         const partialStar = rating - fullStars;
 
         starArr.push(partialStar);
@@ -22,7 +21,8 @@ const BigStarCard = ({ rating }) => {
 
     const stars = starArr.map((val, i) => {
         return (
-            <div key={i}
+            <div
+                key={i}
                 className="starBox"
                 style={{
                     fontSize: '250%',
@@ -36,10 +36,10 @@ const BigStarCard = ({ rating }) => {
                     borderRadius: '6px',
                     color: '#FFD700',
                     margin: '0 1px',
-                    background: `linear-gradient(90deg, #800080
-                    ${val * 100}%, #bbbac0 ${val * 100}%)`
-                }}>
-                ♛
+                    background: `linear-gradient(90deg, #FF0000 ${val * 100}%, #bbbac0 ${val * 100}%)` 
+                }}
+            >
+                ★
             </div>
         );
     });
@@ -50,4 +50,5 @@ const BigStarCard = ({ rating }) => {
         </div>
     );
 };
+
 export default BigStarCard;
