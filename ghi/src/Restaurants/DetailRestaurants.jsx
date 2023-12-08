@@ -5,9 +5,9 @@ import About from './About';
 import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
 import BigStarCard from './StarCardBig';
-import StarCard from './StarCard';
+import ReviewCarousel from './ReviewCarousel';
 import { useStore } from '../ContextStore';
-import Loading from '../Loading'
+import Loading from '../Loading';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -24,15 +24,13 @@ const DetailRestaurant = () => {
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const [showEditReviewModal, setShowEditReviewModal] = useState(false);
     const [existingReviewId, setExistingReviewId] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchDetails(place_id);
     }, [place_id]);
 
     const fetchDetails = async (id) => {
-        setIsLoading(true);
-        const tokenUrl = import.meta.env.VITE_APP_API_HOST || 'default_api_host';
         try {
             const response = await fetch(`${tokenUrl}/api/restaurants/${id}`);
             if (!response.ok) {
@@ -56,7 +54,6 @@ const DetailRestaurant = () => {
         }
 
         const method = isFavorite ? 'DELETE' : 'POST';
-        const tokenUrl = import.meta.env.VITE_APP_API_HOST || 'default_api_host';
         try {
             const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/favorite`, {
                 method: method,
@@ -127,11 +124,11 @@ const DetailRestaurant = () => {
                     return data;
                 }
             } else {
-                console.error('Server responded with an error when checking for existing review');
+                console.error('Server responded with an error when checking for an existing review');
                 return null;
             }
         } catch (error) {
-            console.error('Error checking for existing review:', error);
+            console.error('Error checking for an existing review:', error);
             return null;
         }
     };
@@ -145,7 +142,6 @@ const DetailRestaurant = () => {
         setShowEditReviewModal(false);
     };
 
-
     if (isLoading) {
         return <Loading />;
     }
@@ -154,127 +150,109 @@ const DetailRestaurant = () => {
         return <div><Loading /></div>;
     }
 
+    const { displayName, rating, userRatingCount, websiteUri } = restaurantDetails;
+
     return (
-        <div className="container mt-4">
-            {restaurantDetails && restaurantDetails.displayName &&
-                <h1 className="text-center mb-3">{restaurantDetails.displayName.text}</h1>
-            }
-            <div className="text-center mb-3">
-                <button className="btn btn-primary mr-2" onClick={handleAddReview}>Add a Review</button>
-                <div className="switch">
-                    <input
-                        type="checkbox"
-                        id={`favorite-toggle-detail-${place_id}`}
-                        checked={isFavorite}
-                        onChange={toggleFavorite}
-                    />
-                    <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
-                </div>
-            </div>
-            <BigStarCard rating={restaurantDetails.rating} />
-            <h4 className="text-center my-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
-
-            {restaurantDetails.websiteUri && (
-                <div className="text-center mb-3">
-                    <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
-                        {restaurantDetails.websiteUri}
-                    </a>
-                </div>
-            )}
-            <h2 className="mt-4">Google Reviews</h2>
-            <ul className="list-unstyled mt-3">
-                {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
-                    <li key={index} className="card border-0">
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col-2">
-                                    <div>
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <span key={star} style={{ color: star <= review.rating ? "gold" : "gray", }}>★</span>
-                                        ))}
-                                    </div>
+        <main>
+            <div className="container mt-4" style={{ border: '1px solid #ddd', borderRadius: '5px', padding: '20px', width: '100%' }}>
+                <div className="restaurant-banner-container" style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '5px', display: 'grid', gridTemplateColumns: 'auto auto', width: '100%', gap: '20px' }}>
+                    <div className="left-column">
+                        <div className="left-top">
+                            <h1 className="restaurant-name">{displayName && displayName.text}</h1>
+                        </div>
+                        <div className="left-bottom">
+                            {websiteUri && (
+                                <div className="website-link">
+                                    <a href={websiteUri} target="_blank" rel="noopener noreferrer">
+                                        {websiteUri}
+                                    </a>
                                 </div>
-                                <div className="col-10">
-                                    <div className="d-flex justify-content-between">
-                                        <div className="card-title">
-                                            <blockquote className="blockquote">Google Review Title</blockquote>
-                                        </div>
-                                        <p className="card-subtitle mb-1 text-body-secondary">
-                                            <small>Date Posted: {new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-2 ">
-                                    <img src={review.authorAttribution?.photoUri} className="mr-3 rounded-circle" alt="Author" style={{ width: '40px', height: '40px' }} />
-                                    <h5 className="mt-0 mb-1">
-                                        <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
-                                            {review.authorAttribution?.displayName || 'Unknown Author'}
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div className="col-10">
-                                    <div className="card-text">
-                                        <p>{review.text?.text || "No review text available"}</p>
-                                    </div>
-                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="middle-column" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <div className="middle-top">
+                            <div className="switch">
+                                <input
+                                    type="checkbox"
+                                    id={`favorite-toggle-detail-${place_id}`}
+                                    checked={isFavorite}
+                                    onChange={toggleFavorite}
+                                />
+                                <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
                             </div>
                         </div>
-
-                    </li>
-                ))}
-            </ul>
-
-            <div className="nav nav-tabs mt-4" id="nav-tab" role="tablist">
-                <button className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => handleTabChange('reviews')}>Reviews</button>
-                <button className={`nav-link ${activeTab === 'photos' ? 'active' : ''}`} onClick={() => handleTabChange('photos')}>Photos</button>
-                <button className={`nav-link ${activeTab === 'about' ? 'active' : ''}`} onClick={() => handleTabChange('about')}>About</button>
-            </div>
-            <div className="tab-content mt-3">
-                {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
-                {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
-                {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
-            </div>
-            <div className={`modal ${showLoginPrompt ? 'show' : ''}`} tabIndex="-1" style={{ display: showLoginPrompt ? 'block' : 'none' }}>
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Login Required</h5>
-                            <button type="button" className="btn-close" onClick={handleClose}></button>
+                        <div className="middle-bottom">
+                            <button className="btn btn-primary add-review-button" onClick={handleAddReview}>
+                                Add a Review
+                            </button>
                         </div>
-                        <div className="modal-body">
-                            <p>Only logged-in users can add to favorites. Please login to continue.</p>
+                    </div>
+                    <div className="right-column">
+                        <div className="right-top" style={{ textAlign: 'right' }}>
+                            <BigStarCard rating={rating} />
                         </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
-                            <button type="button" className="btn btn-primary" onClick={handleLogin}>Login</button>
+                        <div className="right-bottom">
+                            <div className="rating-details" style={{ textAlign: 'right' }}>
+                                <h4>Rating: {rating} ({userRatingCount})</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {showEditReviewModal && existingReviewId && (
-                <div className={`modal ${showEditReviewModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showEditReviewModal ? 'block' : 'none' }}>
+                <div style={{ marginTop: '20px' }}></div>
+
+                <ReviewCarousel restaurantDetails={restaurantDetails} style={{ marginTop: '20px' }} />
+
+                <div className="nav nav-tabs mt-4" id="nav-tab" role="tablist">
+                    <button className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => handleTabChange('reviews')}>Reviews</button>
+                    <button className={`nav-link ${activeTab === 'photos' ? 'active' : ''}`} onClick={() => handleTabChange('photos')}>Photos</button>
+                    <button className={`nav-link ${activeTab === 'about' ? 'active' : ''}`} onClick={() => handleTabChange('about')}>About</button>
+                </div>
+                <div className="tab-content mt-3">
+                    {activeTab === 'reviews' && <ListAppReviews place_id={place_id} />}
+                    {activeTab === 'photos' && <RestaurantPhotos placeId={place_id} />}
+                    {activeTab === 'about' && <About restaurantDetails={restaurantDetails} />}
+                </div>
+                <div className={`modal ${showLoginPrompt ? 'show' : ''}`} tabIndex="-1" style={{ display: showLoginPrompt ? 'block' : 'none' }}>
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Edit Review</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowEditReviewModal(false)}></button>
+                                <h5 className="modal-title">Login Required</h5>
+                                <button type="button" className="btn-close" onClick={handleClose}></button>
                             </div>
                             <div className="modal-body">
-                                <p>You have already reviewed this restaurant. Would you like to edit your review?</p>
+                                <p>Only logged-in users can add to favorites. Please login to continue.</p>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={navigateToEditReview}>
-                                    Edit Review
-                                </button>
-                                <button type="button" className="btn btn-secondary" onClick={() => setShowEditReviewModal(false)}>Cancel</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
+                                <button type="button" className="btn btn-primary" onClick={handleLogin}>Login</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
+                {showEditReviewModal && existingReviewId && (
+                    <div className={`modal ${showEditReviewModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showEditReviewModal ? 'block' : 'none' }}>
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Edit Review</h5>
+                                    <button type="button" className="btn-close" onClick={() => setShowEditReviewModal(false)}></button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>You have already reviewed this restaurant. Would you like to edit your review?</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" onClick={navigateToEditReview}>
+                                        Edit Review
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={() => setShowEditReviewModal(false)}>Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </main>
     );
 };
 

@@ -1,4 +1,53 @@
-## Tuesday, Dec 3
+## Friday, Dec 7
+Features/issues that you worked on and who you worked with:
+- Created unit test for photos routers
+
+A reflection on any design conversations that you had:
+- 
+
+At least one ah-ha! moment:
+- 
+
+## Thursday, Dec 7
+Features/issues that you worked on and who you worked with:
+- Worked with Yaosheng on implementing a prompt that has a user edit an existing review. I worked with ListMyReviews to display photos in the photos tab with the corresponding restaurant for each picture. Also, worked on the review tab to display the photos for each review.
+
+A reflection on any design conversations that you had:
+- Discussed with the group how the photos tab for ListMyReviews should be designed.
+
+At least one ah-ha! moment:
+- I was able to understand how prompts work in React by implementing a prompt to have a user edit a review if there was an existing one already created for a restaurant.
+
+## Wednesday, Dec 6
+Features/issues that you worked on and who you worked with:
+- I added functionality in Create Review to upload multiple photos. I updated the photos routers/queries to photo_urls to account for the change.
+ Initially get_photos_by_username query was not functioning as expected. When you create two reviews with two different photo_urls, the response returned had two lists with username listed twice. I updated the query so the response is as expected with each photo_urls field containing a list of strings instead of a comma-separated string. It looked like this before
+ [
+  {
+    "username": "test",
+    "photo_urls": [
+      "https://prestigepalate.s3.us-east-2.amazonaws.com/EditProfile.png",
+    ]
+  }
+]
+ [
+  {
+    "username": "test",
+    "photo_urls": [
+      "https://prestigepalate.s3.us-east-2.amazonaws.com/UserPhotos.png"
+    ]
+  }
+]
+
+Added an endpoint to check if a review has already been created. We are only allowing users to submit one review per restaurant so there is an error message that appears if a user tries to create an additional review.
+
+A reflection on any design conversations that you had:
+- Describe the endpoint update I made
+
+At least one ah-ha! moment:
+- Nothing specific, but being able to update the review to upload multiple photos successfully was a big accomplishment.
+
+## Tuesday, Dec 5
 Features/issues that you worked on and who you worked with:
 - I worked on the ListMyReviews page and created two buttons Edit/Delete Reviews. The edit button navigates the user to the UpdateReview page and the Delete button deletes the review from the list. I also created the DeleteReview component.
 
@@ -11,7 +60,7 @@ At least one ah-ha! moment:
             );
 By using the setReviews function with prevReviews.filter, you filter out the deleted review from the state. This way, the component will re-render, and the deleted review will be reflected immediately in the UI.
 
-## Monday, Dec 2
+## Monday, Dec 4
 Features/issues that you worked on and who you worked with:
 - I created the UpdateReview component and finished the edit review form.
 

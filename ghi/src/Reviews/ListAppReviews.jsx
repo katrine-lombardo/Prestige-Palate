@@ -1,11 +1,11 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
-import Loading from '../Loading'
+import Loading from '../Loading';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.");
+    throw new Error("VITE_APP_API_HOST was undefined.");
 }
 
 const ListAppReviews = () => {
@@ -13,7 +13,7 @@ const ListAppReviews = () => {
     const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
     const { token } = useAuthContext();
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -45,16 +45,75 @@ const ListAppReviews = () => {
         }
     };
 
-    const addReview = () => {
-        if (!token) {
-            promptLogin("Only logged-in users can add reviews.");
-            return;
-        }
-        navigate(`/create-review/${place_id}`);
-    };
+    const renderStars = (rating) => (
+        <div className="star-rating" style={{ fontSize: "23px" }}>
+            {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                    key={star}
+                    style={{
+                        color: star <= rating ? "gold" : "gray",
+                    }}
+                >
+                    ★
+                </span>
+            ))}
+        </div>
+    );
+
+    const renderReview = (review, index) => (
+        <div key={index} className="card border-0 mb-3">
+            <div className="card-body">
+                <div className="row align-items-start">
+                    <div className="col-2">
+                        <img
+                            src={review.profile_icon_url}
+                            alt="User"
+                            className="user-icon"
+                            style={{
+                                width: '40px',
+                                height: '40px',
+                                border: '2px solid black',
+                                borderRadius: '50%',
+                                padding: '1px',
+                                objectFit: 'cover',
+                                margin: 'auto',
+                                display: 'block',
+                            }}
+                        />
+                        <Link to={`/${review.username}`}>
+                            <h5 className="mt-2">{review.username}</h5>
+                        </Link>
+
+                    </div>
+                    <div className="col-10">
+                        <div className="d-flex justify-content-between">
+                            <div className="card-title">
+                                <blockquote className="blockquote">
+                                    <div>{review.title}</div>
+                                </blockquote>
+                            </div>
+                            <p className="card-subtitle mb-1 text-body-secondary">
+                                <small>
+                                    {new Date(review.publish_time).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}
+                                </small>
+                                {renderStars(review.rating)}
+                            </p>
+                        </div>
+                        <div className="card-text text-start">
+                            <p>{review.text}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 
     if (loading) {
-        return <div><Loading /></div>;
+        return <Loading />;
     }
 
     if (reviews.length === 0) {
@@ -65,7 +124,7 @@ const ListAppReviews = () => {
                 </div>
                 <div>
                     <button
-                        onClick={addReview}
+                        onClick={() => addReview()}
                         style={{ marginRight: "5px" }}
                         type="button"
                         className="btn btn-secondary mt-3 ms-2"
@@ -77,73 +136,7 @@ const ListAppReviews = () => {
         );
     }
 
-    return (
-        <div className="container mt-4">
-            {reviews.map((review, index) => {
-                return (
-                    <div key={index} className="card border-0">
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col-2">
-                                    <div>
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <span key={star} style={{ color: star <= review.rating ? "gold" : "gray", }}>★</span>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="col-10">
-                                    <div className="d-flex justify-content-between">
-                                        <div className="card-title">
-                                            <blockquote className="blockquote">
-                                                <p>{review.title}</p>
-                                            </blockquote>
-                                        </div>
-                                        <p className="card-subtitle mb-1 text-body-secondary">
-                                            <small>
-                                                Date posted:{" "}
-                                                {new Date(
-                                                    review.publish_time
-                                                ).toLocaleDateString("en-US", {
-                                                    year: "numeric",
-                                                    month: "long",
-                                                    day: "numeric",
-                                                })}
-                                            </small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-2">
-                                    <img
-                                        src={review.profile_icon_url}
-                                        alt="User"
-                                        className="user-icon"
-                                        style={{
-                                            width: '40px',
-                                            height: '40px',
-                                            borderRadius: '5%',
-                                            objectFit: 'cover',
-                                            margin: 'auto',
-                                            display: 'block',
-                                        }}
-                                    />
-                                    <Link to={`/${review.username}`}>
-                                        <h5>{review.username}</h5>
-                                    </Link>
-                                </div>
-                                <div className="col-10">
-                                    <div className="card-text">
-                                        <p>{review.text}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
-        </div>
-    );
+    return <div className="container mt-4">{reviews.map(renderReview)}</div>;
 };
 
 export default ListAppReviews;

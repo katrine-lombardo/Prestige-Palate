@@ -1,4 +1,9 @@
-## Tues, Dec 5
+## Thurs, Dec 7
+Features/issues that you worked on and who you worked with:
+- Worked on deployment and cleaned up lint
+- Front end of detailed restaurant page, about page for the detailed restaurant page, and the carousel for google reviews.
+
+## Wed, Dec 6
 Features/issues that you worked on and who you worked with:
 - Fixed the back end code of DELETE accounts to delete cookie. Previously, the token remained for a while until it timed out, so on the front end we had to add logout() under response.ok for the delete account feature.  But with this new change, we decided to delete the cookie and so on the front end, we set the setToken to null on the front end after the response.ok instead of logout().
 - Figured out how to from passlib.context import CryptContext on Thonny to generate some hashed_password for seed data. Looking to putting in initial 5 users in accounts table who are able to refer limited number of ppl to get signed up.
