@@ -9,7 +9,7 @@ if (!tokenUrl) {
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
     const { token } = useAuthContext();
-    const [firstName, setFirstName] = useState("");
+    const [username, setUsername] = useState("");
 
     const closeSidebar = () => {
         if (isOpen) {
@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    setFirstName(data.account.first_name);
+                    setUsername(data.account.username.toUpperCase());
                 })
                 .catch((error) => console.error(error));
         };
@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     return (
         <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden' }}>
             <div className="offcanvas-header">
-                <h5 className="offcanvas-title">{token ? `Welcome, ${firstName}` : ''}</h5>
+                <h5 className="offcanvas-title">{token ? `WELCOME, ${username}` : ''}</h5>
                 <button type="button" className="btn-close text-reset" aria-label="Close" onClick={handleCloseClick}></button>
             </div>
             <div className="offcanvas-body d-flex flex-column">
