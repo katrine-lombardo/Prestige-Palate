@@ -74,7 +74,7 @@ const ListMyReviews = () => {
 
     const handleEditReview = (review) => {
         setActiveReviewId(null);
-        navigate(`/update-review/${username}/${review.id}`);
+        navigate(`/update-review/${review.id}`);
     };
 
     const renderNullPhotos = () => (
