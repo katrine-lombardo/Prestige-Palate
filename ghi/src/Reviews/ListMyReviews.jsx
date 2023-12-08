@@ -108,6 +108,25 @@ const ListMyReviews = () => {
         </div>
     );
 
+    const renderNullReviews = () => (
+        <div>
+            <div className="container mt-4">
+                {isLoading ? <Loading /> : <div className="container">
+                    <p>No Prestige Palate reviews here. Yet...</p>
+                    <Link to={`/`}>
+                        <button
+                            style={{ marginRight: "5px" }}
+                            type="button"
+                            className="btn btn-secondary mt-3 ms-2"
+                        >
+                            Start your culinary adventure now
+                        </button>
+                    </Link>
+                </div>}
+            </div>
+        </div>
+    );
+
     const handleToggleEditButton = (reviewId) => {
         setActiveReviewId(activeReviewId === reviewId ? null : reviewId);
     };
@@ -152,26 +171,7 @@ const ListMyReviews = () => {
         return <div>Please log in to see reviews</div>;
     }
 
-    const renderNullReviews = () => {
-        return (
-            <div>
-                <div className="container mt-4">
-                    No Prestige Palate reviews here. Yet...
-                </div>
-                <div>
-                    <Link to={`/`}>
-                        <button
-                            style={{ marginRight: "5px" }}
-                            type="button"
-                            className="btn btn-secondary mt-3 ms-2"
-                        >
-                            Start your culinary adventure now
-                        </button>
-                    </Link>
-                </div>
-            </div>
-        );
-    };
+
 
     return (
         <div>
@@ -242,7 +242,7 @@ const ListMyReviews = () => {
                         {!reviews.length ? (
                             renderNullReviews()
                         ) : (
-                            <div>
+                            <div className="container mt-3">
                                 {reviews.map((review, index) => (
                                     <div key={index} className="card border-0">
                                         <div className="card-body">
@@ -396,7 +396,7 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-photos-tab"
                     tabIndex="0"
                 >
-                    <div className="container">
+                    <div className="container mt-3">
                         <div className="photo-grid">
                             {reviews.length > 0
                                 ? reviews.map((review, index) => (
