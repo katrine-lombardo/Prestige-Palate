@@ -217,7 +217,7 @@ const DetailRestaurant = () => {
                                                     </div>
                                                     <div className="row align-items-center">
                                                         <div className="card-title text-start mb-4">
-                                                            @{review.authorAttribution?.displayName || 'Unknown Author'}
+                                                            <small>@{review.authorAttribution?.displayName || 'Unknown Author'}</small>
                                                         </div>
                                                     </div>
                                                     <div className="row">
