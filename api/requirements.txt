@@ -1,4 +1,4 @@
-psycopg[binary,pool]==3.1.10
+psycopg[binary,pool]==3.1.2
 fastapi[all]==0.89.0
 jwtdown-fastapi>=0.2.0
 uvicorn[standard]==0.17.6
