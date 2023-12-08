@@ -23,6 +23,7 @@ const DetailRestaurant = () => {
     const [showEditReviewModal, setShowEditReviewModal] = useState(false);
     const [existingReviewId, setExistingReviewId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
         fetchDetails(place_id);
@@ -152,6 +153,11 @@ const DetailRestaurant = () => {
         return <div><Loading /></div>;
     }
 
+    const handleCarouselControl = (increment) => {
+        const newIndex = activeIndex + increment * 3;
+        setActiveIndex(newIndex < 0 ? restaurantDetails.reviews.length - 1 : newIndex % restaurantDetails.reviews.length);
+    };
+
     return (
         <div className="container text-center mt-4">
             <div className="card border-0 mb-3">
@@ -196,30 +202,45 @@ const DetailRestaurant = () => {
                 </div>
             </div>
 
-
             <div className="google-review-list">
-                <div className="row row-cols-md-3 g-4">
-                    {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
-                        <div key={index} className="col">
-                            <div className="card h-90">
-                                <div className="card-body mt-1">
-                                    <div className="row">
-                                        <small>{new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
-                                    </div>
-                                    <div className="row align-items-center">
-                                        <div className="card-title text-start mb-4">
-                                            {review.authorAttribution?.displayName || 'Unknown Author'}
+                <div id="review-carousel" className="carousel slide" data-bs-ride="carousel">
+                    <div className="carousel-inner">
+                        {restaurantDetails.reviews.map((review, index) => (
+                            <div key={index} className={`carousel-item ${index === activeIndex % 3 ? 'active' : ''}`}>
+                                <div className="row row-cols-md-3 g-4">
+                                    {restaurantDetails.reviews.slice(index, index + 3).map((review, innerIndex) => (
+                                        <div key={innerIndex} className="col">
+                                            <div className="card h-90">
+                                                <div className="card-body mt-1">
+                                                    <div className="row text-end">
+                                                        <small>{new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
+                                                    </div>
+                                                    <div className="row align-items-center">
+                                                        <div className="card-title text-start mb-4">
+                                                            @{review.authorAttribution?.displayName || 'Unknown Author'}
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <span className="card-text text-truncate text-start">
+                                                            <p>{review.text?.text || "No review text available"}</p>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row">
-                                        <span className="card-text text-truncate text-start">
-                                            <p>{review.text?.text || "No review text available"}</p>
-                                        </span>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    <button className="carousel-control-prev" type="button" onClick={() => handleCarouselControl(-1)}>
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" onClick={() => handleCarouselControl(1)}>
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
 
