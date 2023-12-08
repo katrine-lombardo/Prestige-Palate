@@ -4,8 +4,6 @@ import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import About from './About';
 import ListAppReviews from '../Reviews/ListAppReviews';
 import RestaurantPhotos from './RestaurantPhotos';
-import BigStarCard from './StarCardBig';
-import StarCard from './StarCard';
 import { useStore } from '../ContextStore';
 import Loading from '../Loading'
 
@@ -25,6 +23,7 @@ const DetailRestaurant = () => {
     const [showEditReviewModal, setShowEditReviewModal] = useState(false);
     const [existingReviewId, setExistingReviewId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
         fetchDetails(place_id);
@@ -154,77 +153,96 @@ const DetailRestaurant = () => {
         return <div><Loading /></div>;
     }
 
+    const handleCarouselControl = (increment) => {
+        const newIndex = activeIndex + increment * 3;
+        setActiveIndex(newIndex < 0 ? restaurantDetails.reviews.length - 1 : newIndex % restaurantDetails.reviews.length);
+    };
+
     return (
-        <div className="container mt-4">
-            {restaurantDetails && restaurantDetails.displayName &&
-                <h1 className="text-center mb-3">{restaurantDetails.displayName.text}</h1>
-            }
-            <div className="text-center mb-3">
-                <button className="btn btn-primary mr-2" onClick={handleAddReview}>Add a Review</button>
-                <div className="switch">
-                    <input
-                        type="checkbox"
-                        id={`favorite-toggle-detail-${place_id}`}
-                        checked={isFavorite}
-                        onChange={toggleFavorite}
-                    />
-                    <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
+        <div className="container text-center mt-4">
+            <div className="card border-0 mb-3">
+                <div className="row justify-content-evenly">
+                    <div className="col-9">
+                        <h1 className="mt-1">{restaurantDetails.displayName.text}</h1>
+                    </div>
+                    <div className="col-2 text-end">
+                        <div><small className="text-end">Add to favorites</small></div>
+                        <div className="switch">
+                            <input
+                                type="checkbox"
+                                id={`favorite-toggle-detail-${place_id}`}
+                                checked={isFavorite}
+                                onChange={toggleFavorite}
+                            />
+                            <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
+                        </div>
+                    </div>
+                </div>
+                <div className="row justify-content-evenly">
+                    <div className="col-9">
+                        <div className="text-center">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    style={{
+                                        color: star <= restaurantDetails.rating ? "gold" : "gray",
+                                        fontSize: '40px'
+                                    }}>
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                        {restaurantDetails.rating} ({restaurantDetails.userRatingCount} total reviews)
+                    </div>
+                    <div className="col-2">
+                        <div className="text-center m-0">
+                            <button className="btn btn-primary mr-2 mt-2" onClick={handleAddReview}>Add a Review</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <BigStarCard rating={restaurantDetails.rating} />
-            <h4 className="text-center my-3">Rating: {restaurantDetails.rating} ({restaurantDetails.userRatingCount})</h4>
 
-            {restaurantDetails.websiteUri && (
-                <div className="text-center mb-3">
-                    <a href={restaurantDetails.websiteUri} target="_blank" rel="noopener noreferrer">
-                        {restaurantDetails.websiteUri}
-                    </a>
-                </div>
-            )}
-            <h2 className="mt-4">Google Reviews</h2>
-            <ul className="list-unstyled mt-3">
-                {restaurantDetails && restaurantDetails.reviews && restaurantDetails.reviews.map((review, index) => (
-                    <li key={index} className="card border-0">
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col-2">
-                                    <div>
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <span key={star} style={{ color: star <= review.rating ? "gold" : "gray", }}>★</span>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="col-10">
-                                    <div className="d-flex justify-content-between">
-                                        <div className="card-title">
-                                            <blockquote className="blockquote">Google Review Title</blockquote>
+            <div className="google-review-list">
+                <div id="review-carousel" className="carousel slide" data-bs-ride="carousel">
+                    <div className="carousel-inner">
+                        {restaurantDetails.reviews.map((review, index) => (
+                            <div key={index} className={`carousel-item ${index === activeIndex % 3 ? 'active' : ''}`}>
+                                <div className="row row-cols-md-3 g-4">
+                                    {restaurantDetails.reviews.slice(index, index + 3).map((review, innerIndex) => (
+                                        <div key={innerIndex} className="col">
+                                            <div className="card h-90">
+                                                <div className="card-body mt-1">
+                                                    <div className="row text-end">
+                                                        <small>{new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
+                                                    </div>
+                                                    <div className="row align-items-center">
+                                                        <div className="card-title text-start mb-4">
+                                                            <small>@{review.authorAttribution?.displayName || 'Unknown Author'}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <span className="card-text text-truncate text-start">
+                                                            <p>{review.text?.text || "No review text available"}</p>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p className="card-subtitle mb-1 text-body-secondary">
-                                            <small>Date Posted: {new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
-                                        </p>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col-2 ">
-                                    <img src={review.authorAttribution?.photoUri} className="mr-3 rounded-circle" alt="Author" style={{ width: '40px', height: '40px' }} />
-                                    <h5 className="mt-0 mb-1">
-                                        <a href={review.authorAttribution?.uri} target="_blank" rel="noopener noreferrer">
-                                            {review.authorAttribution?.displayName || 'Unknown Author'}
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div className="col-10">
-                                    <div className="card-text">
-                                        <p>{review.text?.text || "No review text available"}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </li>
-                ))}
-            </ul>
+                        ))}
+                    </div>
+                    <button className="carousel-control-prev" type="button" onClick={() => handleCarouselControl(-1)}>
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" onClick={() => handleCarouselControl(1)}>
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
 
             <div className="nav nav-tabs mt-4" id="nav-tab" role="tablist">
                 <button className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => handleTabChange('reviews')}>Reviews</button>
@@ -253,28 +271,30 @@ const DetailRestaurant = () => {
                     </div>
                 </div>
             </div>
-            {showEditReviewModal && existingReviewId && (
-                <div className={`modal ${showEditReviewModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showEditReviewModal ? 'block' : 'none' }}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Edit Review</h5>
-                                <button type="button" className="btn-close" onClick={() => setShowEditReviewModal(false)}></button>
-                            </div>
-                            <div className="modal-body">
-                                <p>You have already reviewed this restaurant. Would you like to edit your review?</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={navigateToEditReview}>
-                                    Edit Review
-                                </button>
-                                <button type="button" className="btn btn-secondary" onClick={() => setShowEditReviewModal(false)}>Cancel</button>
+            {
+                showEditReviewModal && existingReviewId && (
+                    <div className={`modal ${showEditReviewModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showEditReviewModal ? 'block' : 'none' }}>
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Edit Review</h5>
+                                    <button type="button" className="btn-close" onClick={() => setShowEditReviewModal(false)}></button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>You have already reviewed this restaurant. Would you like to edit your review?</p>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-primary" onClick={navigateToEditReview}>
+                                        Edit Review
+                                    </button>
+                                    <button type="button" className="btn btn-secondary" onClick={() => setShowEditReviewModal(false)}>Cancel</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 

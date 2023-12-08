@@ -122,7 +122,9 @@ const ListAppReviews = () => {
                                         style={{
                                             width: '40px',
                                             height: '40px',
-                                            borderRadius: '5%',
+                                            border: '2px solid black',
+                                            borderRadius: '50%',
+                                            padding: '2px',
                                             objectFit: 'cover',
                                             margin: 'auto',
                                             display: 'block',
@@ -133,7 +135,7 @@ const ListAppReviews = () => {
                                     </Link>
                                 </div>
                                 <div className="col-10">
-                                    <div className="card-text">
+                                    <div className="card-text text-start">
                                         <p>{review.text}</p>
                                     </div>
                                 </div>
