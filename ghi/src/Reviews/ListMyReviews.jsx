@@ -23,6 +23,7 @@ const ListMyReviews = () => {
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
+            setIsLoading(true);
             const url = `${tokenUrl}/token`;
             fetch(url, {
                 credentials: "include",
@@ -37,11 +38,13 @@ const ListMyReviews = () => {
         const fetchMyReviews = async () => {
             if (username) {
                 const url = `${tokenUrl}/api/accounts/${username}/reviews`;
-                fetch(url, {
-                    credentials: "include",
-                })
-                    .then((response) => response.json())
-                    .then(async (data) => {
+                try {
+                    const response = await fetch(url, {
+                        credentials: "include",
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
                         const reviewsWithRestaurantNames = await Promise.all(
                             data.map(async (review) => {
                                 const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`;
@@ -58,18 +61,27 @@ const ListMyReviews = () => {
                             })
                         );
                         setReviews(reviewsWithRestaurantNames);
-                    })
-                    .catch((error) => console.error(error));
-                setIsLoading(false);
+                    } else {
+                        console.error("Error fetching reviews:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error fetching reviews:", error);
+                } finally {
+                    setIsLoading(false); // Move it inside the finally block
+                }
             }
         };
-        setIsLoading(false);
+
         handleFetchWithAPI();
         fetchMyReviews();
     }, [token, username]);
 
     if (isLoading) {
         return <Loading />;
+    }
+
+    if (!reviews) {
+        return <div><Loading /></div>;
     }
 
     const handleEditReview = (review) => {
@@ -80,7 +92,7 @@ const ListMyReviews = () => {
     const renderNullPhotos = () => (
         <div>
             <div className="container mt-4">
-                {isLoading ? "Loading photos..." : <div className="container">
+                {isLoading ? <Loading /> : <div className="container">
                     <p>No photos here. Yet...</p>
                     <Link to={`/`}>
                         <button
