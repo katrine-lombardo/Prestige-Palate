@@ -154,10 +154,13 @@ const DetailRestaurant = () => {
 
     return (
         <div className="container text-center mt-4">
-            <div className="card mb-3">
-                <div className="row mt-">
-                    <div className="col-10"></div>
-                    <div className="col-2 align-self-end">
+            <div className="card border-0 mb-3">
+                <div className="row justify-content-evenly">
+                    <div className="col-9">
+                        <h1 className="mt-1">{restaurantDetails.displayName.text}</h1>
+                    </div>
+                    <div className="col-2 text-end">
+                        <div><small className="text-end">Add to favorites</small></div>
                         <div className="switch">
                             <input
                                 type="checkbox"
@@ -169,14 +172,8 @@ const DetailRestaurant = () => {
                         </div>
                     </div>
                 </div>
-                <div className="row align-items-center">
-                    <div className="col-8">
-                        <h1 className="mt-1">{restaurantDetails.displayName.text}</h1>
-                    </div>
-                    <div className="col-2"></div>
-                </div>
-                <div className="row">
-                    <div className="col-8">
+                <div className="row justify-content-evenly">
+                    <div className="col-9">
                         <div className="text-center">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <span
@@ -191,9 +188,9 @@ const DetailRestaurant = () => {
                         </div>
                         {restaurantDetails.rating} ({restaurantDetails.userRatingCount} total reviews)
                     </div>
-                    <div className="col-2 ms-5">
+                    <div className="col-2">
                         <div className="text-center m-0">
-                            <button className="btn btn-primary mr-2" onClick={handleAddReview}>Add a Review</button>
+                            <button className="btn btn-primary mr-2 mt-2" onClick={handleAddReview}>Add a Review</button>
                         </div>
                     </div>
                 </div>
@@ -209,7 +206,7 @@ const DetailRestaurant = () => {
                                     <div className="row">
                                         <small>{new Date(review.publishTime).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</small>
                                     </div>
-                                    <div className="row">
+                                    <div className="row align-items-center">
                                         <div className="card-title text-start mb-4">
                                             {review.authorAttribution?.displayName || 'Unknown Author'}
                                         </div>
