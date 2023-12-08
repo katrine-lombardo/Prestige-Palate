@@ -73,7 +73,7 @@ const ListMyReviews = () => {
                 } catch (error) {
                     console.error("Error fetching reviews:", error);
                 } finally {
-                    setIsLoading(false);
+                    setIsLoading(false); // Move it inside the finally block
                 }
             }
         };
@@ -137,7 +137,6 @@ const ListMyReviews = () => {
     const renderNullReviews = () => (
         <NullContent message="No Prestige Palate reviews here. Yet..." isLoading={isLoading} />
     );
-
 
     const handleToggleEditButton = (reviewId) => {
         setActiveReviewId(activeReviewId === reviewId ? null : reviewId);
@@ -250,7 +249,7 @@ const ListMyReviews = () => {
                 >
                     <div className="container mt-3">
                         {!reviews.length ? (
-                            renderNullPhotos()
+                            renderNullReviews()
                         ) : (
                             <div className="container mt-3">
                                 {reviews.map((review, index) => (
@@ -420,51 +419,55 @@ const ListMyReviews = () => {
             </div>
             <div className="tab-content mt-3" id="nav-photos-tab">
                 <div
-                    className="tab-pane fade show mt-3"
+                    className="tab-pane fade mt-3"
                     id="nav-photos"
                     role="tabpanel"
                     aria-labelledby="nav-photos-tab"
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        <div className="photo-grid">
-                            {reviews.length > 0 ? (
-                                reviews.map((review, index) => (
-                                    <div key={index} className="photo-item">
-                                        {Array.isArray(review.photo_urls) &&
-                                            review.photo_urls.length > 0 ? (
-                                            <div className="photo-card">
-                                                {review.photo_urls.map(
-                                                    (url, photoIndex) => (
-                                                        <div key={photoIndex}>
+                        {!reviews.length ? (
+                            renderNullPhotos()
+                        ) : (
+                            <div className="container mt-3">
+                                {reviews.map((review, index) => (
+                                    <div key={index} className="card border-0">
+                                        <div className="card-body">
+                                            {/* ... (existing code) */}
+                                            <div className="review-photos">
+                                                {Array.isArray(
+                                                    review.photo_urls
+                                                ) &&
+                                                    review.photo_urls.length > 0 ? (
+                                                    review.photo_urls.map(
+                                                        (
+                                                            url,
+                                                            photoIndex
+                                                        ) => (
                                                             <img
+                                                                key={photoIndex}
                                                                 src={url}
                                                                 alt={`Photo by ${username}`}
                                                             />
-                                                            <Link
-                                                                to={`/restaurants/${review.place_id}`}
-                                                            >
-                                                                <h4>
-                                                                    {
-                                                                        review.restaurantName
-                                                                    }
-                                                                </h4>
-                                                            </Link>
-                                                        </div>
+                                                        )
                                                     )
-                                                )}
+                                                ) : null}
                                             </div>
-                                        ) : null}
+                                            {/* ... (existing code) */}
+                                        </div>
                                     </div>
-                                ))
-                            ) : (
-                                renderNullPhotos()
-                            )}
-                        </div>
+                                ))}
+                                {reviews.every(
+                                    (review) =>
+                                        !Array.isArray(review.photo_urls) ||
+                                        review.photo_urls.length === 0
+                                ) && renderNullPhotos()}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-            <div className="tab-content mt-3" id="nav-tabContent">
+            <div className="tab-content mt-3" id="nav-following-tab">
                 <div
                     className="tab-pane fade show mt-3"
                     id="nav-following"
@@ -477,7 +480,7 @@ const ListMyReviews = () => {
                     </div>
                 </div>
             </div>
-            <div className="tab-content mt-3" id="nav-tabContent">
+            <div className="tab-content mt-3" id="nav-followers-tab">
                 <div
                     className="tab-pane fade show mt-3"
                     id="nav-followers"
