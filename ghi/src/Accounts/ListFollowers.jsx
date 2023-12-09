@@ -40,7 +40,10 @@ const ListFollowers = ({ username }) => {
 
                                 return {
                                     follower: follower_username,
-                                    profile_icon_url: followerReviewData.profile_icon_url,
+                                    profile_icon_url: followerReviewData.length > 0
+                                        ? followerReviewData[0]
+                                            .profile_icon_url
+                                        : "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
                                     total_reviews: totalReviews,
                                     average_rating: averageRating,
                                 };
