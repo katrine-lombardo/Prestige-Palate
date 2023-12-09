@@ -52,7 +52,8 @@ def text_search(
                 "places.formattedAddress,"
                 "places.rating,"
                 "places.displayName.text,"
-                "places.location",
+                "places.location,"
+                "places.userRatingCount"
         }
 
         request_body = {

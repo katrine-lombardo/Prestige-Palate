@@ -28,7 +28,7 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
                 <p>{state}</p>
                 <p>{country}</p>
                 <p>Rating: {restaurant.rating} ({restaurant.userRatingCount} ratings)</p>
-            
+
             {showFavorite && (
                 <div className="switch">
                     <input

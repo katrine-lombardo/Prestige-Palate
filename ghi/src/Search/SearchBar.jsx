@@ -26,6 +26,7 @@ function SearchBar({ onSearch }) {
 
                     const locationData = data.location_data
                     const searchResults = data.restaurants.places.length > 0 ? data.restaurants.places : [];
+                    console.log(searchResults)
                     navigate('/search-results', { state: { results: searchResults, locationData: locationData } });
                 } else {
                     navigate('/search-results', { state: { results: [], locationData: null } });
