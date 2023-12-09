@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import { useStore } from "../ContextStore";
 import ListFollowers from "../Accounts/ListFollowers";
 import ListFollowing from "../Accounts/ListFollowing";
+import NullContent from "./NullContent";
 import PhotoCard from "./PhotoCard";
 import Loading from "../Loading";
+import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.");
+    throw new Error("VITE_APP_API_HOST was undefined.");
 }
 
 const ListUserReviews = () => {
     const { username } = useParams();
     const [reviews, setReviews] = useState([]);
     const { token } = useAuthContext();
+    const { favorites, setFavorites } = useStore();
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -29,18 +33,57 @@ const ListUserReviews = () => {
                     const reviewsWithRestaurantNames = await Promise.all(
                         data.map(async (review) => {
                             const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`;
-                            const restaurantResponse = await fetch(restaurantUrl);
-                            const restaurantData = await restaurantResponse.json();
-                            return { ...review, restaurantName: restaurantData.displayName.text };
+                            const restaurantResponse = await fetch(
+                                restaurantUrl
+                            );
+                            const restaurantData =
+                                await restaurantResponse.json();
+                            return {
+                                ...review,
+                                restaurantName: restaurantData.displayName.text,
+                            };
                         })
                     );
                     setReviews(reviewsWithRestaurantNames);
-                    setIsLoading(false);
                 })
-                .catch((error) => console.error(error));
+                .catch((error) => console.error(error))
+                .finally(
+                    setIsLoading(false)
+                );
         };
         fetchUserReviews();
     }, [username]);
+
+    const toggleFavorite = async (place_id) => {
+        if (!token) {
+            setShowLoginPrompt(true);
+            return;
+        }
+
+        const method = favorites.includes(place_id) ? "DELETE" : "POST";
+        try {
+            const response = await fetch(
+                `${tokenUrl}/api/restaurants/${place_id}/favorite`,
+                {
+                    method: method,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            if (response.ok) {
+                const updatedFavorites = favorites.includes(place_id)
+                    ? favorites.filter((id) => id !== place_id)
+                    : [...favorites, place_id];
+                setFavorites(updatedFavorites);
+            } else {
+                throw new Error("Failed to update favorites");
+            }
+        } catch (error) {
+            console.error("Error updating favorites:", error);
+        }
+    };
 
     const handleFollow = async (followerUsername) => {
         try {
@@ -66,17 +109,24 @@ const ListUserReviews = () => {
         }
     };
 
+    if (!token) {
+        return <div>Please log in to see reviews</div>;
+    }
+
     if (isLoading) {
         return <Loading />;
     }
 
-    const renderNullReviews = () => {
-        return <div>
-            <div className="container mt-4">
-                No Prestige Palate reviews by this user, yet...
-            </div>
-        </div>;
-    };
+    const renderNullPhotos = () => (
+        <NullContent message="No photos here. Yet..." isLoading={isLoading} />
+    );
+
+    const renderNullReviews = () => (
+        <NullContent
+            message="No Prestige Palate reviews here. Yet..."
+            isLoading={isLoading}
+        />
+    );
 
     return (
         <div>
@@ -84,18 +134,22 @@ const ListUserReviews = () => {
                 <div className="row">
                     <div className="col-1">
                         <img
-                            src={reviews.length > 0 ? reviews[0].profile_icon_url : 'default-profile-icon-url'}
+                            src={
+                                reviews.length > 0
+                                    ? reviews[0].profile_icon_url
+                                    : "default-profile-icon-url"
+                            }
                             alt="User"
                             className="user-icon"
                             style={{
-                                width: '40px',
-                                height: '40px',
-                                border: '2px solid black',
-                                borderRadius: '50%',
-                                padding: '2px',
-                                objectFit: 'cover',
-                                margin: 'auto',
-                                display: 'block',
+                                width: "40px",
+                                height: "40px",
+                                border: "2px solid black",
+                                borderRadius: "50%",
+                                padding: "2px",
+                                objectFit: "cover",
+                                margin: "auto",
+                                display: "block",
                             }}
                         />
                     </div>
@@ -163,7 +217,7 @@ const ListUserReviews = () => {
                     </button>
                 </div>
             </nav>
-            <div className="tab-content mt-3" id="nav-tabContent">
+            <div className="tab-content mt-3" id="nav-reviews-tab">
                 <div
                     className="tab-pane fade show active mt-3"
                     id="nav-reviews"
@@ -172,54 +226,129 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        {!reviews.length ? renderNullReviews() : (
-                            <div>
-                                {reviews.map((review, index) => {
-                                    return (
-                                        <div key={index} className="card border-0">
-                                            <div className="card-body">
-                                                <div className="col">
-                                                    <div className="row"></div>
-                                                    <div className="row"></div>
-                                                </div>
-                                                <div className="col">
-                                                    <div className="row"></div>
-                                                    <div className="row"></div>
-                                                </div>
-                                                <div className="card-title">
-                                                    <Link to={`/restaurants/${review.place_id}`}>
-                                                        <h4>{review.restaurantName}</h4>
+                        {!reviews.length ? (
+                            renderNullReviews()
+                        ) : (
+                            <div className="container mt-3">
+                                {reviews.map((review, index) => (
+                                    <div key={index} className="card border-0">
+                                        <div className="card-body">
+                                            <div className="card-title">
+                                                <div className="d-flex justify-content-between">
+                                                    <Link
+                                                        to={`/restaurants/${review.place_id}`}
+                                                    >
+                                                        <h4>
+                                                            {
+                                                                review.restaurantName
+                                                            }
+                                                        </h4>
                                                     </Link>
-                                                    <div className="d-flex justify-content-between">
-                                                        <h5>{review.title}</h5>
-                                                        <div>
-                                                            {[1, 2, 3, 4, 5].map((star) => (
-                                                                <span key={star} style={{
-                                                                    color: star <= review.rating ? "gold" : "gray",
-                                                                }}>★</span>
-                                                            ))}
-                                                        </div>
+                                                    <div
+                                                        className="switch"
+                                                        style={{
+                                                            alignSelf: "center",
+                                                        }}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`favorite-toggle-detail-${review.place_id}`}
+                                                            checked={favorites.includes(
+                                                                review.place_id
+                                                            )}
+                                                            onChange={() =>
+                                                                toggleFavorite(
+                                                                    review.place_id
+                                                                )
+                                                            }
+                                                        />
+                                                        <label
+                                                            htmlFor={`favorite-toggle-detail-${review.place_id}`}
+                                                            className="slider round"
+                                                        ></label>
                                                     </div>
                                                 </div>
-                                                <div className="card-text">
-                                                    <p>{review.text}</p>
-                                                    <p className="card-subtitle mb-1 text-body-secondary">
-                                                        Date posted: {" "}{new Date(review.publish_time).toLocaleDateString("en-US", {
+
+                                                <div className="d-flex justify-content-between">
+                                                    <h5>{review.title}</h5>
+                                                    <div>
+                                                        {[1, 2, 3, 4, 5].map(
+                                                            (star) => (
+                                                                <span
+                                                                    key={star}
+                                                                    style={{
+                                                                        color:
+                                                                            star <=
+                                                                                review.rating
+                                                                                ? "gold"
+                                                                                : "gray",
+                                                                    }}
+                                                                >
+                                                                    ★
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="card-text">
+                                                <p>{review.text}</p>
+                                                <div className="review-photos">
+                                                    {Array.isArray(
+                                                        review.photo_urls
+                                                    ) &&
+                                                        review.photo_urls.length >
+                                                        0 ? (
+                                                        review.photo_urls.map(
+                                                            (
+                                                                url,
+                                                                photoIndex
+                                                            ) => (
+                                                                <img
+                                                                    key={
+                                                                        photoIndex
+                                                                    }
+                                                                    src={url}
+                                                                    alt={`Photo by ${username}`}
+                                                                />
+                                                            )
+                                                        )
+                                                    ) : (
+                                                        <p>
+                                                            <small>
+                                                                <em>
+                                                                    No photos
+                                                                    attached to
+                                                                    this review
+                                                                </em>
+                                                            </small>
+                                                        </p>
+                                                    )}
+                                                </div>
+                                                <p className="card-subtitle mb-1 text-body-secondary">
+                                                    Date posted:{" "}
+                                                    {new Date(
+                                                        review.publish_time
+                                                    ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
                                                             year: "numeric",
                                                             month: "long",
                                                             day: "numeric",
-                                                        })}</p>
-                                                    <p></p>
-                                                </div>
+                                                        }
+                                                    )}
+                                                </p>
                                             </div>
                                         </div>
-                                    );
-                                })
-                                }
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>
                 </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-photos-tab">
                 <div
                     className="tab-pane fade"
                     id="nav-photos"
@@ -233,6 +362,8 @@ const ListUserReviews = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-following-tab">
                 <div
                     className="tab-pane fade"
                     id="nav-following"
@@ -244,6 +375,8 @@ const ListUserReviews = () => {
                         <ListFollowing username={username} />
                     </div>
                 </div>
+            </div>
+            <div className="tab-content mt-3" id="nav-followers-tab">
                 <div
                     className="tab-pane fade"
                     id="nav-followers"
@@ -256,7 +389,7 @@ const ListUserReviews = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
