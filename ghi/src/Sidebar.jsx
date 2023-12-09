@@ -45,11 +45,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </div>
             <div className="offcanvas-body d-flex flex-column">
                 <div>
-                    <NavLink className="nav-link" to="/" onClick={closeSidebar}>
-                        <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;HOME
-                    </NavLink>
                     {token && (
-                        <>
+                        <><NavLink className="nav-link" to="/" onClick={closeSidebar}>
+                            <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;HOME
+                        </NavLink>
                             <NavLink className="nav-link" to="/favorites" onClick={closeSidebar}>
                                 <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;FAVORITES
                             </NavLink>
