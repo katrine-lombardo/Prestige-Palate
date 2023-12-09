@@ -7,6 +7,7 @@ import ListFollowing from "../Accounts/ListFollowing";
 import NullContent from "./NullContent";
 import { useStore } from "../ContextStore";
 import Loading from "../Loading";
+import PhotoCard from "./PhotoCard";
 import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -437,40 +438,12 @@ const ListMyReviews = () => {
                     aria-labelledby="nav-photos-tab"
                     tabIndex="0"
                 >
-                    <div className="container mt-3">
+                    <div className="nav-photos-container">
                         {!reviews.length ? (
                             renderNullPhotos()
                         ) : (
-                            <div className="container mt-3">
-                                {reviews.map((review, index) => (
-                                    <div key={index} className="card border-0">
-                                        <div className="card-body">
-                                            <div className="review-photos">
-                                                {Array.isArray(
-                                                    review.photo_urls
-                                                ) &&
-                                                    review.photo_urls.length > 0
-                                                    ? review.photo_urls.map(
-                                                        (url, photoIndex) => (
-                                                            <img
-                                                                key={
-                                                                    photoIndex
-                                                                }
-                                                                src={url}
-                                                                alt={`Photo by ${username}`}
-                                                            />
-                                                        )
-                                                    )
-                                                    : null}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                                {reviews.every(
-                                    (review) =>
-                                        !Array.isArray(review.photo_urls) ||
-                                        review.photo_urls.length === 0
-                                ) && renderNullPhotos()}
+                            <div className="container">
+                                <PhotoCard key={username} username={username} />
                             </div>
                         )}
                     </div>

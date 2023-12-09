@@ -350,22 +350,26 @@ const ListUserReviews = () => {
             </div>
             <div className="tab-content mt-3" id="nav-photos-tab">
                 <div
-                    className="tab-pane fade"
+                    className="tab-pane fade show mt-3"
                     id="nav-photos"
                     role="tabpanel"
                     aria-labelledby="nav-photos-tab"
                     tabIndex="0"
                 >
                     <div className="nav-photos-container">
-                        <div className="container">
-                            <PhotoCard key={username} username={username} />
-                        </div>
+                        {!reviews.length ? (
+                            renderNullPhotos()
+                        ) : (
+                            <div className="container">
+                                <PhotoCard key={username} username={username} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
             <div className="tab-content mt-3" id="nav-following-tab">
                 <div
-                    className="tab-pane fade"
+                    className="tab-pane fade show mt-3"
                     id="nav-following"
                     role="tabpanel"
                     aria-labelledby="nav-following-tab"
@@ -378,7 +382,7 @@ const ListUserReviews = () => {
             </div>
             <div className="tab-content mt-3" id="nav-followers-tab">
                 <div
-                    className="tab-pane fade"
+                    className="tab-pane fade show mt-3"
                     id="nav-followers"
                     role="tabpanel"
                     aria-labelledby="nav-followers-tab"
