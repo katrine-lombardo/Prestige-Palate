@@ -13,7 +13,7 @@ const LogoutButton = () => {
 
     return (
         <div className="card text-bg-light mb-3">
-            <h5 className="card-header">Log out</h5>
+            <h5 className="card-header">LOG OUT</h5>
             <div className="card-body">
                 <form onSubmit={handleLogout}>
                     <div>Are you sure you want to log out?</div>

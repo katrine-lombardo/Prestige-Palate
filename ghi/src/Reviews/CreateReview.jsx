@@ -55,7 +55,6 @@ const CreateReview = () => {
             }
         };
 
-        // Perform the check when the component mounts
         checkExistingReview();
     }, [place_id, token]);
 
@@ -130,9 +129,7 @@ const CreateReview = () => {
             setIsRatingSelected(false);
             return;
         }
-
-        setIsRatingSelected(true);
-
+        setIsRatingSelected(true)
         if (existingReviewError) {
             setExistingReviewError(true);
             return;
@@ -172,103 +169,107 @@ const CreateReview = () => {
         }
     };
 
+
     return (
-        <div className="p-4 text-center">
-            <h2 className="mb-4">Write a Review</h2>
-
-            {existingReviewError && (
-                <div className="alert alert-danger" role="alert">
-                    You have already submitted a review for this restaurant.
-                </div>
-            )}
-
-            {isReviewPosted && (
-                <div className="alert alert-success" role="alert">
-                    Your review has been posted!
-                </div>
-            )}
-
-            {!isRatingSelected && (
-                <div className="alert alert-danger" role="alert">
-                    Please select a rating!
-                </div>
-            )}
-
-
-            {isPhotoUploaded && (
-                <div className="alert alert-success" role="alert">
-                    Photo uploaded successfully!
-                </div>
-            )}
-            <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
-                <div className="mb-3" style={{ display: 'flex', alignItems: 'center' }}>
-                    <input
-                        id="title"
-                        name="title"
-                        type="text"
-                        placeholder="Title"
-                        value={reviewForm.title}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        style={{ width: '70%', marginBottom: '10px', marginRight: '50px' }}
-                    />
-                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '5px', marginLeft: '30px', marginBottom: '10px' }}>
-                        {[1, 2, 3, 4, 5].map((star) => (
-                            <span
-                                key={star}
-                                onClick={() => handleStarClick(star)}
-                                style={{
-                                    cursor: "pointer",
-                                    color: star <= reviewForm.rating ? "gold" : "gray",
-                                    fontSize: "45px",
-                                    verticalAlign: 'middle',
-                                    marginBottom: '10px',
-                                }}
-                            >
-                                ★
-                            </span>
-                        ))}
+        <div className="container" style={{ maxWidth: '600px', marginTop: '25px' }}>
+            <div className="card text-bg-light mb-3">
+                <h5 className="card-header">WRITE A REVIEW</h5>
+                {existingReviewError && (
+                    <div className="alert alert-danger mb-3" role="alert">
+                        You have already submitted a review for this restaurant.
                     </div>
-                </div>
-
-                <div className="mb-3">
-                    <textarea
-                        id="description"
-                        placeholder="Write your thoughts here...."
-                        name="text"
-                        value={reviewForm.text}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        style={{ width: '100%', height: '150px', marginBottom: '10px' }}
-                    ></textarea>
-                </div>
-
-                <div className="mb-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <input
-                            placeholder="photo_url"
-                            type="file"
-                            accept="image/*"
-                            name="photo_url"
-                            id="imageInput"
-                            className="form-control"
-                            onChange={handlePhotoChange}
-                            multiple
-                            ref={fileInputRef}
-                            value={fileInputValue}
-                            style={{ marginRight: '10px' }}
-                        />
-                        <button type="button" onClick={handlePhotoUpload} className="btn btn-primary" style={{ width: '175px', marginRight: '10px' }}>
-                            Upload Photo
-                        </button>
+                )}
+                {isReviewPosted && (
+                    <div className="alert alert-success mb-3" role="alert">
+                        Your review has been posted!
                     </div>
-                    <button type="submit" className="btn btn-primary">
-                        Post Review
-                    </button>
+                )}
+                {!isRatingSelected && (
+                    <div className="alert alert-danger mb-3" role="alert">
+                        Please select a rating!
+                    </div>
+                )}
+                {isPhotoUploaded && (
+                    <div className="alert alert-success mb-3" role="alert">
+                        Photo uploaded successfully!
+                    </div>
+                )}
+                <div className="card-body">
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <input
+                                id="title"
+                                name="title"
+                                type="text"
+                                placeholder="Title"
+                                value={reviewForm.title}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                required
+                                style={{ width: '70%' }} 
+                            />
+
+                            <div className="d-flex align-items-center mt-2">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span
+                                        key={star}
+                                        onClick={() => handleStarClick(star)}
+                                        style={{
+                                            cursor: "pointer",
+                                            color: star <= reviewForm.rating ? "gold" : "gray",
+                                            fontSize: "24px",
+                                            marginLeft: '10px', 
+                                        }}
+                                    >
+                                        ★
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="mb-3">
+                            <textarea
+                                id="description"
+                                placeholder="Write your thoughts here...."
+                                name="text"
+                                value={reviewForm.text}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                required
+                                style={{ height: '150px' }}
+                            ></textarea>
+                        </div>
+                        <div className="mb-3">
+                            <div className="mb-2">
+                                <input
+                                    placeholder="photo_url"
+                                    type="file"
+                                    accept="image/*"
+                                    name="photo_url"
+                                    id="imageInput"
+                                    className="form-control"
+                                    onChange={handlePhotoChange}
+                                    multiple
+                                    ref={fileInputRef}
+                                    value={fileInputValue}
+                                />
+                            </div>
+                            <div className="mb-3" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <button
+                                    type="button"
+                                    onClick={handlePhotoUpload}
+                                    className="btn btn-link"
+                                >
+                                    <i className="fa-solid fa-paperclip"></i> Confirm Photo Attachment
+                                </button>
+
+                                <button type="submit" className="btn btn-primary">
+                                    Post Review
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     );
 };

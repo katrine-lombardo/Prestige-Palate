@@ -180,7 +180,7 @@ const SignupForm = () => {
                         </div>
                     </div>
                     <button type="submit" className="btn btn-primary" value="Signup">
-                        Sign Up
+                        SIGN UP
                     </button>
                 </form>
                 <p>

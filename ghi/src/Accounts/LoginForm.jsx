@@ -64,7 +64,7 @@ const LoginForm = () => {
 
     return (
         <div className="card text-bg-light mb-3">
-            <h5 className="card-header">Login</h5>
+            <h5 className="card-header">LOGIN</h5>
             <div className="card-body">
                 {errorMessage && (
                     <p className="alert alert-danger mb-3" role="alert">

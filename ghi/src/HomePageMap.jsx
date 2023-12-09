@@ -53,6 +53,7 @@ const Map = () => {
 
     return (
         <GoogleMap
+            className = "map"
             onLoad={onLoad}
             mapContainerStyle={containerStyle}
             center={defaultCenter}

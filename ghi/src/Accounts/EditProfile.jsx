@@ -90,78 +90,83 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="card text-bg-light mb-3">
-            <h5 className="card-header">Edit Profile</h5>
-            {updateSuccess && (
-                <div className="alert alert-success" role="alert">
-                    Successfully updated account information.
-                </div>
-            )}
-            {updateError && (
-                <div className="alert alert-danger" role="alert">
-                    There was trouble updating your profile. Please try again.
-                </div>
-            )}
-            <div className="card-body">
-                <form onSubmit={handleUpdateProfile}>
-                    <div className="mb-3">
-                        <label htmlFor="firstName" className="form-label">
-                            First Name:
-                        </label>
-                        <input
-                            type="text"
-                            id="firstName"
-                            className="form-control"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)} required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="lastName" className="form-label">
-                            Last Name:
-                        </label>
-                        <input
-                            type="text"
-                            id="lastName"
-                            className="form-control"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)} required
-                        />
-                    </div>
-                    <div className="mb-3 icon-grid" style={{ overflowX: "auto", maxWidth: "100%" }}>
-                        <label className="form-label" style={{ marginBottom: "5px", gridColumn: "span 8" }}>
-                            Select Your Icon:
-                        </label>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px", padding: "5px", boxSizing: "border-box" }}>
-                            {icons.map((icon) => (
-                                <div key={icon.id} className="icon-container">
-                                    <label className="icon-radio" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "5px", boxSizing: "border-box" }}>
-                                        <div>
-                                            <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
-                                        </div>
-                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                            <input
-                                                type="radio"
-                                                name="icon"
-                                                value={icon.id}
-                                                checked={selectedIcon.id === icon.id}
-                                                onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
-                                            />
-                                            <div className="icon-name" style={{ fontSize: "12px", marginLeft: "5px" }}>{icon.icon_name}</div>
-                                        </div>
-                                    </label>
-                                </div>
-                            ))}
+        <>
+            <div style={{ marginTop: '25px' }}></div>
+            <div className="container" style={{ maxWidth: '600px' }}>
+                <div className="card text-bg-light mb-3">
+                    <h5 className="card-header">EDIT PROFILE</h5>
+                    {updateSuccess && (
+                        <div className="alert alert-success" role="alert">
+                            Successfully updated account information.
                         </div>
+                    )}
+                    {updateError && (
+                        <div className="alert alert-danger" role="alert">
+                            There was trouble updating your profile. Please try again.
+                        </div>
+                    )}
+                    <div className="card-body">
+                        <form onSubmit={handleUpdateProfile}>
+                            <div className="mb-3">
+                                <label htmlFor="firstName" className="form-label">
+                                    First Name:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    className="form-control"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)} required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="lastName" className="form-label">
+                                    Last Name:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    className="form-control"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)} required
+                                />
+                            </div>
+                            <div className="mb-3 icon-grid" style={{ overflowX: "auto", maxWidth: "100%" }}>
+                                <label className="form-label" style={{ marginBottom: "5px", gridColumn: "span 8" }}>
+                                    Select Your Icon:
+                                </label>
+                                <div style={{ display: "grid", gridTemplateColumns: "repeat(8, 1fr)", gap: "5px", padding: "5px", boxSizing: "border-box" }}>
+                                    {icons.map((icon) => (
+                                        <div key={icon.id} className="icon-container">
+                                            <label className="icon-radio" style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", padding: "5px", boxSizing: "border-box" }}>
+                                                <div>
+                                                    <img src={icon.icon_url} alt={`Icon ${icon.id}`} style={{ width: "100%", height: "auto", maxWidth: "30px" }} />
+                                                </div>
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <input
+                                                        type="radio"
+                                                        name="icon"
+                                                        value={icon.id}
+                                                        checked={selectedIcon.id === icon.id}
+                                                        onChange={() => setSelectedIcon({ id: icon.id, icon_url: icon.icon_url })}
+                                                    />
+                                                    <div className="icon-name" style={{ fontSize: "12px", marginLeft: "5px" }}>{icon.icon_name}</div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <button type="submit" className="btn btn-primary">
+                                    UPDATE
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <button type="submit" className="btn btn-primary">
-                            Update
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

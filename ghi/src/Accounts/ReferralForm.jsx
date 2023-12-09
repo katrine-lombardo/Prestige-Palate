@@ -54,57 +54,61 @@ const ReferralForm = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage("Submission successful.");
+                setMessage("EXCITING NEWS! Your referral is complete.");
                 setTimeout(() => {
                     setMessage("");
-                }, 3000);;
+                }, 5000);;
             } else {
                 setErrorMessage(data.detail || "Referral submission unsuccessful.");
             }
         } catch (error) {
-            console.error("Referral error:", error);
-            setErrorMessage("Referral submission unsuccessful.");
+            setErrorMessage("Hmm.. Looks like your friend has already been referred!");
             setTimeout(() => {
                 setErrorMessage("");
-            }, 3000);
+            }, 5000);
         }
     };
 
     return (
-        <div className="card text-bg-light mb-3">
-            <h5 className="card-header">Refer a Friend</h5>
-            {errorMessage && (
-                <div className="alert alert-danger mb-3" role="alert">
-                    {errorMessage}
-                </div>
-            )}
-            {message && (
-                <div className="alert alert-success mb-3" role="alert">
-                    {message}
-                </div>
-            )}
-            <div className="card-body">
-                <form onSubmit={handleReferral}>
-                    <div className="mb-3">
-                        <label htmlFor="referredEmail" className="form-label">
-                            Email Address:
-                        </label>
-                        <input
-                            type="email"
-                            id="referredEmail"
-                            placeholder="Your friend's email address"
-                            className="form-control"
-                            value={referredEmail}
-                            onChange={(e) => setReferredEmail(e.target.value)}
-                            required
-                        />
+        <>
+            <div style={{ marginTop: '25px' }}></div>
+            <div className="container" style={{ maxWidth: '600px' }}>
+                <div className="card text-bg-light mb-3">
+                    <h5 className="card-header">REFER A FRIEND</h5>
+                    {errorMessage && (
+                        <div className="alert alert-danger mb-3" role="alert">
+                            {errorMessage}
+                        </div>
+                    )}
+                    {message && (
+                        <div className="alert alert-success mb-3" role="alert">
+                            {message}
+                        </div>
+                    )}
+                    <div className="card-body">
+                        <form onSubmit={handleReferral}>
+                            <div className="mb-3">
+                                <label htmlFor="referredEmail" className="form-label">
+                                    Email Address:
+                                </label>
+                                <input
+                                    type="email"
+                                    id="referredEmail"
+                                    placeholder="Your friend's email address"
+                                    className="form-control"
+                                    value={referredEmail}
+                                    onChange={(e) => setReferredEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary" value="Refer">
+                                SUBMIT
+                            </button>
+                        </form>
                     </div>
-                    <button type="submit" className="btn btn-primary" value="Refer">
-                        Submit Referral
-                    </button>
-                </form>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
