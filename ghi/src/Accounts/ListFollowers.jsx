@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
-import Loading from '../Loading';
+import Loading from "../Loading";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -27,23 +28,26 @@ const ListFollowers = ({ username }) => {
                             try {
                                 const reviewUrl = `${tokenUrl}/api/accounts/${follower_username}/reviews`;
                                 const reviewResponse = await fetch(reviewUrl);
-                                const followerReviewData = await reviewResponse.json();
+                                const followerReviewData =
+                                    await reviewResponse.json();
 
                                 const totalReviews = followerReviewData.length;
                                 const averageRating =
                                     totalReviews > 0
                                         ? followerReviewData.reduce(
-                                            (sum, review) => sum + review.rating,
+                                            (sum, review) =>
+                                                sum + review.rating,
                                             0
                                         ) / totalReviews
                                         : 0;
 
                                 return {
                                     follower: follower_username,
-                                    profile_icon_url: followerReviewData.length > 0
-                                        ? followerReviewData[0]
-                                            .profile_icon_url
-                                        : "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
+                                    profile_icon_url:
+                                        followerReviewData.length > 0
+                                            ? followerReviewData[0]
+                                                .profile_icon_url
+                                            : "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
                                     total_reviews: totalReviews,
                                     average_rating: averageRating,
                                 };
@@ -51,7 +55,8 @@ const ListFollowers = ({ username }) => {
                                 console.error("Error fetching review:", error);
                                 return {
                                     follower: follower_username,
-                                    profile_icon_url: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
+                                    profile_icon_url:
+                                        "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
                                     total_reviews: 0,
                                     average_rating: 0,
                                 };
@@ -101,7 +106,11 @@ const ListFollowers = ({ username }) => {
     const renderNullFollowers = () => (
         <div>
             <div className="container mt-4">
-                {<Loading /> ? "Loading followers..." : "No followers here. Yet..."}
+                {<Loading /> ? (
+                    "Loading followers..."
+                ) : (
+                    "No followers here. Yet..."
+                )}
             </div>
         </div>
     );
@@ -116,36 +125,71 @@ const ListFollowers = ({ username }) => {
                                 <div className="follower-card">
                                     <div className="card h-90">
                                         <div className="card-body mt-4">
-                                            <img
-                                                src={follower.profile_icon_url || "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"}
-                                                alt={follower.follower}
-                                                className="user-icon mb-3"
-                                                style={{
-                                                    width: '40px',
-                                                    height: '40px',
-                                                    border: '2px solid black',
-                                                    borderRadius: '50%',
-                                                    padding: '2px',
-                                                    objectFit: 'cover',
-                                                    margin: 'auto',
-                                                    display: 'block',
-                                                }}
-                                            />
-                                            <h5 className="card-title text-center mb-4">{follower.follower}</h5>
+                                            <Link to={`/${follower.follower}`}>
+                                                <img
+                                                    src={
+                                                        follower.profile_icon_url ||
+                                                        "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"
+                                                    }
+                                                    alt={follower.follower}
+                                                    className="user-icon mb-3"
+                                                    style={{
+                                                        width: "40px",
+                                                        height: "40px",
+                                                        border: "2px solid black",
+                                                        borderRadius: "50%",
+                                                        padding: "2px",
+                                                        objectFit: "cover",
+                                                        margin: "auto",
+                                                        display: "block",
+                                                    }}
+                                                />
+                                                <h5 className="card-title text-center mb-4">
+                                                    {follower.follower}
+                                                </h5>
+                                            </Link>
                                             <div className="card-text text-center">
-                                                <p>Average Rating: {follower.average_rating.toFixed(1)}</p>
+                                                <p>
+                                                    Average Rating:{" "}
+                                                    {follower.average_rating.toFixed(
+                                                        1
+                                                    )}
+                                                </p>
                                                 <div>
-                                                    {[1, 2, 3, 4, 5].map((star) => (
-                                                        <span key={star} style={{ color: star <= follower.average_rating ? "gold" : "gray", }}>★</span>
-                                                    ))}
+                                                    {[1, 2, 3, 4, 5].map(
+                                                        (star) => (
+                                                            <span
+                                                                key={star}
+                                                                style={{
+                                                                    color:
+                                                                        star <=
+                                                                            follower.average_rating
+                                                                            ? "gold"
+                                                                            : "gray",
+                                                                }}
+                                                            >
+                                                                ★
+                                                            </span>
+                                                        )
+                                                    )}
                                                 </div>
-                                                <p>Total Reviews: {follower.total_reviews}</p>
+                                                <p>
+                                                    Total Reviews:{" "}
+                                                    {follower.total_reviews}
+                                                </p>
                                                 <button
                                                     type="button"
                                                     className="btn btn-light"
-                                                    onClick={() => handleFollow(follower.follower)}
+                                                    onClick={() =>
+                                                        handleFollow(
+                                                            follower.follower
+                                                        )
+                                                    }
                                                 >
-                                                    <small>+ Follow {follower.follower}</small>
+                                                    <small>
+                                                        + Follow{" "}
+                                                        {follower.follower}
+                                                    </small>
                                                 </button>
                                             </div>
                                         </div>
