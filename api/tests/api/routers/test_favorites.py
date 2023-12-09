@@ -36,17 +36,17 @@ def setup_tests():
 
 def test_add_favorite():
     response = client.post("/api/restaurants/testPlaceId/favorite")
-    print(response)
+    print(response.json())
     assert response.status_code == 200
 
 
 def test_list_favorites():
     response = client.get("/api/user/favorites")
-    print(response)
+    print(response.json())
     assert response.status_code == 200
 
 
 def test_remove_favorite():
     response = client.delete("/api/restaurants/testPlaceId/favorite")
-    print(response)
+    print(response.json())
     assert response.status_code == 200
