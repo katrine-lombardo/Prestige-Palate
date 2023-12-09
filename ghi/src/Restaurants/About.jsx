@@ -10,7 +10,20 @@ const About = ({ restaurantDetails }) => {
         priceLevel,
     } = restaurantDetails;
 
-    const smallFontSize = '14px'; 
+    const mapPriceLevel = (priceLevel) => {
+        const priceMap = {
+            'PRICE_LEVEL_UNSPECIFIED': '',
+            'PRICE_LEVEL_FREE': ' Free',
+            'PRICE_LEVEL_INEXPENSIVE': ' $',
+            'PRICE_LEVEL_MODERATE': ' $$',
+            'PRICE_LEVEL_EXPENSIVE': ' $$$',
+            'PRICE_LEVEL_VERY_EXPENSIVE': ' $$$$'
+        };
+
+        return priceMap[priceLevel] || '';
+    };
+
+    const smallFontSize = '14px';
 
     return (
         <div className="about-section">
@@ -57,7 +70,7 @@ const About = ({ restaurantDetails }) => {
                     <div className="detail-row">
                         <strong style={{ fontSize: smallFontSize }}>Price Level:</strong>
                         <span style={{ fontSize: smallFontSize }}>
-                            {priceLevel.replace('_', ' ').toLowerCase()}
+                            {mapPriceLevel(priceLevel)}
                         </span>
                     </div>
                 </div>

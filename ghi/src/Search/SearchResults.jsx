@@ -108,9 +108,9 @@ function SearchResults() {
                         return a.displayName.text.localeCompare(b.displayName.text);
                     case 'nameDesc':
                         return b.displayName.text.localeCompare(a.displayName.text);
-                    case 'mostRating':
+                    case 'mostRatings':
                         return (b.userRatingCount || 0) - (a.userRatingCount || 0);
-                    case 'leastRating':
+                    case 'fewestRatings':
                         return (a.userRatingCount || 0) - (b.userRatingCount || 0);
                     default:
                         return 0;
@@ -189,8 +189,8 @@ function SearchResults() {
                             <option value="lowRating">Lowest Rating</option>
                             <option value="nameAsc">Name (A-Z)</option>
                             <option value="nameDesc">Name (Z-A)</option>
-                            <option value="mostRating">Most Rating</option>
-                            <option value="leastRating">Least Rating</option>
+                            <option value="mostRatings">Most Ratings</option>
+                            <option value="fewestRatings">Fewest Ratings</option>
                         </select>
                     </div>
                 </div>

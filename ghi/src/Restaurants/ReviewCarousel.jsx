@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import altImage from '../imgs/alternative.png';
 
 const ReviewCarousel = ({ restaurantDetails }) => {
     const itemsPerSlide = 3;
@@ -30,7 +31,8 @@ const ReviewCarousel = ({ restaurantDetails }) => {
                                         <div className="review-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                                             <div className="author-image" style={{ flex: '1 0 auto' }}>
                                                 <img
-                                                    src={review.authorAttribution?.photoUri}
+                                                    src={review.authorAttribution?.photoUri || altImage}
+                                                    onError={(e) => e.target.src = sidebarImage}
                                                     className="rounded-circle"
                                                     alt="Author"
                                                     style={{ width: '50px', height: '50px' }}

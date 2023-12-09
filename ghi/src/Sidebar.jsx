@@ -22,15 +22,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {
-            const url = `${tokenUrl}/token`;
-            fetch(url, {
-                credentials: "include",
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    setUsername(data.account.username.toUpperCase());
+            if (token) {
+                const url = `${tokenUrl}/token`;
+                fetch(url, {
+                    credentials: "include",
                 })
-                .catch((error) => console.error(error));
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setUsername(data.account.username.toUpperCase());
+                    })
+                    .catch((error) => console.error(error));
+            }
         };
         handleFetchWithAPI();
     }, [token]);
