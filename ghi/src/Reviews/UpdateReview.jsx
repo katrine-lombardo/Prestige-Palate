@@ -63,6 +63,9 @@ const UpdateReview = () => {
                 photo_urls: urls,
             }));
             setIsPhotoUploaded(true);
+            setTimeout(() => {
+                setIsPhotoUploaded(false);
+            }, 3000);
 
         } catch (err) {
             console.error("Upload failed:", err);
@@ -118,6 +121,9 @@ const UpdateReview = () => {
                     photo_urls: [],
                 });
                 setIsReviewUpdated(true);
+                setTimeout(() => {
+                    setIsReviewUpdated(false);
+                }, 3000);
                 setFileInputValue("");
                 if (fileInputRef.current) {
                     fileInputRef.current.value = "";

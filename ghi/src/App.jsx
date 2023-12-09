@@ -51,22 +51,6 @@ function App() {
                     <ContextProvider>
                         <Nav toggleSidebar={toggleSidebar} />
                         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-                        {isSidebarOpen && (
-                            <div
-                                className="backdrop"
-                                onClick={closeSidebar}
-                                style={{
-                                    position: 'fixed',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    zIndex: 2
-                                }}
-                            />
-                        )}
-                        <div className="container" onClick={closeSidebar}>
                             <Routes>
                                 <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
                                 <Route path="/signup" element={<SignupForm />} />
@@ -85,7 +69,6 @@ function App() {
                                 <Route path="/update-review/:review_id" element={<UpdateReview />} />
                                 <Route path="/:username" element={<ListUserReviews />} />
                             </Routes>
-                        </div>
                     </ContextProvider>
                 </AuthProvider>
             </BrowserRouter>

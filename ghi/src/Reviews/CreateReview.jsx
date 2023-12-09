@@ -126,19 +126,14 @@ const CreateReview = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Check if the rating is not provided
         if (reviewForm.rating === 0) {
             setIsRatingSelected(false);
             return;
         }
 
-        // Reset the rating validation status
         setIsRatingSelected(true);
 
-        // Check if there's an existing review for the place_id
         if (existingReviewError) {
-            // Display an error message
             setExistingReviewError(true);
             return;
         }
@@ -178,7 +173,7 @@ const CreateReview = () => {
     };
 
     return (
-        <div className="card p-4 text-center">
+        <div className="p-4 text-center">
             <h2 className="mb-4">Write a Review</h2>
 
             {existingReviewError && (

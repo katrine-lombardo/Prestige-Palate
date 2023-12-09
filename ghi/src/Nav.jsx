@@ -111,7 +111,6 @@ function Nav({ toggleSidebar }) {
                     </div>
                 </div>
             </nav>
-            <div style={{ marginTop: '20px' }}></div>
         </>
     );
 }

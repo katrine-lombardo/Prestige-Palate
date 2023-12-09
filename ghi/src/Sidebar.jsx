@@ -46,21 +46,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <div className="offcanvas-body d-flex flex-column">
                 <div>
                     <NavLink className="nav-link" to="/" onClick={closeSidebar}>
-                        <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;Home
+                        <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;HOME
                     </NavLink>
                     {token ? (
                         <>
                             <NavLink className="nav-link" to="/favorites" onClick={closeSidebar}>
-                                <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;Favorite
+                                <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;FAVORITES
                             </NavLink>
                             <NavLink className="nav-link" to="/myreviews" onClick={closeSidebar}>
-                                <i className="fa-regular fa-pen-to-square" style={{ marginRight: '8px' }}></i>&nbsp;My Reviews
+                                <i className="fa-regular fa-pen-to-square" style={{ marginRight: '8px' }}></i>&nbsp;MY REVIEWS
                             </NavLink>
                             <NavLink className="nav-link" to="/friends" onClick={closeSidebar}>
-                                <i className="fa-solid fa-user-group" style={{ marginRight: '8px' }}></i>&nbsp;Friends
+                                <i className="fa-solid fa-user-group" style={{ marginRight: '8px' }}></i>&nbsp;FRIENDS
                             </NavLink>
                             <NavLink className="nav-link" to="/referral" onClick={closeSidebar}>
-                                <i className="fa-solid fa-people-group" style={{ marginRight: '8px' }}></i>&nbsp;Refer a Friend
+                                <i className="fa-solid fa-people-group" style={{ marginRight: '8px' }}></i>&nbsp;REFER A FRIEND
                             </NavLink>
                         </>
                     ) : (
@@ -89,7 +89,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                                 aria-expanded="false"
                                                 aria-controls="collapseSettings"
                                             >
-                                                <i className="fa-solid fa-gear" style={{ marginRight: '8px' }}></i>&nbsp;Settings
+                                                <i className="fa-solid fa-gear" style={{ marginRight: '8px' }}></i>&nbsp;SETTINGS
                                             </button>
                                         </h5>
                                     </div>
@@ -101,20 +101,20 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                     >
                                         <div className="accordion-body text-left">
                                             <NavLink className="nav-link" to="/editprofile" onClick={closeSidebar}>
-                                                <i className="fa-solid fa-user-pen" style={{ marginRight: '8px' }}></i>&nbsp;Edit Profile
+                                                <i className="fa-solid fa-user-pen" style={{ marginRight: '8px' }}></i>&nbsp;EDIT PROFILE
                                             </NavLink>
                                             <NavLink className="nav-link" to="/updatepassword" onClick={closeSidebar}>
-                                                <i className="fa-solid fa-key" style={{ marginRight: '8px' }}></i>&nbsp;&nbsp;Update Password
+                                                <i className="fa-solid fa-key" style={{ marginRight: '8px' }}></i>&nbsp;&nbsp;UPDATE PASSWORD
                                             </NavLink>
                                             <NavLink className="nav-link" to="/deleteprofile" onClick={closeSidebar}>
-                                                <i className="fa-solid fa-user-xmark" style={{ marginRight: '8px' }}></i>&nbsp;Delete Profile
+                                                <i className="fa-solid fa-user-xmark" style={{ marginRight: '8px' }}></i>&nbsp;DELETE PROFILE
                                             </NavLink>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <NavLink className="nav-link" to="/logout" onClick={closeSidebar}>
-                                <i className="fa-solid fa-arrow-right-from-bracket" style={{ marginRight: '8px' }}></i>&nbsp;Log Out
+                                <i className="fa-solid fa-arrow-right-from-bracket" style={{ marginRight: '8px' }}></i>&nbsp;LOG OUT
                             </NavLink>
                         </>
                     )}
