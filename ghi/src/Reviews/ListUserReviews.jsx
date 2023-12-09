@@ -109,13 +109,7 @@ const ListUserReviews = () => {
         }
     };
 
-    if (!token) {
-        return <div>Please log in to see reviews</div>;
-    }
 
-    if (isLoading) {
-        return <Loading />;
-    }
 
     const renderNullPhotos = () => (
         <NullContent message="No photos here. Yet..." isLoading={isLoading} />
@@ -127,6 +121,10 @@ const ListUserReviews = () => {
             isLoading={isLoading}
         />
     );
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <div>
@@ -226,7 +224,7 @@ const ListUserReviews = () => {
                     tabIndex="0"
                 >
                     <div className="container mt-3">
-                        {!reviews.length ? (
+                        {reviews.length === 0 ? (
                             renderNullReviews()
                         ) : (
                             <div className="container mt-3">
