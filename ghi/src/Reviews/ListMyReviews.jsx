@@ -377,7 +377,7 @@ const ListMyReviews = () => {
             </div>
             <div className="tab-content mt-3" id="nav-photos-tab">
                 <div
-                    className="tab-pane fade mt-3"
+                    className="tab-pane fade show mt-3"
                     id="nav-photos"
                     role="tabpanel"
                     aria-labelledby="nav-photos-tab"
