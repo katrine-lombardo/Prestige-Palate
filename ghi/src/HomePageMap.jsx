@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, InfoWindow, MarkerF } from '@react-google-maps/api';
 import markerData from './HomePageMarkers';
 import { useNavigate } from 'react-router-dom';
+import './HomePageMap.css';
 
 const containerStyle = {
     width: '100%',
-    height: '400px'
+    height: '80vh',
+    position: 'relative',
 };
 
 const defaultCenter = { lat: 20, lng: 5 };
@@ -13,10 +15,20 @@ const defaultCenter = { lat: 20, lng: 5 };
 const Map = () => {
     const navigate = useNavigate();
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+    const [showOverlay, setShowOverlay] = useState(true);
     const mapRef = useRef(null);
+
+    const handleOverlayClick = () => {
+        setShowOverlay(false);
+    };
 
     const handleInfoWindowClick = (placeId) => {
         navigate(`/restaurants/${placeId}`);
+    };
+
+    const handleClick = (placeId) => {
+        ;
+        setSelectedRestaurant(null);
     };
 
     const onLoad = (map) => {
@@ -24,7 +36,6 @@ const Map = () => {
     };
 
     useEffect(() => {
-
         if (mapRef.current && markerData.length > 0) {
             const bounds = new window.google.maps.LatLngBounds();
             markerData.forEach((restaurant) => {
@@ -43,19 +54,30 @@ const Map = () => {
 
     return (
         <GoogleMap
+            className="map"
             onLoad={onLoad}
             mapContainerStyle={containerStyle}
             center={defaultCenter}
             options={{ mapTypeControl: false }}
             zoom={1.7}
+            onClick={() => handleClick(selectedRestaurant?.placesId)}
         >
+            {showOverlay && (
+                <div className="overlay-container" onClick={handleOverlayClick}>
+                    <div className="overlay-content">
+                        <h2>START YOUR PRESTIGE PALATE ADVENTURE</h2>
+                    </div>
+                </div>
+            )}
+
             {markerData.map((restaurant) => (
-                restaurant.latitude && restaurant.longitude && (
+                restaurant.latitude &&
+                restaurant.longitude && (
                     <MarkerF
                         key={restaurant.placesId}
                         position={{
                             lat: parseFloat(restaurant.latitude),
-                            lng: parseFloat(restaurant.longitude)
+                            lng: parseFloat(restaurant.longitude),
                         }}
                         onClick={() => setSelectedRestaurant(restaurant)}
                     />

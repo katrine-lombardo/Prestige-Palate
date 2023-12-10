@@ -19,6 +19,8 @@ function SearchResults() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const { favorites, setFavorites } = useStore();
+    const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+    const [favoriteModalMessage, setFavoriteModalMessage] = useState('');
 
     const tokenUrl = import.meta.env.VITE_APP_API_HOST;
     if (!tokenUrl) {
@@ -78,7 +80,8 @@ function SearchResults() {
                     updatedFavoritesList = [...favorites, restaurantId];
                 }
                 setFavorites(updatedFavoritesList);
-
+                setShowFavoriteModal(true);
+                setFavoriteModalMessage(isFavorite ? "Removed from favorites" : "Added to favorites");
             } else {
                 throw new Error("Failed to update favorites");
             }
@@ -162,19 +165,18 @@ function SearchResults() {
                 restaurants={initialResults}
                 viewport={locationData?.viewport}
             />
-
             <div className="container mt-4">
                 <div className="row mb-3">
-                    <div className="col">
-                        <label>Restaurants per page: </label>
-                        <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                        </select>
-                    </div>
                     <nav>
-                        <ul className="pagination">
+                        <div className="col">
+                            <label>Restaurants per page: </label>
+                            <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                        <ul className="pagination justify-content-center">
                             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                                 <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
                                     <button className="page-link" onClick={() => changePage(page)}>{page}</button>
@@ -208,19 +210,44 @@ function SearchResults() {
                         <input type="text" className="form-control" placeholder="Filter by state" value={filterState} onChange={handleFilterStateChange} />
                     </div>
                 </div>
-                {currentItems.map(restaurant => (
-                    <RestaurantCard
-                        key={restaurant.id}
-                        restaurant={restaurant}
-                        isFavorite={favorites.includes(restaurant.id)}
-                        onToggleFavorite={toggleFavorite}
-                        showFavorite={!!token} />
-                ))}
+                {currentItems.map(restaurant => {
+                    const isFavorite = favorites.includes(restaurant.id);
+                    return (
+                        <RestaurantCard
+                            key={restaurant.id}
+                            restaurant={restaurant}
+                            isFavorite={isFavorite}
+                            onToggleFavorite={toggleFavorite}
+                            showFavorite={!!token}
+                            toggleTitle={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                        />
+                    );
+                })}
                 {currentItems.length === 0 && <div className="alert alert-warning">No restaurants found.</div>}
+                <nav>
+                    <ul className="pagination justify-content-center">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                            <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                                <button className="page-link" onClick={() => changePage(page)}>{page}</button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <div className={`modal ${showFavoriteModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showFavoriteModal ? 'block' : 'none' }}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <p>{favoriteModalMessage}</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowFavoriteModal(false)}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
-
 }
 
 export default SearchResults;

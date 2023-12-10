@@ -54,36 +54,42 @@ const DeleteProfile = () => {
     };
 
     return (
-        <div className="card text-bg-light mb-3">
-            <h5 className="card-header">Delete Profile</h5>
-            <div className="card-body">
-                <form onSubmit={handleDelete}>
-                    {updateError && (
-                        <div className="alert alert-danger" role="alert">
-                            We're sorry. We had difficulty deleting your account. Try again later.
-                        </div>
-                    )}
-                    {!deleteSuccess ? (
-                        <>
-                            <div>
-                                Are you sure you want to delete your account? This action is permanent
-                                and irreversible.
-                            </div>
-                            <button
-                                className="btn btn-danger"
-                            >
-                                Delete Account
-                            </button>
-                        </>
-                    ) : (
-                        <div>
-                            Sorry to see you go. We'll be here if you need us again!
-                        </div>
-                    )}
+        <>
+            <div style={{ marginTop: '25px' }}></div>
+            <div className="container" style={{ maxWidth: '600px' }}>
+                <div className="card text-bg-light mb-3">
+                    <h5 className="card-header bg-custom-two">DELETE PROFILE</h5>
+                    <div className="card-body bg-custom">
+                        <form onSubmit={handleDelete}>
+                            {updateError && (
+                                <div className="alert alert-danger" role="alert">
+                                    We're sorry. We had difficulty deleting your account. Try again later.
+                                </div>
+                            )}
+                            {!deleteSuccess ? (
+                                <>
+                                    <div>
+                                        Are you sure you want to delete your account? 
+                                    </div>
+                                    <p>This action is permanent and irreversible.
+                                    </p>
+                                    <button
+                                        className="btn btn-danger"
+                                    >
+                                        YES, I'd like to DELETE my account.
+                                    </button>
+                                </>
+                            ) : (
+                                <div>
+                                    Sorry to see you go. We'll be here if you need us again!
+                                </div>
+                            )}
 
-                </form>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

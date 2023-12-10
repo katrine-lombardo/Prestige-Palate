@@ -3,7 +3,7 @@ export default function Loading() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '50vh',
+        height: '80vh',
     };
 
     return (

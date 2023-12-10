@@ -90,19 +90,18 @@ class ReviewQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    # Use unnest to convert the array of photo URLs to rows
                     cur.execute(
                         """
-                                INSERT INTO reviews
-                                (username,
-                                place_id,
-                                title,
-                                text,
-                                rating,
-                                photo_urls)
-                                VALUES (%s, %s, %s, %s, %s, %s)
-                                RETURNING *;
-                                """,
+                        INSERT INTO reviews
+                        (username,
+                        place_id,
+                        title,
+                        text,
+                        rating,
+                        photo_urls)
+                        VALUES (%s, %s, %s, %s, %s, %s)
+                        RETURNING *;
+                        """,
                         [
                             username,
                             place_id,
@@ -117,17 +116,36 @@ class ReviewQueries:
                     if record is None:
                         return ValueError("No records found")
                     else:
-                        review_data = {
-                            "id": record[0],
-                            "username": record[1],
-                            "place_id": record[2],
-                            "publish_time": record[3],
-                            "title": record[4],
-                            "text": record[5],
-                            "rating": record[6],
-                            "photo_urls": record[7],
-                        }
-                        return ReviewOut(**review_data)
+                        cur.execute(
+                            """
+                            SELECT a.id as account_id, i.icon_url as profile_icon_url
+                            FROM accounts a
+                            JOIN icons i ON a.profile_icon_id = i.id
+                            WHERE a.username = %s;
+                            """,
+                            [username],
+                        )
+                        account_record = cur.fetchone()
+                        if account_record is None:
+                            return ValueError(
+                                "No account found for this username"
+                            )
+                        else:
+                            account_id = account_record[0]
+                            profile_icon_url = account_record[1]
+                            review_data = {
+                                "id": record[0],
+                                "username": record[1],
+                                "place_id": record[2],
+                                "publish_time": record[3],
+                                "title": record[4],
+                                "text": record[5],
+                                "rating": record[6],
+                                "photo_urls": record[7],
+                                "profile_icon_url": profile_icon_url,
+                                "account_id": account_id,
+                            }
+                            return ReviewOut(**review_data)
         except DuplicateReviewError:
             return ValueError("Review already exists for this restaurant")
 
@@ -137,7 +155,6 @@ class ReviewQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    # Fetch the existing review
                     cur.execute(
                         """
                         SELECT * FROM reviews
@@ -146,48 +163,35 @@ class ReviewQueries:
                         [review_id],
                     )
                     existing_record = cur.fetchone()
-
                     if existing_record is None:
                         return Error(message="Review not found")
-
-                    # Create a dictionary from the existing record
                     existing_review = {
                         column.name: value
                         for column, value in zip(
                             cur.description, existing_record
                         )
                     }
-
-                    # Update the existing review with the new data
                     updated_review = {
                         **existing_review,
                         **review_data.dict(exclude_unset=True),
                     }
-
-                    # Build the UPDATE query
                     update_query = """
                         UPDATE reviews
                         SET title = %s, text = %s, rating = %s, photo_urls = %s
                         WHERE id = %s
                         RETURNING *;
                     """
-
-                    # Execute the update query
                     cur.execute(
                         update_query,
                         [
                             updated_review["title"],
                             updated_review["text"],
                             updated_review["rating"],
-                            updated_review["photo_urls"]
-                            or [],  # Handle the case where photo_urls is None
+                            updated_review["photo_urls"] or [],
                             review_id,
                         ],
                     )
-
-                    # Fetch the updated record
                     updated_record = cur.fetchone()
-
                     if updated_record is not None:
                         return ReviewOut(**updated_review)
                     else:

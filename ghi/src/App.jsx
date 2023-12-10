@@ -9,6 +9,7 @@ import EditProfile from "./Accounts/EditProfile";
 import UpdatePassword from "./Accounts/UpdatePassword"
 import DeleteProfile from "./Accounts/DeleteProfile"
 import LogoutButton from "./Accounts/LogoutButton";
+import Dashboard from "./Accounts/Dashboard";
 import Sidebar from "./Sidebar";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import ListMyReviews from "./Reviews/ListMyReviews";
@@ -20,6 +21,7 @@ import UpdateReview from "./Reviews/UpdateReview";
 import ListUserReviews from "./Reviews/ListUserReviews";
 import { LoadScript } from '@react-google-maps/api';
 import ContextProvider from "./ContextStore";
+import FAQPage from "./FAQ"
 
 const libraries = ['places'];
 
@@ -51,22 +53,6 @@ function App() {
                     <ContextProvider>
                         <Nav toggleSidebar={toggleSidebar} />
                         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-                        {isSidebarOpen && (
-                            <div
-                                className="backdrop"
-                                onClick={closeSidebar}
-                                style={{
-                                    position: 'fixed',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundColor: 'rgba(0,0,0,0.5)',
-                                    zIndex: 2
-                                }}
-                            />
-                        )}
-                        <div className="container" onClick={closeSidebar}>
                             <Routes>
                                 <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
                                 <Route path="/signup" element={<SignupForm />} />
@@ -77,15 +63,16 @@ function App() {
                                 <Route path="/editprofile" element={<EditProfile />} />
                                 <Route path="/deleteprofile" element={<DeleteProfile />} />
                                 <Route path="/updatepassword" element={<UpdatePassword />} />
+                                <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
                                 <Route path="/myreviews" element={<ListMyReviews />} />
                                 <Route path="/favorites/" element={<FavoriteRestaurants />} />
                                 <Route path="/create-review/:place_id" element={<CreateReview />} />
                                 <Route path="/search-results" element={<SearchResults />} />
                                 <Route path="/update-review/:review_id" element={<UpdateReview />} />
-                                <Route path="/:username" element={<ListUserReviews />} />
+                                <Route path="/accounts/:username" element={<ListUserReviews />} />
+                                <Route path="/faq" element={<FAQPage />} />
                             </Routes>
-                        </div>
                     </ContextProvider>
                 </AuthProvider>
             </BrowserRouter>
