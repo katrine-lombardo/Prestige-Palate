@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }, [token]);
 
     return (
-        <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden', backgroundColor: '#f6f4ee' }}>
+        <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden', backgroundColor: '#f6f4ee', color: '#370507' }}>
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title">{token ? `WELCOME, ${username}` : ''}</h5>
                 <button type="button" className="btn-close text-reset" aria-label="Close" onClick={handleCloseClick}></button>
