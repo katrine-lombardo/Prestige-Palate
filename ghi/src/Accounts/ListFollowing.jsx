@@ -104,9 +104,9 @@ const ListFollowing = ({ username }) => {
 
     const renderNullFollowers = () => (
         <div>
-            <div className="container mt-4">
-                {<Loading /> ? (
-                    "Loading following..."
+            <div className="container mt-3">
+                {isLoading ? (
+                    <Loading />
                 ) : (
                     "Not following anyone. Yet..."
                 )}
