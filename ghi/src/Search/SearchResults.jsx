@@ -82,7 +82,6 @@ function SearchResults() {
                 setFavorites(updatedFavoritesList);
                 setShowFavoriteModal(true);
                 setFavoriteModalMessage(isFavorite ? "Removed from favorites" : "Added to favorites");
-
             } else {
                 throw new Error("Failed to update favorites");
             }
@@ -166,7 +165,6 @@ function SearchResults() {
                 restaurants={initialResults}
                 viewport={locationData?.viewport}
             />
-
             <div className="container mt-4">
                 <div className="row mb-3">
                     <nav>
@@ -214,7 +212,6 @@ function SearchResults() {
                 </div>
                 {currentItems.map(restaurant => {
                     const isFavorite = favorites.includes(restaurant.id);
-
                     return (
                         <RestaurantCard
                             key={restaurant.id}
@@ -226,7 +223,6 @@ function SearchResults() {
                         />
                     );
                 })}
-
                 {currentItems.length === 0 && <div className="alert alert-warning">No restaurants found.</div>}
                 <nav>
                     <ul className="pagination justify-content-center">
@@ -252,7 +248,6 @@ function SearchResults() {
             </div>
         </div>
     );
-
 }
 
 export default SearchResults;
