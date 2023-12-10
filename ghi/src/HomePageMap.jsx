@@ -6,7 +6,7 @@ import './HomePageMap.css';
 
 const containerStyle = {
     width: '100%',
-    height: '95vh',
+    height: '80vh',
     position: 'relative',
 };
 
@@ -26,7 +26,8 @@ const Map = () => {
         navigate(`/restaurants/${placeId}`);
     };
 
-    const handleClick = (placeId) => {;
+    const handleClick = (placeId) => {
+        ;
         setSelectedRestaurant(null);
     };
 
@@ -53,7 +54,7 @@ const Map = () => {
 
     return (
         <GoogleMap
-            className = "map"
+            className="map"
             onLoad={onLoad}
             mapContainerStyle={containerStyle}
             center={defaultCenter}

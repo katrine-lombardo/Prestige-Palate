@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }, [token]);
 
     return (
-        <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden' }}>
+        <div className={`offcanvas offcanvas-end ${isOpen ? 'show' : ''}`} tabIndex="-1" id="sidebar" style={{ visibility: isOpen ? 'visible' : 'hidden', backgroundColor: '#f6f4ee' }}>
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title">{token ? `WELCOME, ${username}` : ''}</h5>
                 <button type="button" className="btn-close text-reset" aria-label="Close" onClick={handleCloseClick}></button>
@@ -46,23 +46,25 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <div className="offcanvas-body d-flex flex-column">
                 <div>
                     {token && (
-                        <><NavLink className="nav-link" to="/" onClick={closeSidebar}>
-                            <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;HOME
-                        </NavLink>
+                        <>
+                            <NavLink className="nav-link" to="/" onClick={closeSidebar}>
+                                <i className="fa-solid fa-house" style={{ marginRight: '8px' }}></i>&nbsp;HOME
+                            </NavLink>
+                            <NavLink className="nav-link" to="/dashboard" onClick={closeSidebar}>
+                                <i className="fa-solid fa-user-group" style={{ marginRight: '8px' }}></i>&nbsp;DASHBOARD
+                            </NavLink>
                             <NavLink className="nav-link" to="/favorites" onClick={closeSidebar}>
                                 <i className="fa-solid fa-star" style={{ marginRight: '8px' }}></i>&nbsp;FAVORITES
                             </NavLink>
                             <NavLink className="nav-link" to="/myreviews" onClick={closeSidebar}>
                                 <i className="fa-regular fa-pen-to-square" style={{ marginRight: '8px' }}></i>&nbsp;MY REVIEWS
                             </NavLink>
-                            <NavLink className="nav-link" to="/friends" onClick={closeSidebar}>
-                                <i className="fa-solid fa-user-group" style={{ marginRight: '8px' }}></i>&nbsp;FRIENDS
-                            </NavLink>
+
                             <NavLink className="nav-link" to="/referral" onClick={closeSidebar}>
                                 <i className="fa-solid fa-people-group" style={{ marginRight: '8px' }}></i>&nbsp;REFER A FRIEND
                             </NavLink>
                         </>
-                        )}
+                    )}
                 </div>
                 <div className="mt-auto">
                     {token ? (
@@ -85,7 +87,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                     </div>
                                     <div
                                         id="collapseSettings"
-                                        className="accordion-collapse collapse"
+                                        className="accordion-collapse collapse settings-section"
                                         aria-labelledby="headingSettings"
                                         data-bs-parent="#accordionExample"
                                     >
@@ -122,6 +124,5 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </div>
     );
 };
-
 
 export default Sidebar;

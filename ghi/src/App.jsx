@@ -9,6 +9,7 @@ import EditProfile from "./Accounts/EditProfile";
 import UpdatePassword from "./Accounts/UpdatePassword"
 import DeleteProfile from "./Accounts/DeleteProfile"
 import LogoutButton from "./Accounts/LogoutButton";
+import Dashboard from "./Accounts/Dashboard";
 import Sidebar from "./Sidebar";
 import DetailRestaurant from "./Restaurants/DetailRestaurants";
 import ListMyReviews from "./Reviews/ListMyReviews";
@@ -61,6 +62,8 @@ function App() {
                                 <Route path="/editprofile" element={<EditProfile />} />
                                 <Route path="/deleteprofile" element={<DeleteProfile />} />
                                 <Route path="/updatepassword" element={<UpdatePassword />} />
+
+                                <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
                                 <Route path="/myreviews" element={<ListMyReviews />} />
                                 <Route path="/favorites/" element={<FavoriteRestaurants />} />

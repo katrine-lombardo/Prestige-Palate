@@ -5,6 +5,7 @@ import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import logoImage from "./imgs/logo_lightmode.png";
 import logoImage2 from "./imgs/logo_darkmode.png";
 import LineImage from "./imgs/sidebar.png";
+import './Nav.css'
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -52,7 +53,7 @@ function Nav({ toggleSidebar }) {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav className="navbar sticky-top navbar-expand-lg bg-custom">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">
                         <img
