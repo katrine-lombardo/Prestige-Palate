@@ -26,10 +26,14 @@ const ListUserReviews = () => {
         setIsLoading(true);
         const checkUsernameExists = async () => {
             try {
-                const url = `${tokenUrl}/api/accounts/${username}/reviews`;
+                const url = `${tokenUrl}/api/accounts/`;
                 const response = await fetch(url);
-                const user = await response.json();
-                setUsernameExists(user && user.length > 0);
+                if (!response.ok) {
+                    throw new Error(`HTTP error: The status is ${response.status}`);
+                }
+                const accounts = await response.json();
+                const userExists = accounts.some(account => account.username === username);
+                setUsernameExists(userExists);
             } catch (error) {
                 console.error('Error checking username:', error);
             }
