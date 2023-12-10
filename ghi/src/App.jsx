@@ -53,26 +53,26 @@ function App() {
                     <ContextProvider>
                         <Nav toggleSidebar={toggleSidebar} />
                         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-                        <Routes>
-                            <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
-                            <Route path="/signup" element={<SignupForm />} />
-                            <Route path="/login" element={<LoginForm />} />
-                            <Route path="/logout" element={<LogoutButton />} />
-                            <Route path="/sidebar" element={<Sidebar />} />
-                            <Route path="/referral" element={<ReferralForm />} />
-                            <Route path="/editprofile" element={<EditProfile />} />
-                            <Route path="/deleteprofile" element={<DeleteProfile />} />
-                            <Route path="/updatepassword" element={<UpdatePassword />} />
-                            <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
-                            <Route path="/myreviews" element={<ListMyReviews />} />
-                            <Route path="/favorites/" element={<FavoriteRestaurants />} />
-                            <Route path="/create-review/:place_id" element={<CreateReview />} />
-                            <Route path="/search-results" element={<SearchResults />} />
-                            <Route path="/update-review/:review_id" element={<UpdateReview />} />
-                            <Route path="/:username" element={<ListUserReviews />} />
-                            <Route path="/faq" element={<FAQPage />} />
-                        </Routes>
+                            <Routes>
+                                <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
+                                <Route path="/signup" element={<SignupForm />} />
+                                <Route path="/login" element={<LoginForm />} />
+                                <Route path="/logout" element={<LogoutButton />} />
+                                <Route path="/sidebar" element={<Sidebar />} />
+                                <Route path="/referral" element={<ReferralForm />} />
+                                <Route path="/editprofile" element={<EditProfile />} />
+                                <Route path="/deleteprofile" element={<DeleteProfile />} />
+                                <Route path="/updatepassword" element={<UpdatePassword />} />
+                                <Route path="/dashboard" element={<Dashboard />} />
+                                <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
+                                <Route path="/myreviews" element={<ListMyReviews />} />
+                                <Route path="/favorites/" element={<FavoriteRestaurants />} />
+                                <Route path="/create-review/:place_id" element={<CreateReview />} />
+                                <Route path="/search-results" element={<SearchResults />} />
+                                <Route path="/update-review/:review_id" element={<UpdateReview />} />
+                                <Route path="/accounts/:username" element={<ListUserReviews />} />
+                                <Route path="/faq" element={<FAQPage />} />
+                            </Routes>
                     </ContextProvider>
                 </AuthProvider>
             </BrowserRouter>
