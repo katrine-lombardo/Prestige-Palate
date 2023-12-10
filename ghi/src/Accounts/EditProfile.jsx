@@ -92,7 +92,7 @@ const EditProfile = () => {
     return (
         <>
             <div style={{ marginTop: '25px' }}></div>
-            <div className="container" style={{ maxWidth: '600px' }}>
+            <div className="container" style={{ maxWidth: '800px' }}>
                 <div className="card text-bg-light">
                     <h5 className="card-header bg-custom-two">EDIT PROFILE</h5>
                     {updateSuccess && (
@@ -166,6 +166,7 @@ const EditProfile = () => {
                     </div>
                 </div>
             </div>
+            <div style={{ marginBottom: '25px' }}></div>
         </>
     );
 };

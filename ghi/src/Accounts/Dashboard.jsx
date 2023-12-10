@@ -76,7 +76,7 @@ const Dashboard = () => {
         <>
             <div style={{ marginTop: '25px' }}></div>
             <div className="text-center">
-                <h5 className="card-header">REVIEWS FROM USERS I FOLLOW</h5>
+                <h5 className="card-header">REVIEWS FROM ACCOUNTS I FOLLOW</h5>
                 {reviews.map((review) => (
                     <div key={review.id} className="card border-0 mb-3 mx-auto" style={{ maxWidth: '600px' }}>
                         <div className="card-body">

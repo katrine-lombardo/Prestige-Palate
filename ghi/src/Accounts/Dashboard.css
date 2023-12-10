@@ -1,0 +1,63 @@
+.review {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.user-info {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-right: 10px;
+}
+
+.user-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.username {
+  margin-top: 5px;
+}
+
+.review-details {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.description {
+  margin-top: 10px;
+}
+
+.review-meta {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin-left: 10px;
+}
+
+.rating {
+  margin-bottom: 10px;
+}
+
+.date {
+  color: gray;
+}
+
+.review-photos {
+  margin-top: 10px;
+}
+
+.review-photos img {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+}
