@@ -21,6 +21,7 @@ import UpdateReview from "./Reviews/UpdateReview";
 import ListUserReviews from "./Reviews/ListUserReviews";
 import { LoadScript } from '@react-google-maps/api';
 import ContextProvider from "./ContextStore";
+import FAQPage from "./FAQ"
 
 const libraries = ['places'];
 
@@ -70,6 +71,7 @@ function App() {
                                 <Route path="/search-results" element={<SearchResults />} />
                                 <Route path="/update-review/:review_id" element={<UpdateReview />} />
                                 <Route path="/accounts/:username" element={<ListUserReviews />} />
+                                <Route path="/faq" element={<FAQPage />} />
                             </Routes>
                     </ContextProvider>
                 </AuthProvider>

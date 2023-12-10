@@ -34,9 +34,9 @@ const BigStarCard = ({ rating }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '6px',
-                    color: '#FFD700',
+                    color: '#f6f4ee',
                     margin: '0 1px',
-                    background: `linear-gradient(90deg, #FF0000 ${val * 100}%, #bbbac0 ${val * 100}%)` 
+                    background: `linear-gradient(90deg, #FFD700 ${val * 100}%, #DFD5CB ${val * 100}%)`
                 }}
             >
                 ★
