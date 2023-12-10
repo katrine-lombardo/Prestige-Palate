@@ -62,7 +62,6 @@ function App() {
                                 <Route path="/editprofile" element={<EditProfile />} />
                                 <Route path="/deleteprofile" element={<DeleteProfile />} />
                                 <Route path="/updatepassword" element={<UpdatePassword />} />
-
                                 <Route path="/dashboard" element={<Dashboard />} />
                                 <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
                                 <Route path="/myreviews" element={<ListMyReviews />} />
@@ -70,7 +69,7 @@ function App() {
                                 <Route path="/create-review/:place_id" element={<CreateReview />} />
                                 <Route path="/search-results" element={<SearchResults />} />
                                 <Route path="/update-review/:review_id" element={<UpdateReview />} />
-                                <Route path="/:username" element={<ListUserReviews />} />
+                                <Route path="/accounts/:username" element={<ListUserReviews />} />
                             </Routes>
                     </ContextProvider>
                 </AuthProvider>
