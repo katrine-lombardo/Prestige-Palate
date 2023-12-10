@@ -141,15 +141,15 @@ const FavoriteRestaurants = () => {
         <div className="container mt-4">
             <h2>My Favorite Restaurants</h2>
             <div className="row mb-3">
-                <div className="col-md-6">
-                    <label>Restaurants per page: </label>
-                    <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                    </select>
-                </div>
                 <nav>
+                    <div className="col-md-6">
+                        <label>Restaurants per page: </label>
+                        <select className="form-control d-inline-block w-auto ml-2" value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
                     <ul className="pagination justify-content-center">
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                             <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
@@ -188,6 +188,15 @@ const FavoriteRestaurants = () => {
                 <RestaurantCard key={restaurant.place_id} restaurant={restaurant} />
             ))}
             {currentItems.length === 0 && <div className="alert alert-warning">No favorite restaurants found.</div>}
+            <nav>
+                <ul className="pagination justify-content-center">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                        <li key={page} className={`page-item ${currentPage === page ? 'active' : ''}`}>
+                            <button className="page-link" onClick={() => changePage(page)}>{page}</button>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
     );
 

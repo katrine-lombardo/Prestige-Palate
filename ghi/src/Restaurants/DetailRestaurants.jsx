@@ -25,6 +25,8 @@ const DetailRestaurant = () => {
     const [showEditReviewModal, setShowEditReviewModal] = useState(false);
     const [existingReviewId, setExistingReviewId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [showFavoriteModal, setShowFavoriteModal] = useState(false);
+    const [favoriteModalMessage, setFavoriteModalMessage] = useState('');
 
     useEffect(() => {
         fetchDetails(place_id);
@@ -67,6 +69,8 @@ const DetailRestaurant = () => {
                     ? favorites.filter(id => id !== place_id)
                     : [...favorites, place_id];
                 setFavorites(updatedFavorites);
+                setShowFavoriteModal(true);
+                setFavoriteModalMessage(isFavorite ? "Removed from favorites" : "Added to favorites");
             } else {
                 throw new Error("Failed to update favorites");
             }
@@ -171,8 +175,21 @@ const DetailRestaurant = () => {
                                 id={`favorite-toggle-detail-${place_id}`}
                                 checked={isFavorite}
                                 onChange={toggleFavorite}
+                                title={isFavorite ? "Remove from favorites" : "Add to favorites"}
                             />
                             <label htmlFor={`favorite-toggle-detail-${place_id}`} className="slider round"></label>
+                        </div>
+                    </div>
+                </div>
+                <div className={`modal ${showFavoriteModal ? 'show' : ''}`} tabIndex="-1" style={{ display: showFavoriteModal ? 'block' : 'none' }}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <p>{favoriteModalMessage}</p>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowFavoriteModal(false)}>Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
