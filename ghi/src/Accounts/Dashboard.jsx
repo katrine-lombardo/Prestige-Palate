@@ -74,12 +74,14 @@ const Dashboard = () => {
 
     return (
         <>
-            <div>
+            <div style={{ marginTop: '25px' }}></div>
+            <div className="text-center">
+                <h5 className="card-header">REVIEWS FROM USERS I FOLLOW</h5>
                 {reviews.map((review) => (
-                    <div key={review.id} className="card border-0 mb-3">
+                    <div key={review.id} className="card border-0 mb-3 mx-auto" style={{ maxWidth: '600px' }}>
                         <div className="card-body">
                             <div className="row align-items-start">
-                                <div className="col-2">
+                                <div className="col-3">
                                     <img
                                         src={review.profile_icon_url}
                                         alt="User"
@@ -91,7 +93,7 @@ const Dashboard = () => {
                                         </Link>
                                     </div>
                                 </div>
-                                <div className="col-10">
+                                <div className="col-9">
                                     <div className="d-flex justify-content-between">
                                         <div className="card-title">
                                             <blockquote className="blockquote">
@@ -104,7 +106,7 @@ const Dashboard = () => {
                                                     key={star}
                                                     style={{
                                                         color: star <= review.rating ? 'gold' : 'gray',
-                                                        fontSize: '2em', // Adjust the font size for bigger stars
+                                                        fontSize: '2em', 
                                                     }}
                                                 >
                                                     ★
@@ -132,7 +134,7 @@ const Dashboard = () => {
                                                         src={url}
                                                         alt={`Photo by ${username}`}
                                                         style={{
-                                                            maxWidth: '20%', 
+                                                            maxWidth: '20%',
                                                             height: 'auto',
                                                         }}
                                                     />
