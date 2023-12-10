@@ -74,7 +74,7 @@ const ReferralForm = () => {
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
                 <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">REFER A FRIEND</h5>
+                    <h5 className="card-header bg-custom-two">REFER A FRIEND</h5>
                     {errorMessage && (
                         <div className="alert alert-danger mb-3" role="alert">
                             {errorMessage}
@@ -85,7 +85,7 @@ const ReferralForm = () => {
                             {message}
                         </div>
                     )}
-                    <div className="card-body">
+                    <div className="card-body bg-custom">
                         <form onSubmit={handleReferral}>
                             <div className="mb-3">
                                 <label htmlFor="referredEmail" className="form-label">

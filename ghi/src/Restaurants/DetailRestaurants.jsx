@@ -229,6 +229,7 @@ const DetailRestaurant = () => {
                     </div>
                 )}
             </div>
+            <div style={{ marginTop: '25px' }}></div>
         </main>
     );
 };

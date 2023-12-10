@@ -100,7 +100,7 @@ const UpdatePassword = () => {
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
                 <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">CHANGE PASSWORD</h5>
+                    <h5 className="card-header bg-custom-two">CHANGE PASSWORD</h5>
                     {changeSuccess && (
                         <div className="alert alert-success" role="alert">
                             Password successfully changed.
@@ -116,7 +116,7 @@ const UpdatePassword = () => {
                             {passwordMatchError}
                         </div>
                     )}
-                    <div className="card-body">
+                    <div className="card-body bg-custom">
                         <form onSubmit={handleUpdatePassword}>
                             <div className="mb-3">
                                 <label htmlFor="currentPassword" className="form-label">

@@ -16,8 +16,8 @@ const LogoutButton = () => {
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
                 <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">LOG OUT</h5>
-                    <div className="card-body">
+                    <h5 className="card-header bg-custom-two">LOG OUT</h5>
+                    <div className="card-body bg-custom">
                         <form onSubmit={handleLogout}>
                             <div>Are you sure you want to log out?</div>
                             <div style={{ marginTop: '5px' }}></div>

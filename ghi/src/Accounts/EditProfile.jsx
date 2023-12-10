@@ -93,8 +93,8 @@ const EditProfile = () => {
         <>
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
-                <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">EDIT PROFILE</h5>
+                <div className="card text-bg-light">
+                    <h5 className="card-header bg-custom-two">EDIT PROFILE</h5>
                     {updateSuccess && (
                         <div className="alert alert-success" role="alert">
                             Successfully updated account information.
@@ -105,7 +105,7 @@ const EditProfile = () => {
                             There was trouble updating your profile. Please try again.
                         </div>
                     )}
-                    <div className="card-body">
+                    <div className="card-body bg-custom">
                         <form onSubmit={handleUpdateProfile}>
                             <div className="mb-3">
                                 <label htmlFor="firstName" className="form-label">

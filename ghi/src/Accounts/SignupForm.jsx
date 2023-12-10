@@ -72,13 +72,13 @@ const SignupForm = () => {
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
                 <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">Sign Up</h5>
+                    <h5 className="card-header bg-custom-two">Sign Up</h5>
                     {errorMessage && (
                         <div className="alert alert-danger mb-3" role="alert">
                             {errorMessage}
                         </div>
                     )}
-                    <div className="card-body">
+                    <div className="card-body bg-custom">
                         <form onSubmit={handleSignup}>
                             <div className="mb-3">
                                 <label htmlFor="firstname" className="form-label">
@@ -185,11 +185,11 @@ const SignupForm = () => {
                             <button type="submit" className="btn btn-primary" value="Signup">
                                 SIGN UP
                             </button>
+                            <p>
+                                Already have an account?{" "}
+                                <Link to="/login">Click Here to Log In</Link>
+                            </p>
                         </form>
-                        <p>
-                            Already have an account?{" "}
-                            <Link to="/login">Click Here to Log In</Link>
-                        </p>
                     </div>
                 </div>
             </div>

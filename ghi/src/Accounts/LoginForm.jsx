@@ -67,8 +67,8 @@ const LoginForm = () => {
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
                 <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">LOGIN</h5>
-                    <div className="card-body">
+                    <h5 className="card-header bg-custom-two">LOGIN</h5>
+                    <div className="card-body bg-custom">
                         {errorMessage && (
                             <p className="alert alert-danger mb-3" role="alert">
                                 {errorMessage}

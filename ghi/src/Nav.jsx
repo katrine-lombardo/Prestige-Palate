@@ -69,43 +69,19 @@ function Nav({ toggleSidebar }) {
                     <div
                         className="user-icon-container d-flex align-items-center"
                         onClick={toggleSidebar}
-                        style={{
-                            borderRadius: token ? '50%' : '0',
-                            overflow: 'hidden',
-                            border: token ? '2px solid black' : '0',
-                            padding: token ? '2px' : '0',
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
                     >
                         {token ? (
                             <img
                                 src={loading ? LineImage : icon_url}
                                 alt="User"
                                 className="user-icon"
-                                style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    borderRadius: '5%',
-                                    objectFit: 'cover',
-                                    margin: 'auto',
-                                    display: 'block',
-                                }}
                                 loading={loading ? 'lazy' : 'eager'}
                             />
                         ) : (
                             <img
                                 src={LineImage}
                                 alt="User"
-                                className="user-icon"
-                                style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    borderRadius: '5%',
-                                    objectFit: 'cover',
-                                    margin: 'auto',
-                                    display: 'block',
-                                }}
+                                className="nav-image"
                                 loading={loading ? 'lazy' : 'eager'}
                             />
                         )}

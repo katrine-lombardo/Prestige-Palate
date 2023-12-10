@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from '../Loading';
+import './ListAppReviews.css'
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -79,21 +80,12 @@ const ListAppReviews = () => {
                             src={review.profile_icon_url}
                             alt="User"
                             className="user-icon"
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                border: '2px solid black',
-                                borderRadius: '50%',
-                                padding: '1px',
-                                objectFit: 'cover',
-                                margin: 'auto',
-                                display: 'block',
-                            }}
                         />
-                        <Link to={`/${review.username}`}>
-                            <h5 className="mt-2">{review.username}</h5>
+                        <h5 className="mt-2">
+                            <Link to={`/accounts/${review.username}`}>
+                            {review.username}
                         </Link>
-
+                        </h5>
                     </div>
                     <div className="col-10">
                         <div className="d-flex justify-content-between">

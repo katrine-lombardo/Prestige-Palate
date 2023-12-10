@@ -58,8 +58,8 @@ const DeleteProfile = () => {
             <div style={{ marginTop: '25px' }}></div>
             <div className="container" style={{ maxWidth: '600px' }}>
                 <div className="card text-bg-light mb-3">
-                    <h5 className="card-header">DELETE PROFILE</h5>
-                    <div className="card-body">
+                    <h5 className="card-header bg-custom-two">DELETE PROFILE</h5>
+                    <div className="card-body bg-custom">
                         <form onSubmit={handleDelete}>
                             {updateError && (
                                 <div className="alert alert-danger" role="alert">
