@@ -135,8 +135,9 @@ const ListUserReviews = () => {
         } else {
             return (
                 <NullContent
-                    message="No Prestige Palate reviews here. Yet..."
+                    message="No Prestige Palate photos here. Yet..."
                     isLoading={isLoading}
+                    showButton={false}
                 />
             )
         }
@@ -150,6 +151,7 @@ const ListUserReviews = () => {
                 <NullContent
                     message="No Prestige Palate reviews here. Yet..."
                     isLoading={isLoading}
+                    showButton={false}
                 />
             )
         }
@@ -397,7 +399,7 @@ const ListUserReviews = () => {
                         aria-labelledby="nav-photos-tab"
                         tabIndex="0"
                     >
-                        <div className="nav-photos-container">
+                        <div className="container mt-3">
                             {!reviews.length ? (
                                 renderNullPhotos()
                             ) : (
@@ -416,7 +418,7 @@ const ListUserReviews = () => {
                         aria-labelledby="nav-following-tab"
                         tabIndex="0"
                     >
-                        <div className="container mt-4">
+                        <div className="container mt-3">
                             <ListFollowing username={username} />
                         </div>
                     </div>
@@ -429,7 +431,7 @@ const ListUserReviews = () => {
                         aria-labelledby="nav-followers-tab"
                         tabIndex="0"
                     >
-                        <div className="container mt-4">
+                        <div className="container mt-3">
                             <ListFollowers username={username} />
                         </div>
                     </div>
