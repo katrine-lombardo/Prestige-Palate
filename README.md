@@ -35,6 +35,14 @@ We are targeting Elite foodies who want to explore their next global culinary ad
 - A logged-in user can privately or publicly share a review of their foodie experiences, and publicly shared photos/reviews will be displayed on a restaurant’s detail page and their personal profile.
 - Privately posted reviews and photos are only visible in the user’s saved log, to reminisce on previous experiences.
 
+## Testing
+
+- Trejon: Unit Tests for Photos
+- Erin:
+- Katrine:
+- Michael:
+- Yaosheng:
+
 # Getting the app running
 
 1. Git clone into your local repository: git clone (repo)
