@@ -7,7 +7,6 @@ import ListFollowing from "../Accounts/ListFollowing";
 import NullContent from "./NullContent";
 import { useStore } from "../ContextStore";
 import Loading from "../Loading";
-import PhotoCard from "./PhotoCard";
 import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
