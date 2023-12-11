@@ -1,4 +1,12 @@
-## Tuwede, Dec 6
+## Fri, Dec 8
+Features/issues that you worked on and who you worked with:
+I creat unit test for account and favorite router and change the layout for restaurant card, and add hover text for toggle.
+
+## Thur, Dec 7
+Features/issues that you worked on and who you worked with:
+I change the sidebar style and add auto clsoe feature, I add loading feature, also I work with Trey to add check existing review and navigate to edit review.
+
+## Wed, Dec 6
 Features/issues that you worked on and who you worked with:
 I change the fetchFavorites to context store, I found use context can improve the performance for the app, especially we need to use toggle to show the restaurant is in favorite or not.
 

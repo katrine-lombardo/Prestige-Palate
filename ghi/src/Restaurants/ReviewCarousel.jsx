@@ -32,7 +32,7 @@ const ReviewCarousel = ({ restaurantDetails }) => {
                                             <div className="author-image" style={{ flex: '1 0 auto' }}>
                                                 <img
                                                     src={review.authorAttribution?.photoUri || altImage}
-                                                    onError={(e) => e.target.src = sidebarImage}
+                                                    onError={(e) => e.target.src = altImage}
                                                     className="rounded-circle"
                                                     alt="Author"
                                                     style={{ width: '50px', height: '50px' }}
