@@ -14,6 +14,6 @@ This illustrates what a user will see after clicking the icon in the upper right
 
 ## Sign Up Page
 
-This is the sign up form that users will fill out to create an account for the website.
+This is the sign up form that users will fill out to create an account for the website. Test
 
 ![Sign Up Page](wireframes/SignUp.png)
