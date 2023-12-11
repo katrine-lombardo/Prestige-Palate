@@ -61,7 +61,6 @@ build-front-end-job:
     VITE_AWS_BUCKET_REGION: ${VITE_AWS_BUCKET_REGION}
   script:
     - cd ghi
-    - npm install
     - npm run build -- --base=/prestige-palate/
     - cp dist/index.html dist/404.html
   artifacts:
