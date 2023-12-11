@@ -6,8 +6,8 @@ if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.");
 }
 
-const FollowButton = ({ followingUsername }) => {
-    const [isFollowing, setIsFollowing] = useState(false);
+const FollowButton = ({ followingUsername, isFollowing }) => {
+    const [following, setFollowing] = useState(isFollowing);
     const { token } = useAuthContext();
 
     const handleFollow = async (username) => {
@@ -26,7 +26,7 @@ const FollowButton = ({ followingUsername }) => {
 
             if (response.ok) {
                 console.log(`You are now following ${followingUsername}`);
-                setIsFollowing(true)
+                setFollowing(true);
             } else {
                 console.error(`Failed to follow ${followingUsername}`);
             }
@@ -51,7 +51,7 @@ const FollowButton = ({ followingUsername }) => {
 
             if (response.ok) {
                 console.log(`You are no longer following ${followingUsername}`);
-                setIsFollowing(false);
+                setFollowing(false);
             } else {
                 console.error(`Failed to unfollow ${followingUsername}`);
             }
@@ -64,11 +64,13 @@ const FollowButton = ({ followingUsername }) => {
         <button
             type="button"
             className="btn btn-light"
-            onClick={isFollowing ? handleUnfollow : handleFollow}
+            onClick={
+                following
+                    ? () => handleUnfollow(followingUsername)
+                    : () => handleFollow(followingUsername)
+            }
         >
-            <small>
-                {isFollowing ? "- Unfollow" : "+ Follow"}
-            </small>
+            <small>{following ? "- Unfollow" : "+ Follow"}</small>
         </button>
     );
 };

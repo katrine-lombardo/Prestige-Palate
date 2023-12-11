@@ -74,7 +74,7 @@ const ListMyReviews = () => {
                 } catch (error) {
                     console.error("Error fetching reviews:", error);
                 } finally {
-                    setIsLoading(false); // Move it inside the finally block
+                    setIsLoading(false);
                 }
             }
         };
