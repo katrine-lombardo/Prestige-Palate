@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from '../Loading';
 import './ListAppReviews.css'
+import FollowButton from "../Accounts/FollowButton";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -85,6 +86,7 @@ const ListAppReviews = () => {
                             <Link to={`/accounts/${review.username}`}>
                             {review.username}
                         </Link>
+                            <FollowButton followingUsername={review.username} />
                         </h5>
                     </div>
                     <div className="col-10">
