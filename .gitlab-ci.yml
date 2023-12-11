@@ -57,7 +57,7 @@ build-front-end-job:
   script:
     - cd ghi
     - npm install
-    - npm run build --base=/prestige-palate/
+    - npm run build -- --base=/prestige-palate/
     - cp dist/index.html dist/404.html
   artifacts:
     paths:
