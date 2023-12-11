@@ -7,6 +7,7 @@ import ListFollowing from "../Accounts/ListFollowing";
 import NullContent from "./NullContent";
 import PhotoCard from "./PhotoCard";
 import Loading from "../Loading";
+import FollowButton from "../Accounts/FollowButton";
 import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -66,12 +67,15 @@ const ListUserReviews = () => {
                             })
                         );
                         setReviews(reviewsWithRestaurantNames);
+                        setIsLoading(false)
                     })
-                    .catch((error) => console.error(error));
+                    .catch((error) => {
+                        console.error(error);
+                        setIsLoading(false)
+                    });
             };
             fetchUserReviews();
         }
-        setIsLoading(false)
     }, [username, usernameExists]);
 
     const toggleFavorite = async (place_id) => {
@@ -105,33 +109,9 @@ const ListUserReviews = () => {
         }
     };
 
-    const handleFollow = async (followerUsername) => {
-        try {
-            const followUrl = `${tokenUrl}/api/accounts/follow/`;
-            const response = await fetch(followUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    following_username: followerUsername,
-                }),
-            });
-
-            if (response.ok) {
-                console.log(`You are now following ${followerUsername}`);
-            } else {
-                console.error(`Failed to follow ${followerUsername}`);
-            }
-        } catch (error) {
-            console.error("Error following:", error);
-        }
-    };
-
     const renderNullPhotos = () => {
         if (isLoading) {
-            < Loading />
+            return <Loading />;
         } else {
             return (
                 <NullContent
@@ -145,7 +125,7 @@ const ListUserReviews = () => {
 
     const renderNullReviews = () => {
         if (isLoading) {
-            < Loading />
+            return < Loading />
         } else {
             return (
                 <NullContent
@@ -162,11 +142,15 @@ const ListUserReviews = () => {
     }
 
     if (!usernameExists) {
-        return (
-            <div className="container mt-5">
-                <p>{username} is not a member of Prestige Palate.</p>
-            </div>
-        );
+        if (isLoading) {
+            return <Loading />
+        } else {
+            return (
+                <div className="container mt-5">
+                    <p>{username} is not a member of Prestige Palate.</p>
+                </div>
+            );
+        }
     }
 
     return (
@@ -198,13 +182,9 @@ const ListUserReviews = () => {
                         </div>
                         <div className="col-7">
                             <h3>{username}'s Prestigious Palate</h3>
-                            <button
-                                type="button"
-                                className="btn btn-light"
-                                onClick={() => handleFollow(username)}
-                            >
-                                <small>+ Follow {username}</small>
-                            </button>
+                            <div>
+                                <FollowButton followingUsername={username} />
+                            </div>
                         </div>
                     </div>
                 </div>

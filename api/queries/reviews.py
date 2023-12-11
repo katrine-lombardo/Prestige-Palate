@@ -118,7 +118,8 @@ class ReviewQueries:
                     else:
                         cur.execute(
                             """
-                            SELECT a.id as account_id, i.icon_url as profile_icon_url
+                            SELECT a.id as account_id,
+                            i.icon_url as profile_icon_url
                             FROM accounts a
                             JOIN icons i ON a.profile_icon_id = i.id
                             WHERE a.username = %s;
