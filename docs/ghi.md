@@ -30,6 +30,18 @@ This is the list restaurants page that users will see after searching for a spec
 
 ![List Restaurants Page](wireframes/Restaurants.png)
 
+## Restaurant Details Page Cont.
+
+There is a toggle button on the List Restaurants page that allows a user to bookmark/favorite a restaurant.
+
+![Restaurant Details Page Cont.](wireframes/Restaurants3.png)
+
+## Favorited/Bookmarked Restaurants Page
+
+This page lists all of a particular user's favorited/bookmarked restaurants.
+
+![Favorited Restaurants Page](wireframes/UserBookmarks.png)
+
 ## Restaurant Details Page
 
 This is the restaurant details page that displays the most recent reviews from Google and a Reviews tab with User reviews.
@@ -88,4 +100,10 @@ On the user's review page there is an ellipsis that when clicked provides the us
 
 This is the page the user is routed to after clicking the edit review button shown on the previous page.
 
-![User Review Page Cont.](wireframes/EditReviewPage.png)
+![Edit Review Page](wireframes/EditReviewPage.png)
+
+## Edit Profile Page
+
+The user has the ability to edit their profile information and change their icon from the edit profile page.
+
+![Edit Profile Page](wireframes/EditProfile.png)
