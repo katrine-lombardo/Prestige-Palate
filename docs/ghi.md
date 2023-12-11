@@ -32,7 +32,7 @@ This is the list restaurants page that users will see after searching for a spec
 
 ## Restaurant Details Page Cont.
 
-There is a toggle button on the List Restaurants page that allows a user to bookmark/favorite a restaurant.
+There is a toggle button on the list restaurants page that allows a user to favorite/bookmark a restaurant.
 
 ![Restaurant Details Page Cont.](wireframes/Restaurants3.png)
 
@@ -44,13 +44,13 @@ This page lists all of a particular user's favorited/bookmarked restaurants.
 
 ## Restaurant Details Page
 
-This is the restaurant details page that displays the most recent reviews from Google and a Reviews tab with User reviews.
+This is the restaurant details page that displays the most recent reviews from Google and a Reviews tab with user reviews.
 
 ![Restaurant Details Page](wireframes/Restaurants2.png)
 
 ## Restaurant Details Page Cont.
 
-The restaurant details page has an additional tab that displays photos from the Google Reviews.
+The restaurant details page has an additional tab that displays photos from the Google reviews.
 
 ![Restaurant Details Page Cont.](wireframes/Photos.png)
 
