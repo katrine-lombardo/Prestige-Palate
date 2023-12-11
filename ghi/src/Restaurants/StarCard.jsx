@@ -1,54 +1,28 @@
+import './StarCard.css';
 const StarCard = ({ rating }) => {
     const fullStars = Math.floor(rating);
-
-    const starArr = [];
-
-    for (let i = 1; i <= fullStars; i++) {
-        starArr.push(1);
-    }
-
-    if (rating < 5) {
-        const partialStar = rating - fullStars;
-
-        starArr.push(partialStar);
-
-        const emptyStars = 5 - starArr.length;
-
-        for (let i = 1; i <= emptyStars; i++) {
-            starArr.push(0);
-        }
-    }
-
-    const stars = starArr.map((val, i) => {
-        return (
-            <div
-                key={i}
-                className="starBox"
-                style={{
-                    fontSize: '140%', 
-                    width: '30px',
-                    height: '30px',
-                    lineHeight: '30px', 
-                    verticalAlign: 'top',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '50%',
-                    color: '#FFD700',
-                    margin: '0 1px',
-                    background: `linear-gradient(90deg, #800080 ${val * 100}%, #bbbac0 ${val * 100}%)`
-                }}
-            >
-                ♛
-            </div>
-        );
-    });
+    const partialStarPercentage = (rating % 1) * 100;
+    const emptyStars = 5 - Math.ceil(rating);
 
     return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-            {stars}
+            {[...Array(fullStars)].map((_, i) => (
+                <div key={i} className="star full" />
+            ))}
+            {rating % 1 !== 0 && (
+                <div
+                    key="partial"
+                    className="star partial"
+                    style={
+                        { backgroundImage: `linear-gradient(to right, #FFD700 ${partialStarPercentage}%, #bbbac0 ${partialStarPercentage}%)` }
+                    } />
+            )}
+            {[...Array(emptyStars)].map((_, i) => (
+                <div key={`empty-${i}`} className="star empty" />
+            ))}
         </div>
     );
 };
+
 
 export default StarCard;
