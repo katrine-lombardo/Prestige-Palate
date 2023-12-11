@@ -21,7 +21,7 @@ CORS_HOST = os.environ.get("CORS_HOST")
 if not CORS_HOST:
     origins = [
         "http://localhost:5173",
-        "https://mambo-number-5.gitlab.io/prestige-palate",
+        "https://mambo-number-5.gitlab.io",
     ]
 else:
     origins = [CORS_HOST]
