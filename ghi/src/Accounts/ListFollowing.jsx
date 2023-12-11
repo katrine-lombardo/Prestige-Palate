@@ -11,10 +11,11 @@ if (!tokenUrl) {
 const ListFollowing = ({ username }) => {
     const [followers, setFollowers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isFollowing, setIsFollowing] = useState(false);
     const { token } = useAuthContext();
 
     useEffect(() => {
-        const fetchFollowers = async () => {
+        const fetchFollowing = async () => {
             if (username) {
                 try {
                     const url = `${tokenUrl}/api/accounts/following/${username}`;
@@ -39,7 +40,9 @@ const ListFollowing = ({ username }) => {
                                             0
                                         ) / totalReviews
                                         : 0;
-
+                                if (follower_username === username) {
+                                    setIsFollowing(true);
+                                }
                                 return {
                                     follower: follower_username,
                                     profile_icon_url:
@@ -71,7 +74,7 @@ const ListFollowing = ({ username }) => {
                 }
             }
         };
-        fetchFollowers();
+        fetchFollowing();
     }, [token, username]);
 
     if (isLoading) {
@@ -102,6 +105,31 @@ const ListFollowing = ({ username }) => {
         }
     };
 
+    const handleUnfollow = async (followingUsername) => {
+        try {
+            const unfollowUrl = `${tokenUrl}/api/accounts/unfollow/`;
+            const response = await fetch(unfollowUrl, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    following_username: followingUsername,
+                }),
+            });
+
+            if (response.ok) {
+                console.log(`You are no longer following ${followingUsername}`);
+                setIsFollowing(false);
+            } else {
+                console.error(`Failed to unfollow ${followingUsername}`);
+            }
+        } catch (error) {
+            console.error("Error unfollowing:", error);
+        }
+    };
+
     const renderNullFollowers = () => (
         <div>
             <div className="container mt-3">
@@ -125,7 +153,7 @@ const ListFollowing = ({ username }) => {
                                     <div className="card h-90">
                                         <div className="card-body mt-4">
                                             <Link
-                                                to={`/${follower.follower}`}
+                                                to={`/accounts/${follower.follower}`}
                                             >
                                                 <img
                                                     src={
@@ -181,15 +209,10 @@ const ListFollowing = ({ username }) => {
                                                 <button
                                                     type="button"
                                                     className="btn btn-light"
-                                                    onClick={() =>
-                                                        handleFollow(
-                                                            follower.follower
-                                                        )
-                                                    }
+                                                    onClick={isFollowing ? handleUnfollow : handleFollow}
                                                 >
                                                     <small>
-                                                        + Follow{" "}
-                                                        {follower.follower}
+                                                        {isFollowing ? "- Unfollow" : "+ Follow"}
                                                     </small>
                                                 </button>
                                             </div>

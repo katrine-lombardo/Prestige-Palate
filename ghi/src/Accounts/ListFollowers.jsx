@@ -125,7 +125,7 @@ const ListFollowers = ({ username }) => {
                                 <div className="follower-card">
                                     <div className="card h-90">
                                         <div className="card-body mt-4">
-                                            <Link to={`/${follower.follower}`}>
+                                            <Link to={`/accounts/${follower.follower}`}>
                                                 <img
                                                     src={
                                                         follower.profile_icon_url ||
