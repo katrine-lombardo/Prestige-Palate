@@ -31,27 +31,3 @@
 .team1 .pro-pic {
     min-height: 200px;
 }
-
-.team1 .pro-pic .card-img-overlay {
-    background: rgba(223, 213, 201);
-    display: none;
-}
-
-.team1 .pro-pic .card-img-overlay ul {
-    top: 50%;
-}
-
-.team1 .pro-pic .card-img-overlay ul li a {
-    -webkit-transition: 0.1s ease-in;
-    -o-transition: 0.1s ease-in;
-    transition: 0.1s ease-in;
-}
-
-.team1 .pro-pic .card-img-overlay ul li a:hover {
-    -webkit-transform: translate3d(0px, -5px, 0px);
-    transform: translate3d(0px, -5px, 0px);
-}
-
-.team1 .pro-pic:hover .card-img-overlay {
-    display: block;
-}

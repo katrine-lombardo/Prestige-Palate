@@ -58,6 +58,16 @@ const Dashboard = () => {
                             (a, b) => new Date(b.publish_time) - new Date(a.publish_time)
                         );
                         setReviews(sortedReviews);
+
+                        if (reviews) {
+                            allRestaurants = []
+                            for (const review of reviews) {
+                                const restaurantUrl = `${tokenUrl}/api/restaurants/${review.place_id}`
+                                const restaurantResponse = await fetch(restaurantUrl, { credentials: "include" })
+                                const restaurantData = await restaurantResponse.json()
+                                allRestaurants.push(restaurantData.displayName.text)
+                            }
+                        }
                     } else {
                         setLoading(false);
                     }
