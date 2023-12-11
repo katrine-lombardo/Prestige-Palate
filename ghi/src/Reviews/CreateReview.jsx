@@ -69,7 +69,6 @@ const CreateReview = () => {
             try {
                 await s3Client.send(new PutObjectCommand(params));
                 const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`;
-                console.log("Success", url);
                 return url;
             } catch (err) {
                 console.error("Error", err);
@@ -149,7 +148,6 @@ const CreateReview = () => {
             );
 
             if (response.ok) {
-                console.log("Review posted successfully");
                 setReviewForm({
                     title: "",
                     text: "",
@@ -206,7 +204,7 @@ const CreateReview = () => {
                                 onChange={handleInputChange}
                                 className="form-control"
                                 required
-                                style={{ width: '70%' }} 
+                                style={{ width: '70%' }}
                             />
 
                             <div className="d-flex align-items-center mt-2">
@@ -218,7 +216,7 @@ const CreateReview = () => {
                                             cursor: "pointer",
                                             color: star <= reviewForm.rating ? "gold" : "gray",
                                             fontSize: "24px",
-                                            marginLeft: '10px', 
+                                            marginLeft: '10px',
                                         }}
                                     >
                                         ★

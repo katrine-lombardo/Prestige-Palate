@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import Loading from '../Loading'
+import altImage from '../imgs/alternative.png';
 
 const RestaurantPhotos = () => {
     const { place_id } = useParams();
@@ -57,10 +58,10 @@ const RestaurantPhotos = () => {
                                 {photo.authorAttributions?.[0]?.photoUri ? (
                                     <p style={{ marginRight: '10px' }}>
                                         <img
-                                            src={`https:${photo.authorAttributions?.[0]?.photoUri}`}
-                                            alt=""
+                                            src={ `https:${photo.authorAttributions?.[0]?.photoUri}` || altImage }
+                                            onError={(e) => e.target.src = altImage}
+                                            alt="Author"
                                             style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-                                            loading="lazy"
                                         />
                                     </p>
                                 ) : (

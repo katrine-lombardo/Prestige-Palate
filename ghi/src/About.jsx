@@ -2,6 +2,7 @@ import React from 'react';
 import './About.css';
 import erin from './imgs/erin.jpg'
 import trejon from './imgs/trejon.jpg'
+import michael from './imgs/michael.jpg'
 
 const About = () => {
     return (
@@ -46,7 +47,7 @@ const About = () => {
                             <div className="card card-shadow border-0 mb-4">
                                 <div className="row no-gutters card-shadow">
                                     <div className="col-md-5">
-                                        <img src="CHANGETHIS" alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img src={michael} alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         <div className="card-img-overlay d-flex justify-content-end align-items-start">
                                             <a className="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/michael-boateng-27098a50/" role="button" data-mdb-ripple-color="dark">
                                                 <i className="fab fa-linkedin"></i>
@@ -56,7 +57,11 @@ const About = () => {
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
                                             <h6 className="mb-3 font-weight-medium">MICHAEL BOATENG</h6>
-                                            <p style={{ fontSize: '11px' }}>EDIT YOUR DESCRIPTION</p>
+                                            <p style={{ fontSize: '11px' }}>
+                                                Hi! My journey into software engineering is driven by an interest in developing user-friendly and efficient solutions.
+                                                Intrigued by the potential of tech, I focus on building practical and innovative applications.
+                                                I relish the opportunity to tackle complex challenges and contribute to creative projects.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

@@ -7,7 +7,6 @@ import ListFollowing from "../Accounts/ListFollowing";
 import NullContent from "./NullContent";
 import { useStore } from "../ContextStore";
 import Loading from "../Loading";
-import PhotoCard from "./PhotoCard";
 import "./../index.css";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
@@ -443,7 +442,37 @@ const ListMyReviews = () => {
                             renderNullPhotos()
                         ) : (
                             <div className="container">
-                                <PhotoCard key={username} username={username} />
+                                {reviews.length > 0
+                                    ? reviews.map((review, index) => (
+                                        <div key={index} className="row mb-4">
+                                            {Array.isArray(review.photo_urls) &&
+                                                review.photo_urls.length > 0 ? (
+                                                review.photo_urls.map((url, photoIndex) => (
+                                                    <div key={photoIndex} className="col-md-4">
+                                                        <div className="card">
+                                                            <img
+                                                                src={url}
+                                                                alt={`Photo by ${username}`}
+                                                                className="card-img-top"
+                                                            />
+                                                            <div className="card-body">
+                                                                <Link
+                                                                    to={`/restaurants/${review.place_id}`}
+                                                                >
+                                                                    <h5 className="card-title">
+                                                                        {review.restaurantName}
+                                                                    </h5>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                renderNullPhotos()
+                                            )}
+                                        </div>
+                                    ))
+                                    : renderNullPhotos()}
                             </div>
                         )}
                     </div>
