@@ -1,3 +1,67 @@
+## Fri, Dec 8
+Features/issues that you worked on and who you worked with:
+-Yaosheng led our group in making unit tests.  Made styling tweaks to the restaurant detail component, and removed console errors if a user is not logged in.
+
+A reflection on any design conversations that you had
+-Katrine was awesom in crafting a must do list to focus our last project days on.
+
+At least one ah-ha! moment:
+-The google review author photos are inconsistently loading, so having a backup image seems to work well here.
+
+## Thur, Dec 7
+Features/issues that you worked on and who you worked with:
+-Troubleshot the main branch not working with Katrine and Erin, found out the Lint made some codebreaking edits for long strings.  Reduced the request for google photos by half to render faster. 
+
+A reflection on any design conversations that you had
+-We decided to replace the detail rating stars for a better look.
+
+At least one ah-ha! moment:
+-Found out there was a missing useEffect in the search results component that prevented the list results from rerendering if you searched inside the search results page.
+
+## Wed, Dec 6
+Features/issues that you worked on and who you worked with:
+-Fixed the list results map not rendering issue.  CI/CD setup with the whole team.
+
+A reflection on any design conversations that you had
+-If I search a location on the main page, the list shows up but the map doesn’t render with markers, why?
+
+At least one ah-ha! moment:
+-Found out the onLoad syntax for the map viewport was blocking the map from rendering, simplifying the logic just to use the viewport center fixed the issue.
+
+## Tues, Dec 5
+Features/issues that you worked on and who you worked with:
+-Tried and tried to make an interactive globe for the homepage but ran into too many issues to continue down that road. Added a map for the homepage.
+
+A reflection on any design conversations that you had
+-If I search a location on the main page, the list shows up but the map doesn’t render with markers, why?
+
+At least one ah-ha! moment:
+-Found out the onLoad syntax for the map viewport was blocking the map from rendering, simplifying the logic just to use the viewport center fixed the issue.
+
+## Mon, Dec 4
+Features/issues that you worked on and who you worked with:
+-Fixed the list results map not rendering issue.  CI/CD setup with the whole team.
+
+A reflection on any design conversations that you had
+-If I search a location on the main page, the list shows up but the map doesn’t render with markers, why?
+
+At least one ah-ha! moment:
+-Found out the onLoad syntax for the map viewport was blocking the map from rendering, simplifying the logic just to use the viewport center fixed the issue.
+
+## Fri, Dec 1
+Features/issues that you worked on and who you worked with:
+-Started working on making a map for the restaurant list results.
+
+A reflection on any design conversations that you had
+-Discussed making unit tests as a group.
+
+## Thur, Nov 30
+Features/issues that you worked on and who you worked with:
+-Turned the restaurant titles into links to their respective detail views
+
+A reflection on any design conversations that you had
+-If a search returns null or error it should display a message saying No restaurants found
+
 ## Wed, Nov 29
 Features/issues that you worked on and who you worked with:
 -Got the restaurant search working on the frontend with Yaosheng.
