@@ -58,22 +58,34 @@ When a user clicks the add a review button on the restaurant details page, they 
 
 This is the user review page. This page has a Reviews tab with a list of all of the user reviews.
 
-![Review Page](wireframes/UserReviews.png)
+![User Review Page](wireframes/UserReviews.png)
 
 ## User Review Page Cont.
 
 This page shows the Photos tab which has a list of all of the user photos that have been uploaded.
 
-![Review Page](wireframes/UserPhotos.png)
+![User Review Page Cont.](wireframes/UserPhotos.png)
 
 ## User Review Page Cont.
 
 This page shows the Following tab which has a list of all of the users that a particular user is following on the website.
 
-![Review Page](wireframes/FollowedUsers.png)
+![User Review Page Cont.](wireframes/FollowedUsers.png)
 
 ## User Review Page Cont.
 
 This page shows the Followers tab which has a list of all of the users that follow a particular user on the website.
 
-![Review Page](wireframes/Followers.png)
+![User Review Page Cont.](wireframes/Followers.png)
+
+## User Review Page Cont.
+
+On the user's review page there is an ellipsis that when clicked provides the user with an option to edit or delete the review.
+
+![User Review Page Cont.](wireframes/EditReview.png)
+
+## Edit Review Page
+
+This is the page the user is routed to after clicking the edit review button shown on the previous page.
+
+![User Review Page Cont.](wireframes/EditReviewPage.png)
