@@ -25,6 +25,18 @@ const ListMyReviews = () => {
     const { favorites, setFavorites } = useStore();
 
     useEffect(() => {
+        if (!token) {
+            navigate(`/`);
+        }
+    }, [token, navigate]);
+
+    useEffect(() => {
+        if (username) {
+            document.title = `${username}'s Prestige Palate  ·  Prestige Palate`;
+        }
+    }, [username]);
+
+    useEffect(() => {
         const handleFetchWithAPI = async () => {
             setIsLoading(true);
             const url = `${tokenUrl}/token`;
@@ -188,7 +200,7 @@ const ListMyReviews = () => {
 
     return (
         <div>
-            <div className="container mb-4">
+            <div className="container mb-4 mt-4">
                 <h3>My Prestigious Palate</h3>
             </div>
             <nav className="container mb-3">

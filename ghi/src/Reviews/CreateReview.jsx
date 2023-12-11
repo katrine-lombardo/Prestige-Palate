@@ -18,6 +18,10 @@ const CreateReview = () => {
     const { token } = useAuthContext();
     const fileInputRef = useRef(null);
 
+    useEffect(() => {
+        document.title = `Create a Review  ·  Prestige Palate`;
+    }, []);
+
     const [reviewForm, setReviewForm] = useState({
         title: "",
         text: "",

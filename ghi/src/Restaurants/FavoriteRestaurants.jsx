@@ -16,6 +16,9 @@ const FavoriteRestaurants = () => {
     const { token } = useAuthContext();
     const [isLoading, setIsLoading] = useState(false);
 
+    useEffect(() => {
+        document.title = `My Favorite Restaurants  ·  Prestige Palate`;
+    }, []);
 
     const sortedAndFilteredFavorites = () => {
         return detailedFavorites

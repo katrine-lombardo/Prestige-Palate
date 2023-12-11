@@ -28,6 +28,10 @@ const UpdateReview = () => {
     const { token } = useAuthContext();
     const fileInputRef = useRef(null);
 
+    useEffect(() => {
+        document.title = `Update Review  ·  Prestige Palate`;
+    }, []);
+
     const uploadToS3 = async (photos) => {
         const uploadPromises = photos.map(async (photo) => {
             const params = {

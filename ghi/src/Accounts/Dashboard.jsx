@@ -19,6 +19,10 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = `Dashboard  ·  Prestige Palate`;
+    }, []);
+
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const accountUrl = `${tokenUrl}/token`;
@@ -116,7 +120,7 @@ const Dashboard = () => {
                                                     key={star}
                                                     style={{
                                                         color: star <= review.rating ? 'gold' : 'gray',
-                                                        fontSize: '2em', 
+                                                        fontSize: '2em',
                                                     }}
                                                 >
                                                     ★

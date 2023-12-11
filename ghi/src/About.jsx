@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './About.css';
 import erin from './imgs/erin.jpg'
 import trejon from './imgs/trejon.jpg'
 import michael from './imgs/michael.jpg'
 
 const About = () => {
+
+    useEffect(() => {
+        document.title = `About Us ·  Prestige Palate`;
+    }, []);
+
     return (
         <>
             <div className="py-5 bg-light team1">
