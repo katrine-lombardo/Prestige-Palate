@@ -39,7 +39,7 @@ We are targeting Elite foodies who want to explore their next global culinary ad
 
 1. Git clone into your local repository: git clone (repo)
 2. Change directory: cd prestigepalate
-3. Create volumes: docker volume create pg-admin & docker volume create postrgres-data
+3. Create volumes: docker volume create pg-admin & docker volume create postgres-data
 4. Build the image: docker compose build
 5. Run the containers: docker compose up
 6. Change directory: cd ghi
