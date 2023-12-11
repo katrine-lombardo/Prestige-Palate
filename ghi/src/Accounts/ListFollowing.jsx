@@ -125,7 +125,7 @@ const ListFollowing = ({ username }) => {
                                     <div className="card h-90">
                                         <div className="card-body mt-4">
                                             <Link
-                                                to={`/${follower.follower}`}
+                                                to={`/accounts/${follower.follower}`}
                                             >
                                                 <img
                                                     src={
@@ -178,20 +178,6 @@ const ListFollowing = ({ username }) => {
                                                     Total Reviews:{" "}
                                                     {follower.total_reviews}
                                                 </p>
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-light"
-                                                    onClick={() =>
-                                                        handleFollow(
-                                                            follower.follower
-                                                        )
-                                                    }
-                                                >
-                                                    <small>
-                                                        + Follow{" "}
-                                                        {follower.follower}
-                                                    </small>
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
