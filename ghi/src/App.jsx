@@ -28,12 +28,12 @@ const libraries = ['places'];
 
 const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 if (!googleApiKey) {
-    throw error("VITE_APP_API_HOST was undefined.")
+    throw Error("VITE_APP_API_HOST was undefined.")
 }
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
-    throw error("VITE_APP_API_HOST was undefined.")
+    throw Error("VITE_APP_API_HOST was undefined.")
 }
 
 function App() {
