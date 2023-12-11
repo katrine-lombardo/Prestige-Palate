@@ -443,7 +443,41 @@ const ListMyReviews = () => {
                             renderNullPhotos()
                         ) : (
                             <div className="container">
-                                <PhotoCard key={username} username={username} />
+                                <div className="photo-grid">
+                                    {reviews.length > 0
+                                        ? reviews.map((review, index) => (
+                                            <div key={index} className="photo-item">
+                                                {Array.isArray(review.photo_urls) &&
+                                                    review.photo_urls.length > 0 ? (
+                                                    <div className="photo-card">
+                                                        {review.photo_urls.map(
+                                                            (url, photoIndex) => (
+                                                                <div key={photoIndex}>
+                                                                    <img
+                                                                        src={url}
+                                                                        alt={`Photo by ${username}`}
+                                                                    />
+                                                                    <Link
+                                                                        to={`/restaurants/${review.place_id}`}
+                                                                    >
+                                                                        <h4>
+                                                                            {
+                                                                                review.restaurantName
+                                                                            }
+                                                                        </h4>
+                                                                    </Link>
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    renderNullPhotos()
+                                                )}
+                                            </div>
+                                        ))
+                                        : renderNullPhotos()}
+                                </div>
+
                             </div>
                         )}
                     </div>
