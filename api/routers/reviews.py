@@ -111,7 +111,6 @@ async def create_review(
                 detail="Cannot create a review with these credentials",
             )
 
-        # Ensure photo_urls is a list
         review.photo_urls = (
             review.photo_urls
             if isinstance(review.photo_urls, list)
