@@ -1,5 +1,6 @@
 import React from 'react';
 import './About.css';
+import erin from './imgs/erin.jpg'
 
 const About = () => {
     return (
@@ -16,20 +17,25 @@ const About = () => {
                         <div className="col-lg-6">
                             <div className="card card-shadow border-0 mb-4">
                                 <div className="row no-gutters">
-                                    <div className="col-md-5 pro-pic" style={{ background: 'url(https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t1.jpg) center center no-repeat / cover' }}>
-                                        <div className="card-img-overlay">
-                                            <ul className="list-inline position-relative text-center">
-                                                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block text-white px-1"><i class="icon-social-facebook"></i></a></li>
-                                                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block text-white px-1"><i class="icon-social-twitter"></i></a></li>
-                                                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block text-white px-1"><i class="icon-social-instagram"></i></a></li>
-                                                <li class="list-inline-item"><a href="#" class="text-decoration-none d-block text-white px-1"><i class="icon-social-behance"></i></a></li>
-                                            </ul>
+                                    <div className="col-md-5">
+                                        <img src={erin} alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <div className="card-img-overlay d-flex justify-content-end align-items-start">
+                                            <a className="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/erinyahn/" role="button" data-mdb-ripple-color="dark">
+                                                <i className="fab fa-linkedin"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
-                                            <h6 className="mb-3 font-weight-medium">Erin Ahn</h6>
-                                            <p>EDIT YOUR DERSCRIPTION HERE.</p>
+                                            <h6 className="mb-3 font-weight-medium">ERIN AHN</h6>
+                                            <p style={{ fontSize: '11px' }}>
+                                                Hey there! As a software engineer with a unique background in speech-language pathology, I bring a fresh perspective to the world of coding. 
+                                                With my experience in helping individuals communicate effectively, I've developed a knack for problem-solving and attention to detail that translates
+                                                seamlessly into my software development skills. I'm thrilled to combine my passion for technology with my understanding of language and 
+                                                communication to create innovative solutions that bridge the gap between the two fields.
+                                                I'm excited to use my diverse background to build software that not only functions 
+                                                flawlessly but also enhances the way we connect and communicate.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -38,20 +44,18 @@ const About = () => {
                         <div className="col-lg-6">
                             <div className="card card-shadow border-0 mb-4">
                                 <div className="row no-gutters card-shadow">
-                                    <div className="col-md-5 pro-pic" style={{ background: 'url(https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t2.jpg) center center no-repeat / cover' }}>
-                                        <div className="card-img-overlay">
-                                            <ul className="list-inline position-relative text-center">
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-facebook"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-twitter"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-instagram"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-behance"></i></a></li>
-                                            </ul>
+                                    <div className="col-md-5">
+                                        <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t1.jpg" alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <div className="card-img-overlay d-flex justify-content-end align-items-start">
+                                            <a className="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/michael-boateng-27098a50/" role="button" data-mdb-ripple-color="dark">
+                                                <i className="fab fa-linkedin"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
-                                            <h6 className="mb-3 font-weight-medium">Michael Boateng</h6>
-                                            <p>EDIT YOUR DERSCRIPTION HERE</p>
+                                            <h6 className="mb-3 font-weight-medium">MICHAEL BOATENG</h6>
+                                            <p style={{ fontSize: '11px' }}>EDIT YOUR DESCRIPTION</p>
                                         </div>
                                     </div>
                                 </div>
@@ -62,20 +66,18 @@ const About = () => {
                         <div className="col-lg-6">
                             <div className="card card-shadow border-0 mb-4">
                                 <div className="row no-gutters card-shadow">
-                                    <div className="col-md-5 pro-pic" style={{ background: 'url(https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t3.jpg) center center no-repeat / cover' }}>
-                                        <div className="card-img-overlay">
-                                            <ul className="list-inline position-relative text-center">
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-facebook"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-twitter"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-instagram"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-behance"></i></a></li>
-                                            </ul>
+                                    <div className="col-md-5">
+                                        <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t3.jpg" alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <div className="card-img-overlay d-flex justify-content-end align-items-start">
+                                            <a className="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/katrine-lombardo/" role="button" data-mdb-ripple-color="dark">
+                                                <i className="fab fa-linkedin"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
-                                            <h6 className="mb-3 font-weight-medium">Katrine Lombardo</h6>
-                                            <p>EDIT YOUR DERSCRIPTION HERE</p>
+                                            <h6 className="mb-3 font-weight-medium">KATRINE LOMBARDO</h6>
+                                            <p style={{ fontSize: '11px' }}>EDIT YOUR DESCRIPTION</p>
                                         </div>
                                     </div>
                                 </div>
@@ -86,44 +88,39 @@ const About = () => {
                         <div className="col-lg-6">
                             <div className="card card-shadow border-0 mb-4">
                                 <div className="row no-gutters card-shadow">
-                                    <div className="col-md-5 pro-pic" style={{ background: 'url(https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t4.jpg) center center no-repeat / cover' }}>
-                                        <div className="card-img-overlay">
-                                            <ul className="list-inline position-relative text-center">
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-facebook"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-twitter"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-instagram"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-behance"></i></a></li>
-                                            </ul>
+                                    <div className="col-md-5">
+                                        <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t4.jpg" alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <div className="card-img-overlay d-flex justify-content-end align-items-start">
+                                            <a className="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/trejonmcgee/" role="button" data-mdb-ripple-color="dark">
+                                                <i className="fab fa-linkedin"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
-                                            <h6 className="mb-3 font-weight-medium">Trey McGee</h6>
-                                            <p>EDIT YOUR DERSCRIPTION HERE</p>
+                                            <h6 className="mb-3 font-weight-medium">TREY MCGEE</h6>
+                                            <p style={{ fontSize: '11px' }}>EDIT YOUR DESCRIPTION</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Team Member 5 */}
                         <div className="col-lg-6">
                             <div className="card card-shadow border-0 mb-4">
                                 <div className="row no-gutters card-shadow">
-                                    <div className="col-md-5 pro-pic" style={{ background: 'url(https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t5.jpg) center center no-repeat / cover' }}>
-                                        <div className="card-img-overlay">
-                                            <ul className="list-inline position-relative text-center">
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-facebook"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-twitter"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-instagram"></i></a></li>
-                                                <li className="list-inline-item"><a href="#" className="text-decoration-none d-block text-white px-1"><i className="icon-social-behance"></i></a></li>
-                                            </ul>
+                                    <div className="col-md-5">
+                                        <img src="https://www.wrappixel.com/demos/ui-kit/wrapkit/assets/images/team/t1.jpg" alt="Team Member" className="pro-pic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <div className="card-img-overlay d-flex justify-content-end align-items-start">
+                                            <a className="btn btn-link btn-floating btn-lg text-dark m-1" href="https://www.linkedin.com/in/yaoshengyin/" role="button" data-mdb-ripple-color="dark">
+                                                <i className="fab fa-linkedin"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
-                                            <h6 className="mb-3 font-weight-medium">Yaosheng Yin</h6>
-                                            <p>EDIT YOUR DERSCRIPTION HERE</p>
+                                            <h6 className="mb-3 font-weight-medium">YAOSHENG YIN</h6>
+                                            <p style={{ fontSize: '11px' }}>EDIT YOUR DESCRIPTION</p>
                                         </div>
                                     </div>
                                 </div>
@@ -135,6 +132,7 @@ const About = () => {
             </div>
         </>
     );
-}
+};
+
 
 export default About;
