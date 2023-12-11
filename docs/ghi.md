@@ -18,8 +18,32 @@ This is the sign up form that users will fill out to create an account for the w
 
 ![Sign Up Page](wireframes/SignUp.png)
 
-## Log In Page
+## Login Page
 
-This is the log in form that users will fill out to log into their account for the website.
+This is the login form that users will fill out to log into their account for the website.
 
-![Log In Page](wireframes/LogIn.png)
+![Login Page](wireframes/LogIn.png)
+
+## List Restaurants Page
+
+This is the list restaurants page that users will see after searching for a specific location.
+
+![List Restaurants Page](wireframes/Restaurants.png)
+
+## Restaurant Details Page
+
+This is the restaurants detail page that displays the most recent reviews from Google and a Reviews tab with User reviews.
+
+![Restaurant Details Page](wireframes/Restaurants2.png)
+
+## Restaurant Details Page Cont.
+
+The restaurants detail page has an additional tab that displays photos from the Google Reviews.
+
+![Restaurant Details Page Cont.](wireframes/Photos.png)
+
+## Restaurant Details Page Cont.
+
+Lastly, there is an About tab on the restaurants detail page that provides further information about the Restaurant such as operating hours and contact information.
+
+![Restaurant Details Page Cont.](wireframes/About.png)
