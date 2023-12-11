@@ -38,45 +38,45 @@ We are targeting Elite foodies who want to explore their next global culinary ad
 ## Testing
 
 - Trejon: Unit Tests for Photos
-- Erin:
-- Katrine:
-- Michael:
-- Yaosheng:
+- Erin: Unit Tests for Follow
+- Katrine: Unit Tests for Reviews
+- Michael: Unit Tests for Referrals
+- Yaosheng: Unit Tests for Accounts and Favorites
 
 # Getting the app running
 
-1. Git clone into your local repository: 
+1. Git clone into your local repository:
 ```sh
 git clone (repo)
 ```
-2. Change directory: 
+2. Change directory:
 ```sh
 cd prestigepalate
 ```
-3. Create volumes: 
+3. Create volumes:
 ```sh
 docker volume create pg-admin
 ```
 ```sh
 docker volume create postgres-data
 ```
-4. Build the image: 
+4. Build the image:
 ```sh
 docker compose build
 ```
-5. Run the containers: 
+5. Run the containers:
 ```sh
 docker compose up
 ```
-6. Change directory: 
+6. Change directory:
 ```sh
 cd ghi
 ```
 7. Run command:
-```sh 
+```sh
 npm install @aws-sdk/client-s3
 ```
-8. Run command: 
+8. Run command:
 ```sh
 npm install @react-google-maps/api --save
 ```
