@@ -24,6 +24,7 @@ import ContextProvider from "./ContextStore";
 import FAQPage from "./FAQ"
 import About from "./About"
 import { FollowProvider } from "./FollowContext";
+import Footer from "./Footer"; 
 
 const libraries = ['places'];
 
@@ -82,6 +83,7 @@ function App() {
                                 <Route path="/faq" element={<FAQPage />} />
                                 <Route path="/about" element={<About />} />
                             </Routes>
+                            <Footer />
                         </FollowProvider>
                     </ContextProvider>
                 </AuthProvider>
