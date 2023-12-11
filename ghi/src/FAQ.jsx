@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './FAQ.css';
 
 const FAQPage = () => {
+
+    useEffect(() => {
+        document.title = `FAQ  ·  Prestige Palate`;
+    }, []);
+
     return (
         <>
             <div style={{ marginTop: '25px' }}></div>

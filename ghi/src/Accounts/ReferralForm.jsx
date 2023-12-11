@@ -15,6 +15,10 @@ const ReferralForm = () => {
     const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 
     useEffect(() => {
+        document.title = `Refer a friend  ·  Prestige Palate`;
+    }, []);
+
+    useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
                 const accountUrl = `${tokenUrl}/token`;
