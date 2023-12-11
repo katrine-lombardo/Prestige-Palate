@@ -11,6 +11,7 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
     const isAlreadyFavorite = favorites.includes(restaurant.id);
     const [photoUrl, setPhotoUrl] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showHoverText, setShowHoverText] = useState(false);
     let city, state, country;
 
     if (restaurant.formattedAddress) {
@@ -71,20 +72,39 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
                                 {restaurant.displayName.text}
                             </Link>
                             {showFavorite && (
-                                <div className="form-check form-switch" style={{ fontSize: '1.2em' }}>
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        id={`favorite-toggle-${restaurant.id}`}
-                                        checked={isAlreadyFavorite}
-                                        onChange={handleFavoriteClick}
-                                        role="switch"
-                                        style={{ transform: 'scale(1)', transition: 'transform 0.3s ease' }}
-                                        onMouseOver={(e) => e.target.style.transform = 'scale(1.2)'}
-                                        onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
-                                    />
+                                <div
+                                    className="form-check form-switch"
+                                    style={{ fontSize: '1.2em', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
+                                    onMouseOver={() => setShowHoverText(true)}
+                                    onMouseOut={() => setShowHoverText(false)}
+                                >
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        {showHoverText && (
+                                            <span
+                                                style={{
+                                                    marginRight: '100px',
+                                                    fontSize: '1em',
+                                                    whiteSpace: 'nowrap',
+                                                    fontFamily: 'cursive',
+                                                    fontWeight: 'bold',
+                                                    color: 'blue'
+                                                }}>
+                                                {isAlreadyFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                                            </span>
+                                        )}
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id={`favorite-toggle-${restaurant.id}`}
+                                            checked={isAlreadyFavorite}
+                                            onChange={handleFavoriteClick}
+                                            role="switch"
+                                            style={{ transform: 'scale(1.5)', transition: 'transform 0.3s ease' }}
+                                        />
+                                    </div>
                                 </div>
                             )}
+
                         </h5>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <StarCard rating={restaurant.rating} />
