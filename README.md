@@ -30,16 +30,18 @@ We are targeting Elite foodies who want to explore their next global culinary ad
 
 - If a user is not logged in, they see a heatmap view of a map showing "trending" locations (ie cities where users have left a review).
 - The user sees a search field where they can make a city selection from the world, which pulls up the top 3 restaurants to visit from any searched area.
-- If the user is logged in, they will see an additional two options: 1) Leave a review for a restaurant, and 2) Save this restaurant.
-- The user's "saved" list contains the restaurants a user saves, grouped automatically by city.
-- A logged-in user can privately or publicly share a review of their foodie experiences, and publicly shared photos/reviews will be displayed on a restaurant’s detail page and their personal profile.
-- Privately posted reviews and photos are only visible in the user’s saved log, to reminisce on previous experiences.
+- If the user is logged in, they will see additional functionality: 1) Leave a review for a restaurant, 2) Save this restaurant, and 3) Follow other app users.
+- The user's "Favorites" list contains the restaurants a user saves, grouped automatically by city.
+- A logged-in user has access to My Reviews, where reviews and photos of their foodie experiences are displayed along with their following and followers list.
+- Reviews created by users are saved to their personal profile and that restaurant’s detail page.
+- A logged-in user can view a dashboard of reviews from users they follow to stay up-to-date on trends.
+
 
 ## Testing
 
 - Trejon: Unit Tests for Photos
 - Erin:
-- Katrine:
+- Katrine: Unit Tests for Reviews
 - Michael:
 - Yaosheng:
 
