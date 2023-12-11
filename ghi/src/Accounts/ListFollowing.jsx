@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from "../Loading";
-import FollowButton from './FollowButton';
+import FollowButton from "./FollowButton";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -12,7 +12,24 @@ if (!tokenUrl) {
 const ListFollowing = ({ username }) => {
     const [followers, setFollowers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [loggedInUsername, setLoggedInUsername] = useState("");
     const { token } = useAuthContext();
+
+    useEffect(() => {
+        const fetchLoggedInUsername = async () => {
+            const url = `${tokenUrl}/token`;
+            try {
+                const response = await fetch(url, {
+                    credentials: "include",
+                });
+                const data = await response.json();
+                setLoggedInUsername(data.account.username);
+            } catch (error) {
+                console.error("Error fetching logged in username:", error);
+            }
+        };
+        fetchLoggedInUsername();
+    }, [token]);
 
     useEffect(() => {
         const fetchFollowing = async () => {
@@ -84,11 +101,7 @@ const ListFollowing = ({ username }) => {
     const renderNullFollowers = () => (
         <div>
             <div className="container mt-3">
-                {isLoading ? (
-                    <Loading />
-                ) : (
-                    "Not following anyone. Yet..."
-                )}
+                {isLoading ? <Loading /> : "Not following anyone. Yet..."}
             </div>
         </div>
     );
@@ -158,7 +171,27 @@ const ListFollowing = ({ username }) => {
                                                     {follower.total_reviews}
                                                 </p>
                                                 <div>
-                                                    <FollowButton followingUsername={follower.follower} />
+                                                    {follower.follower ===
+                                                        loggedInUsername ? (
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-light"
+                                                            disabled
+                                                        >
+                                                            <small>
+                                                                My Palate
+                                                            </small>
+                                                        </button>
+                                                    ) : (
+                                                        <FollowButton
+                                                            followingUsername={
+                                                                follower.follower
+                                                            }
+                                                            isFollowing={
+                                                                follower.isFollowing
+                                                            }
+                                                        />
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
