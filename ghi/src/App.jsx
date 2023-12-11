@@ -44,6 +44,10 @@ function App() {
             setIsSidebarOpen(false);
         }
     };
+
+    const domain = /https?:\/\/[^/]+/;
+    const basename = import.meta.env.VITE_PUBLIC_URL.replace(domain, "");
+
     return (
         <LoadScript
             googleMapsApiKey={googleApiKey}
