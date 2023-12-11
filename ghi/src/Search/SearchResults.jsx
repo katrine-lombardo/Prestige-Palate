@@ -28,6 +28,12 @@ function SearchResults() {
     }
 
     useEffect(() => {
+        if (locationData) {
+            document.title = `Search results for ${locationData.location} · Prestige Palate`;
+        }
+    }, [locationData]);
+
+    useEffect(() => {
         setResults(location.state?.results || []);
     }, [location.state]);
 

@@ -17,6 +17,10 @@ const EditProfile = () => {
     const [selectedIcon, setSelectedIcon] = useState({ id: "", icon_url: "" });
 
     useEffect(() => {
+        document.title = `Edit Profile  ·  Prestige Palate`;
+    }, []);
+
+    useEffect(() => {
         const handleFetchWithAPI = async () => {
             const url = `${tokenUrl}/token`;
             fetch(url, {

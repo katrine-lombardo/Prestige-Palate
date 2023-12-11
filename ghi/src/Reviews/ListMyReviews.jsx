@@ -25,8 +25,10 @@ const ListMyReviews = () => {
     const { favorites, setFavorites } = useStore();
 
     useEffect(() => {
-        document.title = `My Prestige Palate  ·  Prestige Palate`;
-    }, []);
+        if (username) {
+            document.title = `${username}'s Prestige Palate  ·  Prestige Palate`;
+        }
+    }, [username]);
 
     useEffect(() => {
         const handleFetchWithAPI = async () => {

@@ -14,6 +14,10 @@ const DeleteProfile = () => {
     const { token, setToken } = useAuthContext();
 
     useEffect(() => {
+        document.title = `Delete Profile  ·  Prestige Palate`;
+    }, []);
+
+    useEffect(() => {
         const handleFetchWithAPI = async () => {
             const url = `${tokenUrl}/token`;
             fetch(url, {
@@ -69,7 +73,7 @@ const DeleteProfile = () => {
                             {!deleteSuccess ? (
                                 <>
                                     <div>
-                                        Are you sure you want to delete your account? 
+                                        Are you sure you want to delete your account?
                                     </div>
                                     <p>This action is permanent and irreversible.
                                     </p>

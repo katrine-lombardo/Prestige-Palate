@@ -32,6 +32,10 @@ const LoginForm = () => {
     const { token, setToken, baseUrl } = useAuthContext();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        document.title = `Login  ·  Prestige Palate`;
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
