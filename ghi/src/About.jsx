@@ -4,6 +4,7 @@ import erin from "./imgs/erin.jpg";
 import trejon from "./imgs/trejon.jpg";
 import michael from "./imgs/michael.jpg";
 import katrine from "./imgs/katrine.jpeg";
+import yaosheng from "./imgs/yaosheng.jpg";
 
 const About = () => {
     useEffect(() => {
