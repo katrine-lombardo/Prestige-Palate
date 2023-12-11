@@ -1,13 +1,26 @@
+#### Fri, Dec 8
+
+Features/issues that you worked on and who you worked with:
+* Today we spent time prioritising our "must-haves" and "nice-to-haves", and it was overall a great day which felt collaborative and productive. Trey and Michael were so helpful in that when I asked for assistance in my code, both of them lept to my aid. As a team we walked through our app and checked under all the floorboards for console logs, errors, and funny business, and compiled our priority list for the day and the weekend. I focused in on MyReviews while the others took ownership of DetailRestaurant, create reaview, and ListAppReviews.
+
+A reflection on any design conversations that you had
+* Due to some micommunication and misunderstanding, unfortunately my code from yesterday was overwritten by someone else's code, which did not feel great. It's tough to see hours of work be wasted, especially given the the number of other items on my to-do list that I could have been working on instead. Unfortunately it is what it is, and it's more important to keep moving and learn from the incident -- Lesson here being to be overly communicative about what we're working on, and being extra vigilent about team updates in slack.
+ 
+At least one ah-ha! moment:
+* It wasn't until finishing our code walk-through that I fully appreciated how much work has been done and what's left to do. It was incredible experiencing code that my teammates built, and I feel so lucky to be part of this team. I am grateful to be teamed up with such talented individuals.
+
+---
+
 #### Thurs, Dec 7
 
 Features/issues that you worked on and who you worked with:
-* 
+* Today I learned more about bootstrap utilities and updated our DetailRestaurant page. I implemented a carousel but had trouble enabling the ability to display only a particular height of card, truncated with the ability to expand. 
 
 A reflection on any design conversations that you had
-* 
+* I took over the follower/following frontend which was very interesting, but I found myself frequently confused by the terminology of "following_username" and "follower_username". In the next iteration of this project, I foresee myself making some updates on the backend for better human readability.
  
 At least one ah-ha! moment:
-* 
+* I learned how to capture a user's average rating using math, which is not my strong suit.
 
 ---
 
