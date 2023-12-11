@@ -50,5 +50,6 @@ services:
             - "5173:5173"
         environment:
             VITE_APP_API_HOST: ${VITE_APP_API_HOST}
+            VITE_PUBLIC_URL: http://localhost:5173/
             HOST: 0.0.0.0
             NODE_ENV: development

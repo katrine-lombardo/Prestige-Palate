@@ -36,6 +36,8 @@ if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
 
+console.log(import.meta.env)
+
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -45,37 +47,41 @@ function App() {
         }
     };
 
+    const domain = /https?:\/\/[^/]+/;
+    const basename = import.meta.env.VITE_PUBLIC_URL.replace(domain, "");
+
+
     return (
         <LoadScript
             googleMapsApiKey={googleApiKey}
             libraries={libraries}
         >
-            <BrowserRouter>
+            <BrowserRouter basename={basename}>
                 <AuthProvider baseUrl={tokenUrl}>
                     <ContextProvider>
                         <Nav toggleSidebar={toggleSidebar} />
                         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-                            <Routes>
-                                <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
-                                <Route path="/signup" element={<SignupForm />} />
-                                <Route path="/login" element={<LoginForm />} />
-                                <Route path="/logout" element={<LogoutButton />} />
-                                <Route path="/sidebar" element={<Sidebar />} />
-                                <Route path="/referral" element={<ReferralForm />} />
-                                <Route path="/editprofile" element={<EditProfile />} />
-                                <Route path="/deleteprofile" element={<DeleteProfile />} />
-                                <Route path="/updatepassword" element={<UpdatePassword />} />
-                                <Route path="/dashboard" element={<Dashboard />} />
-                                <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
-                                <Route path="/myreviews" element={<ListMyReviews />} />
-                                <Route path="/favorites/" element={<FavoriteRestaurants />} />
-                                <Route path="/create-review/:place_id" element={<CreateReview />} />
-                                <Route path="/search-results" element={<SearchResults />} />
-                                <Route path="/update-review/:review_id" element={<UpdateReview />} />
-                                <Route path="/accounts/:username" element={<ListUserReviews />} />
-                                <Route path="/faq" element={<FAQPage />} />
-                                <Route path="/about" element={<About />} />
-                            </Routes>
+                        <Routes>
+                            <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
+                            <Route path="/signup" element={<SignupForm />} />
+                            <Route path="/login" element={<LoginForm />} />
+                            <Route path="/logout" element={<LogoutButton />} />
+                            <Route path="/sidebar" element={<Sidebar />} />
+                            <Route path="/referral" element={<ReferralForm />} />
+                            <Route path="/editprofile" element={<EditProfile />} />
+                            <Route path="/deleteprofile" element={<DeleteProfile />} />
+                            <Route path="/updatepassword" element={<UpdatePassword />} />
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/restaurants/:place_id" element={<DetailRestaurant />} />
+                            <Route path="/myreviews" element={<ListMyReviews />} />
+                            <Route path="/favorites/" element={<FavoriteRestaurants />} />
+                            <Route path="/create-review/:place_id" element={<CreateReview />} />
+                            <Route path="/search-results" element={<SearchResults />} />
+                            <Route path="/update-review/:review_id" element={<UpdateReview />} />
+                            <Route path="/accounts/:username" element={<ListUserReviews />} />
+                            <Route path="/faq" element={<FAQPage />} />
+                            <Route path="/about" element={<About />} />
+                        </Routes>
                     </ContextProvider>
                 </AuthProvider>
             </BrowserRouter>
