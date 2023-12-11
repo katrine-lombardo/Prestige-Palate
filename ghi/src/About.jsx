@@ -255,7 +255,7 @@ const About = () => {
                                 <div className="row no-gutters card-shadow">
                                     <div className="col-md-5">
                                         <img
-                                            src="CHANGETHIS"
+                                            src={yaosheng}
                                             alt="Team Member"
                                             className="pro-pic"
                                             style={{
@@ -281,7 +281,18 @@ const About = () => {
                                                 YAOSHENG YIN
                                             </h6>
                                             <p style={{ fontSize: "11px" }}>
-                                                EDIT YOUR DESCRIPTION
+                                                Experienced Software Development Engineer 
+                                                with expertise in fullstack feature design 
+                                                and implementation for complex systems. 
+                                                Demonstrated excellence in performance optimization 
+                                                and disaster recovery at Amazon, enhancing system 
+                                                efficiency and reliability. Proficient in managing 
+                                                high-traffic scenarios using agile methodologies. 
+                                                Led significant projects focused on internal systems, 
+                                                showcasing strong skills in data processing, 
+                                                API development, and web design. 
+                                                Versatile in various programming languages and tools, 
+                                                adept at delivering robust solutions in dynamic environments.
                                             </p>
                                         </div>
                                     </div>
