@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from "../Loading";
 import FollowButton from "./FollowButton";
+import { useFollow } from "../FollowContext";
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -14,6 +15,7 @@ const ListFollowers = ({ username }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loggedInUsername, setLoggedInUsername] = useState("");
     const { token } = useAuthContext();
+    const { isFollowing } = useFollow();
 
     useEffect(() => {
         const fetchLoggedInUsername = async () => {
@@ -181,14 +183,8 @@ const ListFollowers = ({ username }) => {
                                                             </small>
                                                         </button>
                                                     ) : (
-                                                        <FollowButton
-                                                            followingUsername={
-                                                                follower.follower
-                                                            }
-                                                            isFollowing={
-                                                                follower.isFollowing
-                                                            }
-                                                        />
+                                                        <FollowButton followingUsername={follower.follower} isFollowing={isFollowing(follower.follower)} />
+
                                                     )}
                                                 </div>
                                             </div>
