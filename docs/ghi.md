@@ -47,3 +47,15 @@ The restaurants detail page has an additional tab that displays photos from the 
 Lastly, there is an About tab on the restaurants detail page that provides further information about the Restaurant such as operating hours and contact information.
 
 ![Restaurant Details Page Cont.](wireframes/About.png)
+
+## Review Page
+
+When a user clicks the add a review button on the restaurant detail page, they will be directed to this review form.
+
+![Review Page](wireframes/Reviews.png)
+
+## User Review Page
+
+This is the user review page. This page has a reviews tab with a list of all of the user reviews.
+
+![Review Page](wireframes/UserReviews.png)
