@@ -82,7 +82,10 @@ const FavoriteRestaurants = () => {
     useEffect(() => {
         const fetchFavoriteDetails = async () => {
             setIsLoading(true);
-            if (!favorites.length) return;
+            if (favorites.length === 0) {
+                setIsLoading(false);
+                return;
+            }
 
             try {
                 const details = await Promise.all(
