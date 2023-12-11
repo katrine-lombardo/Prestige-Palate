@@ -243,7 +243,7 @@ input:checked + .slider:before {
 
 .photo-grid {
     display: grid;
-    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted to use grid-template-rows */
+    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
 }
 
@@ -253,19 +253,19 @@ input:checked + .slider:before {
 
 .photo-card {
     display: flex;
-    flex-direction: row; /* Adjusted to display photos in a row */
+    flex-direction: row;
     align-items: center;
     gap: 16px;
 }
 
 .photo-card img {
-    max-width: 100%; /* Ensures the image scales within the container */
-    height: auto; /* Maintains the aspect ratio of the image */
+    max-width: 100%;
+    height: auto;
     margin-bottom: 8px;
 }
 
 .photo-card h4 {
-    margin: 0; /* Remove margin to prevent extra space */
+    margin: 0;
 }
 
 .review-photos {
@@ -275,7 +275,7 @@ input:checked + .slider:before {
 }
 
 .review-photos img {
-    max-width: 300px; /* Adjust the max-width based on your preference */
+    max-width: 300px;
     height: auto;
     margin-right: 8px;
     margin-bottom: 8px;
