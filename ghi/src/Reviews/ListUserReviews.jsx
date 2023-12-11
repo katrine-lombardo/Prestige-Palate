@@ -67,12 +67,15 @@ const ListUserReviews = () => {
                             })
                         );
                         setReviews(reviewsWithRestaurantNames);
+                        setIsLoading(false)
                     })
-                    .catch((error) => console.error(error));
+                    .catch((error) => {
+                        console.error(error);
+                        setIsLoading(false)
+                    });
             };
             fetchUserReviews();
         }
-        setIsLoading(false)
     }, [username, usernameExists]);
 
     const toggleFavorite = async (place_id) => {
@@ -108,7 +111,7 @@ const ListUserReviews = () => {
 
     const renderNullPhotos = () => {
         if (isLoading) {
-            < Loading />
+            return <Loading />;
         } else {
             return (
                 <NullContent
@@ -122,7 +125,7 @@ const ListUserReviews = () => {
 
     const renderNullReviews = () => {
         if (isLoading) {
-            < Loading />
+            return < Loading />
         } else {
             return (
                 <NullContent
@@ -139,11 +142,15 @@ const ListUserReviews = () => {
     }
 
     if (!usernameExists) {
-        return (
-            <div className="container mt-5">
-                <p>{username} is not a member of Prestige Palate.</p>
-            </div>
-        );
+        if (isLoading) {
+            return <Loading />
+        } else {
+            return (
+                <div className="container mt-5">
+                    <p>{username} is not a member of Prestige Palate.</p>
+                </div>
+            );
+        }
     }
 
     return (
