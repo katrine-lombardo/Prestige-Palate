@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from "../Loading";
+import FollowButton from './FollowButton';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -11,7 +12,6 @@ if (!tokenUrl) {
 const ListFollowing = ({ username }) => {
     const [followers, setFollowers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isFollowing, setIsFollowing] = useState(false);
     const { token } = useAuthContext();
 
     useEffect(() => {
@@ -80,55 +80,6 @@ const ListFollowing = ({ username }) => {
     if (isLoading) {
         return <Loading />;
     }
-
-    const handleFollow = async (followingUsername) => {
-        try {
-            const followUrl = `${tokenUrl}/api/accounts/follow/`;
-            const response = await fetch(followUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    following_username: followingUsername,
-                }),
-            });
-
-            if (response.ok) {
-                console.log(`You are now following ${followingUsername}`);
-            } else {
-                console.error(`Failed to follow ${followingUsername}`);
-            }
-        } catch (error) {
-            console.error("Error following:", error);
-        }
-    };
-
-    const handleUnfollow = async (followingUsername) => {
-        try {
-            const unfollowUrl = `${tokenUrl}/api/accounts/unfollow/`;
-            const response = await fetch(unfollowUrl, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    following_username: followingUsername,
-                }),
-            });
-
-            if (response.ok) {
-                console.log(`You are no longer following ${followingUsername}`);
-                setIsFollowing(false);
-            } else {
-                console.error(`Failed to unfollow ${followingUsername}`);
-            }
-        } catch (error) {
-            console.error("Error unfollowing:", error);
-        }
-    };
 
     const renderNullFollowers = () => (
         <div>
@@ -206,15 +157,9 @@ const ListFollowing = ({ username }) => {
                                                     Total Reviews:{" "}
                                                     {follower.total_reviews}
                                                 </p>
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-light"
-                                                    onClick={isFollowing ? handleUnfollow : handleFollow}
-                                                >
-                                                    <small>
-                                                        {isFollowing ? "- Unfollow" : "+ Follow"}
-                                                    </small>
-                                                </button>
+                                                <div>
+                                                    <FollowButton followingUsername={follower.follower} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

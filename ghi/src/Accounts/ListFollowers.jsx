@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from "../Loading";
+import FollowButton from './FollowButton';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -11,7 +12,6 @@ if (!tokenUrl) {
 const ListFollowers = ({ username }) => {
     const [followers, setFollowers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { token } = useAuthContext();
 
     useEffect(() => {
@@ -78,30 +78,6 @@ const ListFollowers = ({ username }) => {
     if (isLoading) {
         return <Loading />;
     }
-
-    const handleFollow = async (followerUsername) => {
-        try {
-            const followUrl = `${tokenUrl}/api/accounts/follow/`;
-            const response = await fetch(followUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    following_username: followerUsername,
-                }),
-            });
-
-            if (response.ok) {
-                console.log(`You are now following ${followerUsername}`);
-            } else {
-                console.error(`Failed to follow ${followerUsername}`);
-            }
-        } catch (error) {
-            console.error("Error following:", error);
-        }
-    };
 
     const renderNullFollowers = () => (
         <div>
@@ -177,20 +153,9 @@ const ListFollowers = ({ username }) => {
                                                     Total Reviews:{" "}
                                                     {follower.total_reviews}
                                                 </p>
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-light"
-                                                    onClick={() =>
-                                                        handleFollow(
-                                                            follower.follower
-                                                        )
-                                                    }
-                                                >
-                                                    <small>
-                                                        + Follow{" "}
-                                                        {follower.follower}
-                                                    </small>
-                                                </button>
+                                                <div>
+                                                    <FollowButton followingUsername={follower.follower} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
