@@ -80,7 +80,7 @@ function App() {
                                 <Route path="/update-review/:review_id" element={<UpdateReview />} />
                                 <Route path="/accounts/:username" element={<ListUserReviews />} />
                                 <Route path="/faq" element={<FAQPage />} />
-                                <Route exact path="/about" element={<About />} />
+                                <Route path="/about" element={<About />} />
                             </Routes>
                         </FollowProvider>
                     </ContextProvider>
