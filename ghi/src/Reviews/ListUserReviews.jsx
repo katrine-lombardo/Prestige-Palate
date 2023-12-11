@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import { useStore } from "../ContextStore";
 import ListFollowers from "../Accounts/ListFollowers";
@@ -18,10 +18,35 @@ if (!tokenUrl) {
 const ListUserReviews = () => {
     const { username } = useParams();
     const [usernameExists, setUsernameExists] = useState(false);
+    const [loggedInUsername, setLoggedInUsername] = useState("");
     const [reviews, setReviews] = useState([]);
     const { token } = useAuthContext();
     const { favorites, setFavorites } = useStore();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (username === loggedInUsername) {
+            navigate("/myreviews");
+        }
+    }, [username, loggedInUsername, navigate]);
+
+    useEffect(() => {
+        setIsLoading(true);
+        const fetchLoggedInUsername = async () => {
+            const url = `${tokenUrl}/token`;
+            try {
+                const response = await fetch(url, {
+                    credentials: "include",
+                });
+                const data = await response.json();
+                setLoggedInUsername(data.account.username);
+            } catch (error) {
+                console.error("Error fetching logged in username:", error);
+            }
+        };
+        fetchLoggedInUsername();
+    }, [token]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -183,7 +208,26 @@ const ListUserReviews = () => {
                         <div className="col-7">
                             <h3>{username}'s Prestigious Palate</h3>
                             <div>
-                                <FollowButton followingUsername={username} />
+                                <div>
+                                    {username ===
+                                        loggedInUsername ? (
+                                        <button
+                                            type="button"
+                                            className="btn btn-light"
+                                            disabled
+                                        >
+                                            <small>
+                                                My Palate
+                                            </small>
+                                        </button>
+                                    ) : (
+                                        <FollowButton
+                                            followingUsername={
+                                                username
+                                            }
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
