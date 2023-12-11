@@ -161,6 +161,11 @@ button:focus-visible {
     border-radius: 8px;
 }
 
+.restaurant-name-link:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
 .restaurant-detail-container {
     display: flex;
     flex-direction: column;

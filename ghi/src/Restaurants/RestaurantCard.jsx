@@ -51,7 +51,7 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
     }, [restaurant.id, token]);
 
     return (
-        <div className="card mb-3">
+        <div className="card mb-3 shadow-lg" style={{ border: '2px solid #ddd' }}>
             <div className="row g-0">
                 <div className="col-md-4" style={{ position: 'relative', height: '200px' }}>
                     {isLoading ? (
@@ -67,11 +67,11 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
                 <div className="col-md-8">
                     <div className="card-body">
                         <h5 className="card-title d-flex justify-content-between align-items-center">
-                            <Link to={`/restaurants/${restaurant.id}`}>
+                            <Link to={`/restaurants/${restaurant.id}`} className="restaurant-name-link">
                                 {restaurant.displayName.text}
                             </Link>
                             {showFavorite && (
-                                <div className="form-check form-switch">
+                                <div className="form-check form-switch" style={{ fontSize: '1.2em' }}>
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
@@ -79,6 +79,9 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
                                         checked={isAlreadyFavorite}
                                         onChange={handleFavoriteClick}
                                         role="switch"
+                                        style={{ transform: 'scale(1)', transition: 'transform 0.3s ease' }}
+                                        onMouseOver={(e) => e.target.style.transform = 'scale(1.2)'}
+                                        onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
                                     />
                                 </div>
                             )}
@@ -89,6 +92,7 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
                                 Rating {restaurant.rating} ({restaurant.userRatingCount})
                             </p>
                         </div>
+
                         <p className="card-text">{`${city}, ${state}, ${country}`}</p>
                         <p>{restaurant.formattedAddress}</p>
                     </div>
