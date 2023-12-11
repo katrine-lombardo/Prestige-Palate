@@ -83,8 +83,12 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
                                 </div>
                             )}
                         </h5>
-                        <StarCard rating={restaurant.rating} />
-                        <p>Rating {restaurant.rating}({restaurant.userRatingCount})</p>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <StarCard rating={restaurant.rating} />
+                            <p style={{ marginLeft: '20px', marginBottom: '0', display: 'flex', alignItems: 'center' }}>
+                                Rating {restaurant.rating} ({restaurant.userRatingCount})
+                            </p>
+                        </div>
                         <p className="card-text">{`${city}, ${state}, ${country}`}</p>
                         <p>{restaurant.formattedAddress}</p>
                     </div>
