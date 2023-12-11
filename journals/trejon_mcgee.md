@@ -1,12 +1,22 @@
-## Friday, Dec 7
+## Monday, Dec 11
 Features/issues that you worked on and who you worked with:
-- Created unit test for photos routers
+- Updated my section for the About Us page. Working on CSS for the photo grid tab in My Reviews. Checked code for any commented out code or console logs.
 
 A reflection on any design conversations that you had:
-- 
+- As a group we went over any last changes to the overall design before initial deployment.
 
 At least one ah-ha! moment:
-- 
+- I was able to upload a photo from my local drive to the imgs folder and import it to the About Us section successfully.
+
+## Friday, Dec 8
+Features/issues that you worked on and who you worked with:
+- Created unit test for photos routers. Worked on ListAppReviews to fix the add a review link because it was broken and not navigating to the proper create review page.
+
+A reflection on any design conversations that you had:
+- Continued conversations on the layout of the Photo grid in ListMyReviews.
+
+At least one ah-ha! moment:
+- I was able to get hands on experience developing unit tests and further understand their importance in the development process.
 
 ## Thursday, Dec 7
 Features/issues that you worked on and who you worked with:
@@ -21,12 +31,12 @@ At least one ah-ha! moment:
 ## Wednesday, Dec 6
 Features/issues that you worked on and who you worked with:
 - I added functionality in Create Review to upload multiple photos. I updated the photos routers/queries to photo_urls to account for the change.
- Initially get_photos_by_username query was not functioning as expected. When you create two reviews with two different photo_urls, the response returned had two lists with username listed twice. I updated the query so the response is as expected with each photo_urls field containing a list of strings instead of a comma-separated string. It looked like this before
+ Initially get_photos_by_username query was not functioning as expected. When you create two reviews with two different photo_urls, the response returned had two lists with username listed twice. I updated the query so the response is as expected with each photo_urls field containing a list of strings instead of a comma-separated string. It looked like this before the change:
  [
   {
     "username": "test",
     "photo_urls": [
-      "https://prestigepalate.s3.us-east-2.amazonaws.com/EditProfile.png",
+      "https://*****/EditProfile.png",
     ]
   }
 ]
@@ -34,7 +44,7 @@ Features/issues that you worked on and who you worked with:
   {
     "username": "test",
     "photo_urls": [
-      "https://prestigepalate.s3.us-east-2.amazonaws.com/UserPhotos.png"
+      "https://*****/UserPhotos.png"
     ]
   }
 ]
@@ -42,10 +52,11 @@ Features/issues that you worked on and who you worked with:
 Added an endpoint to check if a review has already been created. We are only allowing users to submit one review per restaurant so there is an error message that appears if a user tries to create an additional review.
 
 A reflection on any design conversations that you had:
-- Describe the endpoint update I made
+- I discussed with the group the update I made to the API endpoint for the photo_urls.
 
 At least one ah-ha! moment:
 - Nothing specific, but being able to update the review to upload multiple photos successfully was a big accomplishment.
+
 
 ## Tuesday, Dec 5
 Features/issues that you worked on and who you worked with:
