@@ -29,7 +29,7 @@ const About = () => {
                                     <div className="col-md-7 bg-white">
                                         <div className="p-4">
                                             <h6 className="mb-3 font-weight-medium">Erin Ahn</h6>
-                                            <p>EDIT YOUR DERSCRIPTION HERE</p>
+                                            <p>EDIT YOUR DERSCRIPTION HERE.</p>
                                         </div>
                                     </div>
                                 </div>
