@@ -55,6 +55,10 @@ build-front-end-job:
     VITE_PUBLIC_URL: https://mambo-number-5.gitlab.io/prestige-palate/
     VITE_APP_API_HOST: https://aug-2023-5-pt-api.mod3projects.com/
     VITE_GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    VITE_S3_ACCESS_KEY_ID: ${VITE_S3_ACCESS_KEY_ID}
+    VITE_S3_SECRET_ACCESS_KEY: ${VITE_S3_SECRET_ACCESS_KEY}
+    VITE_AWS_BUCKET_NAME: ${VITE_AWS_BUCKET_NAME}
+    VITE_AWS_BUCKET_REGION: ${VITE_AWS_BUCKET_REGION}
   script:
     - cd ghi
     - npm install
