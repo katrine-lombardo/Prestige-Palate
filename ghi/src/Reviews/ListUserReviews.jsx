@@ -22,7 +22,7 @@ const ListUserReviews = () => {
     const { token } = useAuthContext();
     const { favorites, setFavorites } = useStore();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         document.title = `${username}'s Prestige Palate  ·  Prestige Palate`;
@@ -47,6 +47,7 @@ const ListUserReviews = () => {
             } catch (error) {
                 console.error("Error fetching logged in username:", error);
             }
+            setIsLoading(false);
         };
         fetchLoggedInUsername();
     }, [token]);
@@ -58,13 +59,17 @@ const ListUserReviews = () => {
                 const url = `${tokenUrl}/api/accounts/`;
                 const response = await fetch(url);
                 if (!response.ok) {
-                    throw new Error(`HTTP error: The status is ${response.status}`);
+                    throw new Error(
+                        `HTTP error: The status is ${response.status}`
+                    );
                 }
                 const accounts = await response.json();
-                const userExists = accounts.some(account => account.username === username);
+                const userExists = accounts.some(
+                    (account) => account.username === username
+                );
                 setUsernameExists(userExists);
             } catch (error) {
-                console.error('Error checking username:', error);
+                console.error("Error checking username:", error);
             }
         };
         checkUsernameExists();
@@ -90,16 +95,18 @@ const ListUserReviews = () => {
                                     await restaurantResponse.json();
                                 return {
                                     ...review,
-                                    restaurantName: restaurantData.displayName.text,
+                                    restaurantName:
+                                        restaurantData.displayName.text,
                                 };
                             })
                         );
                         setReviews(reviewsWithRestaurantNames);
-                        setIsLoading(false)
                     })
                     .catch((error) => {
                         console.error(error);
-                        setIsLoading(false)
+                    })
+                    .finally(() => {
+                        setIsLoading(false);
                     });
             };
             fetchUserReviews();
@@ -147,13 +154,13 @@ const ListUserReviews = () => {
                     isLoading={isLoading}
                     showButton={false}
                 />
-            )
+            );
         }
     };
 
     const renderNullReviews = () => {
         if (isLoading) {
-            return < Loading />
+            return <Loading />;
         } else {
             return (
                 <NullContent
@@ -161,7 +168,7 @@ const ListUserReviews = () => {
                     isLoading={isLoading}
                     showButton={false}
                 />
-            )
+            );
         }
     };
 
@@ -169,21 +176,17 @@ const ListUserReviews = () => {
         return <Loading />;
     }
 
-    if (!usernameExists) {
-        if (isLoading) {
-            return <Loading />
-        } else {
-            return (
-                <div className="container mt-5">
-                    <p>{username} is not a member of Prestige Palate.</p>
-                </div>
-            );
-        }
+    if (!isLoading && !usernameExists) {
+        return (
+            <div className="container mt-5">
+                <p>{username} is not a member of Prestige Palate.</p>
+            </div>
+        );
     }
 
     return (
         <>
-            <div style={{ marginTop: '25px' }}></div>
+            <div style={{ marginTop: "25px" }}></div>
             <div>
                 <div className="container mb-4">
                     <div className="row">
@@ -192,7 +195,7 @@ const ListUserReviews = () => {
                                 src={
                                     reviews.length > 0
                                         ? reviews[0].profile_icon_url
-                                        : "default-profile-icon-url"
+                                        : "https://cdn-icons-png.flaticon.com/512/9131/9131529.png"
                                 }
                                 alt="User"
                                 className="user-icon"
@@ -212,22 +215,17 @@ const ListUserReviews = () => {
                             <h3>{username}'s Prestigious Palate</h3>
                             <div>
                                 <div>
-                                    {username ===
-                                        loggedInUsername ? (
+                                    {username === loggedInUsername ? (
                                         <button
                                             type="button"
                                             className="btn btn-light"
                                             disabled
                                         >
-                                            <small>
-                                                My Palate
-                                            </small>
+                                            <small>My Palate</small>
                                         </button>
                                     ) : (
                                         <FollowButton
-                                            followingUsername={
-                                                username
-                                            }
+                                            followingUsername={username}
                                         />
                                     )}
                                 </div>
@@ -301,7 +299,10 @@ const ListUserReviews = () => {
                             ) : (
                                 <div className="container mt-3">
                                     {reviews.map((review, index) => (
-                                        <div key={index} className="card border-0">
+                                        <div
+                                            key={index}
+                                            className="card border-0"
+                                        >
                                             <div className="card-body">
                                                 <div className="card-title">
                                                     <div className="d-flex justify-content-between">
@@ -317,7 +318,8 @@ const ListUserReviews = () => {
                                                         <div
                                                             className="switch"
                                                             style={{
-                                                                alignSelf: "center",
+                                                                alignSelf:
+                                                                    "center",
                                                             }}
                                                         >
                                                             <input
@@ -342,22 +344,22 @@ const ListUserReviews = () => {
                                                     <div className="d-flex justify-content-between">
                                                         <h5>{review.title}</h5>
                                                         <div>
-                                                            {[1, 2, 3, 4, 5].map(
-                                                                (star) => (
-                                                                    <span
-                                                                        key={star}
-                                                                        style={{
-                                                                            color:
-                                                                                star <=
-                                                                                    review.rating
-                                                                                    ? "gold"
-                                                                                    : "gray",
-                                                                        }}
-                                                                    >
-                                                                        ★
-                                                                    </span>
-                                                                )
-                                                            )}
+                                                            {[
+                                                                1, 2, 3, 4, 5,
+                                                            ].map((star) => (
+                                                                <span
+                                                                    key={star}
+                                                                    style={{
+                                                                        color:
+                                                                            star <=
+                                                                                review.rating
+                                                                                ? "gold"
+                                                                                : "gray",
+                                                                    }}
+                                                                >
+                                                                    ★
+                                                                </span>
+                                                            ))}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -368,8 +370,8 @@ const ListUserReviews = () => {
                                                         {Array.isArray(
                                                             review.photo_urls
                                                         ) &&
-                                                            review.photo_urls.length >
-                                                            0 ? (
+                                                            review.photo_urls
+                                                                .length > 0 ? (
                                                             review.photo_urls.map(
                                                                 (
                                                                     url,
@@ -379,7 +381,9 @@ const ListUserReviews = () => {
                                                                         key={
                                                                             photoIndex
                                                                         }
-                                                                        src={url}
+                                                                        src={
+                                                                            url
+                                                                        }
                                                                         alt={`Photo by ${username}`}
                                                                     />
                                                                 )
@@ -388,9 +392,11 @@ const ListUserReviews = () => {
                                                             <p>
                                                                 <small>
                                                                     <em>
-                                                                        No photos
-                                                                        attached to
-                                                                        this review
+                                                                        No
+                                                                        photos
+                                                                        attached
+                                                                        to this
+                                                                        review
                                                                     </em>
                                                                 </small>
                                                             </p>
@@ -437,39 +443,57 @@ const ListUserReviews = () => {
                                         <div className="container">
                                             <div className="photo-grid">
                                                 {reviews.length > 0
-                                                    ? reviews.map((review, index) => (
-                                                        <div key={index} className="photo-item">
-                                                            {Array.isArray(review.photo_urls) &&
-                                                                review.photo_urls.length > 0 ? (
-                                                                <div className="photo-card">
-                                                                    {review.photo_urls.map(
-                                                                        (url, photoIndex) => (
-                                                                            <div key={photoIndex}>
-                                                                                <img
-                                                                                    src={url}
-                                                                                    alt={`Photo by ${username}`}
-                                                                                />
-                                                                                <Link
-                                                                                    to={`/restaurants/${review.place_id}`}
+                                                    ? reviews.map(
+                                                        (review, index) => (
+                                                            <div
+                                                                key={index}
+                                                                className="photo-item"
+                                                            >
+                                                                {Array.isArray(
+                                                                    review.photo_urls
+                                                                ) &&
+                                                                    review
+                                                                        .photo_urls
+                                                                        .length >
+                                                                    0 ? (
+                                                                    <div className="photo-card">
+                                                                        {review.photo_urls.map(
+                                                                            (
+                                                                                url,
+                                                                                photoIndex
+                                                                            ) => (
+                                                                                <div
+                                                                                    key={
+                                                                                        photoIndex
+                                                                                    }
                                                                                 >
-                                                                                    <h4>
-                                                                                        {
-                                                                                            review.restaurantName
+                                                                                    <img
+                                                                                        src={
+                                                                                            url
                                                                                         }
-                                                                                    </h4>
-                                                                                </Link>
-                                                                            </div>
-                                                                        )
-                                                                    )}
-                                                                </div>
-                                                            ) : (
-                                                                renderNullPhotos()
-                                                            )}
-                                                        </div>
-                                                    ))
+                                                                                        alt={`Photo by ${username}`}
+                                                                                    />
+                                                                                    <Link
+                                                                                        to={`/restaurants/${review.place_id}`}
+                                                                                    >
+                                                                                        <h4>
+                                                                                            {
+                                                                                                review.restaurantName
+                                                                                            }
+                                                                                        </h4>
+                                                                                    </Link>
+                                                                                </div>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                ) : (
+                                                                    renderNullPhotos()
+                                                                )}
+                                                            </div>
+                                                        )
+                                                    )
                                                     : renderNullPhotos()}
                                             </div>
-
                                         </div>
                                     )}
                                 </div>
