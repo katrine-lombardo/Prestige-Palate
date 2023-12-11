@@ -36,8 +36,6 @@ if (!tokenUrl) {
     throw error("VITE_APP_API_HOST was undefined.")
 }
 
-console.log(import.meta.env)
-
 function App() {
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
