@@ -1,10 +1,10 @@
 ## Prestige Palate
 Team:
-- Trejon
-- Erin
-- Katrine
-- Michael
-- Yaosheng
+- Trejon McGee
+- Erin Ahn
+- Katrine Lombardo
+- Michael Boateng
+- Yaosheng Yin
 
 # Technologies Used
 
