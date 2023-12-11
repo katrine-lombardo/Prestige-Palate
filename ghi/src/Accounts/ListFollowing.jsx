@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import Loading from "../Loading";
+import FollowButton from './FollowButton';
 
 const tokenUrl = import.meta.env.VITE_APP_API_HOST;
 if (!tokenUrl) {
@@ -14,7 +15,7 @@ const ListFollowing = ({ username }) => {
     const { token } = useAuthContext();
 
     useEffect(() => {
-        const fetchFollowers = async () => {
+        const fetchFollowing = async () => {
             if (username) {
                 try {
                     const url = `${tokenUrl}/api/accounts/following/${username}`;
@@ -39,7 +40,9 @@ const ListFollowing = ({ username }) => {
                                             0
                                         ) / totalReviews
                                         : 0;
-
+                                if (follower_username === username) {
+                                    setIsFollowing(true);
+                                }
                                 return {
                                     follower: follower_username,
                                     profile_icon_url:
@@ -71,36 +74,12 @@ const ListFollowing = ({ username }) => {
                 }
             }
         };
-        fetchFollowers();
+        fetchFollowing();
     }, [token, username]);
 
     if (isLoading) {
         return <Loading />;
     }
-
-    const handleFollow = async (followingUsername) => {
-        try {
-            const followUrl = `${tokenUrl}/api/accounts/follow/`;
-            const response = await fetch(followUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    following_username: followingUsername,
-                }),
-            });
-
-            if (response.ok) {
-                console.log(`You are now following ${followingUsername}`);
-            } else {
-                console.error(`Failed to follow ${followingUsername}`);
-            }
-        } catch (error) {
-            console.error("Error following:", error);
-        }
-    };
 
     const renderNullFollowers = () => (
         <div>
@@ -178,6 +157,9 @@ const ListFollowing = ({ username }) => {
                                                     Total Reviews:{" "}
                                                     {follower.total_reviews}
                                                 </p>
+                                                <div>
+                                                    <FollowButton followingUsername={follower.follower} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
