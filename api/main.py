@@ -20,10 +20,9 @@ app.include_router(favorites.router, tags=["Favorites"])
 CORS_HOST = os.environ.get("CORS_HOST")
 if not CORS_HOST:
     origins = [
-        "http://localhost:3000",
         "http://localhost:5173",
-        "https://mambo-number-5.gitlab.io/prestige-palate/"
-        ]
+        "https://mambo-number-5.gitlab.io/prestige-palate/",
+    ]
 else:
     origins = [CORS_HOST]
 
