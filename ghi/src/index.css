@@ -236,38 +236,6 @@ input:checked + .slider:before {
 }
 
 
-.photo-list {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.photo-grid {
-    display: grid;
-    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-}
-
-.photo-item {
-    margin-bottom: 20px;
-}
-
-.photo-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-}
-
-.photo-card img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 8px;
-}
-
-.photo-card h4 {
-    margin: 0;
-}
-
 .review-photos {
     display: flex;
     flex-wrap: wrap;

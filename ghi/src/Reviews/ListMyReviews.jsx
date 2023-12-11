@@ -442,41 +442,37 @@ const ListMyReviews = () => {
                             renderNullPhotos()
                         ) : (
                             <div className="container">
-                                <div className="photo-grid">
-                                    {reviews.length > 0
-                                        ? reviews.map((review, index) => (
-                                            <div key={index} className="photo-item">
-                                                {Array.isArray(review.photo_urls) &&
-                                                    review.photo_urls.length > 0 ? (
-                                                    <div className="photo-card">
-                                                        {review.photo_urls.map(
-                                                            (url, photoIndex) => (
-                                                                <div key={photoIndex}>
-                                                                    <img
-                                                                        src={url}
-                                                                        alt={`Photo by ${username}`}
-                                                                    />
-                                                                    <Link
-                                                                        to={`/restaurants/${review.place_id}`}
-                                                                    >
-                                                                        <h4>
-                                                                            {
-                                                                                review.restaurantName
-                                                                            }
-                                                                        </h4>
-                                                                    </Link>
-                                                                </div>
-                                                            )
-                                                        )}
+                                {reviews.length > 0
+                                    ? reviews.map((review, index) => (
+                                        <div key={index} className="row mb-4">
+                                            {Array.isArray(review.photo_urls) &&
+                                                review.photo_urls.length > 0 ? (
+                                                review.photo_urls.map((url, photoIndex) => (
+                                                    <div key={photoIndex} className="col-md-4">
+                                                        <div className="card">
+                                                            <img
+                                                                src={url}
+                                                                alt={`Photo by ${username}`}
+                                                                className="card-img-top"
+                                                            />
+                                                            <div className="card-body">
+                                                                <Link
+                                                                    to={`/restaurants/${review.place_id}`}
+                                                                >
+                                                                    <h5 className="card-title">
+                                                                        {review.restaurantName}
+                                                                    </h5>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                ) : (
-                                                    renderNullPhotos()
-                                                )}
-                                            </div>
-                                        ))
-                                        : renderNullPhotos()}
-                                </div>
-
+                                                ))
+                                            ) : (
+                                                renderNullPhotos()
+                                            )}
+                                        </div>
+                                    ))
+                                    : renderNullPhotos()}
                             </div>
                         )}
                     </div>
