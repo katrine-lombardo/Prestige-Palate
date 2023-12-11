@@ -25,6 +25,10 @@ const ListUserReviews = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        document.title = `${username}'s Prestige Palate  ·  Prestige Palate`;
+    }, []);
+
+    useEffect(() => {
         if (username === loggedInUsername) {
             navigate("/myreviews");
         }
