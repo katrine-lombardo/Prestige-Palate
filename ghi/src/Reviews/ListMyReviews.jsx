@@ -25,6 +25,12 @@ const ListMyReviews = () => {
     const { favorites, setFavorites } = useStore();
 
     useEffect(() => {
+        if (!token) {
+            navigate(`/`);
+        }
+    }, [token, navigate]);
+
+    useEffect(() => {
         if (username) {
             document.title = `${username}'s Prestige Palate  ·  Prestige Palate`;
         }
