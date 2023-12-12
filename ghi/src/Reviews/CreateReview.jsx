@@ -3,6 +3,11 @@ import { useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const bucketName = import.meta.env.VITE_AWS_BUCKET_NAME;
 const bucketRegion = import.meta.env.VITE_AWS_BUCKET_REGION;
 const s3Client = new S3Client({
@@ -39,7 +44,7 @@ const CreateReview = () => {
         const checkExistingReview = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:8000/api/restaurants/${place_id}/reviews/check-existing`,
+                    `${tokenUrl}/api/restaurants/${place_id}/reviews/check-existing`,
                     {
                         method: "GET",
                         headers: {
@@ -140,7 +145,7 @@ const CreateReview = () => {
 
         try {
             const response = await fetch(
-                `http://localhost:8000/api/restaurants/${place_id}/reviews/`,
+                `${tokenUrl}/api/restaurants/${place_id}/reviews/`,
                 {
                     method: "POST",
                     headers: {

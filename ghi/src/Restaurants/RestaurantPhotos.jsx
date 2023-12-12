@@ -4,6 +4,11 @@ import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import Loading from '../Loading'
 import altImage from '../imgs/alternative.png';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const RestaurantPhotos = () => {
     const { place_id } = useParams();
     const [restaurantPhotos, setRestaurantPhotos] = useState(null);
@@ -14,7 +19,7 @@ const RestaurantPhotos = () => {
         const fetchPhotos = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${place_id}/photos`);
+                const response = await fetch(`${tokenUrl}/api/restaurants/${place_id}/photos`);
                 if (!response.ok) {
                     throw new Error('Could not fetch restaurant photos');
                 }

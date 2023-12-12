@@ -2,13 +2,18 @@ import React, { createContext, useState, useContext, useCallback } from 'react';
 
 const RestaurantPhotosContext = createContext();
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 export const RestaurantPhotosProvider = ({ children }) => {
     const [photos, setPhotos] = useState({});
 
     const fetchPhotos = useCallback(async (placeId) => {
         if (!photos[placeId]) {
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${placeId}/photos`);
+                const response = await fetch(`${tokenUrl}/api/restaurants/${placeId}/photos`);
                 if (!response.ok) {
                     throw new Error('Could not fetch restaurant photos');
                 }

@@ -166,7 +166,7 @@ const ListMyReviews = () => {
     const handleConfirmDelete = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/accounts/${username}/reviews/${activeReviewId}`,
+                `${tokenUrl}/api/accounts/${username}/reviews/${activeReviewId}`,
                 {
                     method: "DELETE",
                     headers: {

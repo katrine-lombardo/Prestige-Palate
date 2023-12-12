@@ -5,6 +5,11 @@ import StarCard from './StarCard';
 import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import Loading from '../Loading';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFavorite }) => {
     const { favorites } = useStore();
     const { token } = useAuthContext();
@@ -29,7 +34,7 @@ const RestaurantCard = ({ restaurant, onToggleFavorite, showFavorite, onRemoveFa
         const fetchPhotos = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch(`http://localhost:8000/api/restaurants/${restaurant.id}/photos`, {
+                const response = await fetch(`${tokenUrl}/api/restaurants/${restaurant.id}/photos`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

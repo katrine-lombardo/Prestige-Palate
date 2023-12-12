@@ -13,6 +13,11 @@ const s3Client = new S3Client({
     },
 });
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const UpdateReview = () => {
     const { username, review_id } = useParams();
     const [reviewForm, setReviewForm] = useState({
@@ -105,7 +110,7 @@ const UpdateReview = () => {
 
         try {
             const response = await fetch(
-                `http://localhost:8000/api/accounts/${username}/reviews/${review_id}`,
+                `${tokenUrl}/api/accounts/${username}/reviews/${review_id}`,
                 {
                     method: "PUT",
                     headers: {

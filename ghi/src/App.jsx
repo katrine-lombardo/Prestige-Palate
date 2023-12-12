@@ -24,7 +24,7 @@ import ContextProvider from "./ContextStore";
 import FAQPage from "./FAQ"
 import About from "./About"
 import { FollowProvider } from "./FollowContext";
-import Footer from "./Footer"; 
+import Footer from "./Footer";
 
 const libraries = ['places'];
 
@@ -60,8 +60,8 @@ function App() {
                 <AuthProvider baseUrl={tokenUrl}>
                     <ContextProvider>
                         <FollowProvider>
-                        <Nav toggleSidebar={toggleSidebar} />
-                        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+                            <Nav toggleSidebar={toggleSidebar} />
+                            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
                             <Routes>
                                 <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
                                 <Route path="/signup" element={<SignupForm />} />

@@ -3,6 +3,11 @@ import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
 import RestaurantCard from './RestaurantCard';
 import Loading from '../Loading';
 
+const tokenUrl = import.meta.env.VITE_APP_API_HOST;
+if (!tokenUrl) {
+    throw new Error("VITE_APP_API_HOST was undefined.");
+}
+
 const FavoriteRestaurants = () => {
     const [favorites, setFavorites] = useState([]);
     const [detailedFavorites, setDetailedFavorites] = useState([]);
@@ -64,7 +69,7 @@ const FavoriteRestaurants = () => {
         const fetchFavorites = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch('http://localhost:8000/api/user/favorites', {
+                const response = await fetch('${tokenUrl}/api/user/favorites', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -93,7 +98,7 @@ const FavoriteRestaurants = () => {
             try {
                 const details = await Promise.all(
                     favorites.map(fav =>
-                        fetch(`http://localhost:8000/api/restaurants/${fav.place_id}`, {
+                        fetch(`${tokenUrl}/api/restaurants/${fav.place_id}`, {
                             headers: {
                                 Authorization: `Bearer ${token}`,
                             },
