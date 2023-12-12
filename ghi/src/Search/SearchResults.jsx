@@ -11,7 +11,7 @@ function SearchResults() {
     const initialResults = location.state?.results || [];
     const locationData = location.state?.locationData;
     const [results, setResults] = useState(initialResults);
-    const [sortKey, setSortKey] = useState('nameAsc');
+    const [sortKey, setSortKey] = useState('highRating');
     const [filterCity, setFilterCity] = useState('');
     const [filterState, setFilterState] = useState('');
     const [filterRating, setFilterRating] = useState('');
@@ -21,6 +21,7 @@ function SearchResults() {
     const { favorites, setFavorites } = useStore();
     const [showFavoriteModal, setShowFavoriteModal] = useState(false);
     const [favoriteModalMessage, setFavoriteModalMessage] = useState('');
+    
 
     const tokenUrl = import.meta.env.VITE_APP_API_HOST;
     if (!tokenUrl) {
