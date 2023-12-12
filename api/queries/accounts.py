@@ -95,8 +95,7 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 except Exception:
                     return {
-                        "message":
-                        "Could not get accounts record for this accounts email"
+                        "message": "Could not get accounts record for this accounts email"
                     }
 
     def email_exists_in_referral(self, email: str) -> bool:
@@ -197,6 +196,11 @@ class AccountQueries:
             return {"message": "Could not get all account information"}
 
     def delete_account(self, account_id: int) -> bool:
+        if account_id == 1:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Deleting admin account not allowed.",
+            )
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(

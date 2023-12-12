@@ -9,8 +9,8 @@ if (!tokenUrl) {
 
 const DeleteProfile = () => {
     const [deleteSuccess, setDeleteSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [id, setAccountId] = useState("");
-    const [updateError, setError] = useState(false);
     const { token, setToken } = useAuthContext();
 
     useEffect(() => {
@@ -46,13 +46,16 @@ const DeleteProfile = () => {
             if (response.ok) {
                 setDeleteSuccess(true);
                 setToken(null)
+                setTimeout(() => {
+                    setDeleteSuccess(false);
+                }, 3000);
             } else {
-                throw new Error("Failed to delete account.");
+                setErrorMessage(data.detail || "Failed to delete account at this time.");
             }
         } catch (error) {
-            setError(true);
+            setErrorMessage("Failed to delete account at this time.")
             setTimeout(() => {
-                setError(false);
+                setErrorMessage("");
             }, 3000);
         }
     };
@@ -65,9 +68,14 @@ const DeleteProfile = () => {
                     <h5 className="card-header bg-custom-two">DELETE PROFILE</h5>
                     <div className="card-body bg-custom">
                         <form onSubmit={handleDelete}>
-                            {updateError && (
-                                <div className="alert alert-danger" role="alert">
-                                    We're sorry. We had difficulty deleting your account. Try again later.
+                            {deleteSuccess && (
+                                <div className="alert alert-success" role="alert">
+                                    Account successfully deleted.
+                                </div>
+                            )}
+                            {errorMessage && (
+                                <div className="alert alert-danger mb-3" role="alert">
+                                    {errorMessage}
                                 </div>
                             )}
                             {!deleteSuccess ? (

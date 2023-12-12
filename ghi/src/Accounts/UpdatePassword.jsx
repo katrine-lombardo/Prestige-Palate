@@ -90,7 +90,7 @@ const UpdatePassword = () => {
         } catch (error) {
             setErrorMessage("Failed to change password at this time.")
             setTimeout(() => {
-                setChangeError("");
+                setErrorMessage("");
             }, 3000);
         }
     };
