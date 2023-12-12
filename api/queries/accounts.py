@@ -95,7 +95,8 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 except Exception:
                     return {
-                        "message": "Could not get accounts record for this accounts email"
+                        "message":
+                        "Could not get accounts record for this accounts email"
                     }
 
     def email_exists_in_referral(self, email: str) -> bool:
