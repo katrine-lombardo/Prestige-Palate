@@ -131,7 +131,7 @@ const ListAppReviews = () => {
                         onClick={handleAddReview}
                         style={{ marginRight: "5px" }}
                         type="button"
-                        className="btn btn-secondary mt-3 ms-2"
+                        className="btn btn-link"
                     >
                         Be the first
                     </button>
