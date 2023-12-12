@@ -45,15 +45,20 @@ const DeleteProfile = () => {
 
             if (response.ok) {
                 setDeleteSuccess(true);
-                setToken(null)
+                setToken(null);
                 setTimeout(() => {
                     setDeleteSuccess(false);
                 }, 3000);
             } else {
-                setErrorMessage(data.detail || "Failed to delete account at this time.");
+                const data = await response.json();
+                if (response.status === 403 && data.detail === "Deleting admin account not allowed.") {
+                    setErrorMessage("Password changes for admin account not allowed.");
+                } else {
+                    setErrorMessage(data.detail || "Failed to delete account at this time.");
+                }
             }
         } catch (error) {
-            setErrorMessage("Failed to delete account at this time.")
+            setErrorMessage("Failed to delete account at this time.");
             setTimeout(() => {
                 setErrorMessage("");
             }, 3000);
