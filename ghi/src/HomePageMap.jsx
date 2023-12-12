@@ -66,6 +66,7 @@ const Map = () => {
                 <div className="overlay-container" onClick={handleOverlayClick}>
                     <div className="overlay-content">
                         <h2>START YOUR PRESTIGE PALATE ADVENTURE</h2>
+                        <p className="small-text">click here to get started</p>
                     </div>
                 </div>
             )}
