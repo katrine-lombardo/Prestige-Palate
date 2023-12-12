@@ -1,3 +1,11 @@
+## Mon, Dec 9
+Features/issues that you worked on and who you worked with:
+- Worked on deployment for front end and fixing the accounts migration (with 008_accounts_update_migration.py). Both front end and back end deployment finally are working well.
+
+## Fri, Dec 8
+Features/issues that you worked on and who you worked with:
+- Worked front end map filling up the entire homepage, changed the confirm photo upload button on the create/edit review page, worked on the banner of the detailed restaurant page, worked on css color scheme, and the dashboard to display a list of reviews for the users that logged in users follow.
+
 ## Thurs, Dec 7
 Features/issues that you worked on and who you worked with:
 - Worked on deployment and cleaned up lint

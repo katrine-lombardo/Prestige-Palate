@@ -253,3 +253,23 @@ input:checked+.slider:before {
     margin-right: 8px;
     margin-bottom: 8px;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+footer {
+    background-color: #f6f4ee;
+    min-height: 60px;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-content {
+    flex: 1;
+    padding: 15px;
+}
