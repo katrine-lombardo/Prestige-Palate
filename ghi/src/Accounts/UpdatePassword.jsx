@@ -15,7 +15,7 @@ const UpdatePassword = () => {
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
     const [confirmationVisible, setConfirmationVisible] = useState(false);
     const [changeSuccess, setChangeSuccess] = useState(false);
-    const [changeError, setChangeError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [passwordMatchError, setPasswordMatchError] = useState("");
     const { token } = useAuthContext();
 
@@ -77,6 +77,7 @@ const UpdatePassword = () => {
                     confirm_password: confirmPassword,
                 }),
             });
+            const data = await response.json();
 
             if (response.ok) {
                 setChangeSuccess(true);
@@ -84,13 +85,12 @@ const UpdatePassword = () => {
                     setChangeSuccess(false);
                 }, 3000);
             } else {
-                const data = await response.json();
-                throw new Error(data.detail || "An error occurred while changing the password.");
+                setErrorMessage(data.detail || "Failed to change password at this time.");
             }
         } catch (error) {
-            setChangeError(true);
+            setErrorMessage("Failed to change password at this time.")
             setTimeout(() => {
-                setChangeError(false);
+                setChangeError("");
             }, 3000);
         }
     };
@@ -106,9 +106,9 @@ const UpdatePassword = () => {
                             Password successfully changed.
                         </div>
                     )}
-                    {changeError && (
-                        <div className="alert alert-danger" role="alert">
-                            Incorrect current password. Please try again.
+                    {errorMessage && (
+                        <div className="alert alert-danger mb-3" role="alert">
+                            {errorMessage}
                         </div>
                     )}
                     {passwordMatchError && (

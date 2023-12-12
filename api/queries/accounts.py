@@ -95,8 +95,7 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 except Exception:
                     return {
-                        "message":
-                        "Could not get accounts record for this accounts email"
+                        "message": "Could not get accounts record for this accounts email"
                     }
 
     def email_exists_in_referral(self, email: str) -> bool:
@@ -209,6 +208,11 @@ class AccountQueries:
                 return cur.rowcount > 0
 
     def change_password(self, new_hashed_password, email: str):
+        if email == "admin@email.com":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Password changes for admin account not allowed.",
+            )
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 params = [
@@ -231,7 +235,6 @@ class AccountQueries:
                     raise ValueError(
                         "Invalid icon_id. It must be between 1 and 16."
                     )
-
                 params = [
                     edit_profile.first_name,
                     edit_profile.last_name,
