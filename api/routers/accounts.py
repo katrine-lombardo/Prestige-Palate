@@ -192,3 +192,12 @@ async def delete_account(
         secure=secure,
     )
     return accounts.delete_account(account_id)
+
+
+@router.get("/api/accounts/{account_id}/profile", response_model=AccountOut)
+async def get_current_user_profile(
+    current_account: AccountOut = Depends(
+        authenticator.get_current_account_data
+    ),
+):
+    return current_account

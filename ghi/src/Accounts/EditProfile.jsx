@@ -51,6 +51,35 @@ const EditProfile = () => {
         handleFetchWithAPI();
     }, [token]);
 
+    useEffect(() => {
+        const fetchProfile = async () => {
+            const url = `${tokenUrl}/api/accounts/${id}/profile`;
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile');
+                }
+                const profileData = await response.json();
+                setFirstName(profileData.first_name);
+                setLastName(profileData.last_name);
+                setSelectedIcon(profileData.profile_icon_id)
+            } catch (error) {
+                console.error('Error fetching profile:', error.message);
+            }
+        };
+
+        if (token && id) {
+            fetchProfile();
+        }
+    }, [token, id]);
+
+
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
         if (!token) {
