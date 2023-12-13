@@ -25,6 +25,7 @@ import FAQPage from "./FAQ"
 import About from "./About"
 import { FollowProvider } from "./FollowContext";
 import Footer from "./Footer";
+import "./App.css";
 
 const libraries = ['places'];
 
@@ -60,8 +61,10 @@ function App() {
                 <AuthProvider baseUrl={tokenUrl}>
                     <ContextProvider>
                         <FollowProvider>
+                            <div className = "mainpage">
                             <Nav toggleSidebar={toggleSidebar} />
                             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+                            <div className = "mainbody">
                             <Routes>
                                 <Route path="/" element={<HomePage toggleSidebar={toggleSidebar} />} />
                                 <Route path="/signup" element={<SignupForm />} />
@@ -83,7 +86,9 @@ function App() {
                                 <Route path="/faq" element={<FAQPage />} />
                                 <Route path="/about" element={<About />} />
                             </Routes>
+                            </div>
                             <Footer />
+                            </div>
                         </FollowProvider>
                     </ContextProvider>
                 </AuthProvider>
