@@ -69,7 +69,7 @@ const FavoriteRestaurants = () => {
         const fetchFavorites = async () => {
             setIsLoading(true);
             try {
-                const response = await fetch('${tokenUrl}/api/user/favorites', {
+                const response = await fetch(`${tokenUrl}/api/user/favorites`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
