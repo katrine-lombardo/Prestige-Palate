@@ -95,7 +95,8 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 except Exception:
                     return {
-                        "message": "Could not get accounts record for this accounts email"
+                        "message":
+                        "Could not get accounts record for this accounts email"
                     }
 
     def email_exists_in_referral(self, email: str) -> bool:
@@ -137,7 +138,11 @@ class AccountQueries:
         if self.email_exists_in_accounts(info.email):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="There is already a Prestige Palate account associated with this email.",
+                detail=
+                """
+                There is already a Prestige Palate account
+                associated with this email.
+                """,
             )
         with pool.connection() as conn:
             with conn.cursor() as cur:
