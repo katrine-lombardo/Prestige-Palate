@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./Search/SearchBar";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 import logoImage from "./imgs/logo_lightmode.png";
-import logoImage2 from "./imgs/logo_darkmode.png";
 import LineImage from "./imgs/sidebar.png";
 import './Nav.css'
 
