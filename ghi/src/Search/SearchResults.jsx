@@ -163,6 +163,7 @@ function SearchResults() {
 
     const changePage = (pageNumber) => {
         setCurrentPage(pageNumber);
+        window.scrollTo(0, 0);
     };
 
     return (

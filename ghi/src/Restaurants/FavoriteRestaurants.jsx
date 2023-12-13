@@ -118,6 +118,7 @@ const FavoriteRestaurants = () => {
 
     const changePage = (pageNumber) => {
         setCurrentPage(pageNumber);
+        window.scrollTo(0, 0); 
     };
 
     const handleSortChange = (e) => {
