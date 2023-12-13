@@ -95,8 +95,7 @@ class AccountQueries:
                     return AccountOutWithPassword(**record)
                 except Exception:
                     return {
-                        "message":
-                        "Could not get accounts record for this accounts email"
+                        "message": "Could not get accounts record for this accounts email"
                     }
 
     def email_exists_in_referral(self, email: str) -> bool:
@@ -113,6 +112,20 @@ class AccountQueries:
                 count = cur.fetchone()[0]
                 return count > 0
 
+    def email_exists_in_accounts(self, email: str) -> bool:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT COUNT(*)
+                    FROM accounts
+                    WHERE referred = %s;
+                    """,
+                    [email],
+                )
+                count = cur.fetchone()[0]
+                return count > 0
+
     def create_account(
         self, info: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
@@ -120,6 +133,11 @@ class AccountQueries:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="This email is not eligible for account creation.",
+            )
+        if not self.email_exists_in_accounts(info.email):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="This email already has a Prestige Palate account.",
             )
         with pool.connection() as conn:
             with conn.cursor() as cur:
