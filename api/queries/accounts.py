@@ -120,7 +120,7 @@ class AccountQueries:
                     """
                     SELECT COUNT(*)
                     FROM accounts
-                    WHERE referred = %s;
+                    WHERE email = %s;
                     """,
                     [email],
                 )
@@ -135,7 +135,7 @@ class AccountQueries:
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="This email is not eligible for account creation.",
             )
-        if not self.email_exists_in_accounts(info.email):
+        if self.email_exists_in_accounts(info.email):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="This email already has a Prestige Palate account.",
