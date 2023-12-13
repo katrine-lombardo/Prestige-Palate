@@ -52,7 +52,7 @@ function SearchBar({ onSearch }) {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="where to next ?..."
                     aria-label="Search"
-                    style={{ width: '500px' }}
+                    style={{ width: 'calc(100vw / 2)' }}
                 />
             </div>
         </form>
