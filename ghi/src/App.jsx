@@ -89,7 +89,6 @@ function App() {
                 </AuthProvider>
             </BrowserRouter>
         </LoadScript>
-        
     );
 }
 
