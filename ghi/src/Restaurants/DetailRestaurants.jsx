@@ -174,7 +174,7 @@ const DetailRestaurant = () => {
         );
     }
 
-    const { displayName, rating, userRatingCount, websiteUri } =
+    const { displayName, rating, userRatingCount} =
         restaurantDetails;
 
     return (
