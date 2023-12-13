@@ -275,3 +275,30 @@ class AccountQueries:
                     """,
                     params,
                 )
+
+
+def get_current_user_profile(
+    self, account_id: int
+) -> Union[Error, AccountOut]:
+    with pool.connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT id, first_name, last_name, profile_icon_id
+                FROM accounts
+                WHERE id = %s;
+                """,
+                [account_id],
+            )
+            row = cur.fetchone()
+            if row is not None:
+                record = {
+                    column.name: row[i]
+                    for i, column in enumerate(cur.description)
+                }
+                return AccountOut(**record)
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Account not found.",
+                )
