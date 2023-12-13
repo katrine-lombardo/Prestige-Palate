@@ -138,8 +138,7 @@ class AccountQueries:
         if self.email_exists_in_accounts(info.email):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail=
-                """
+                detail="""
                 There is already a Prestige Palate account
                 associated with this email.
                 """,
