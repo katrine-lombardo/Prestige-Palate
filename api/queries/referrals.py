@@ -1,7 +1,6 @@
 from queries.pool import pool
 from pydantic import BaseModel
 from typing import List
-from fastapi import HTTPException, status
 
 
 class Error(BaseModel):
@@ -18,20 +17,6 @@ class ReferralOut(BaseModel):
 
 
 class ReferralQueries:
-    def email_exists_in_accounts(self, email: str) -> bool:
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    SELECT COUNT(*)
-                    FROM accounts
-                    WHERE email = %s;
-                    """,
-                    [email],
-                )
-                count = cur.fetchone()[0]
-                return count > 0
-
     def refer_email(self, info: ReferralIn, email: str) -> ReferralOut:
         with pool.connection() as conn:
             with conn.cursor() as cur:
