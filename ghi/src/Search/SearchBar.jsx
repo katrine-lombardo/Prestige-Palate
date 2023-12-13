@@ -54,11 +54,6 @@ function SearchBar({ onSearch }) {
                     aria-label="Search"
                     style={{ width: '500px' }}
                 />
-                {isLoading && (
-                    <div style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
-                        <Loading />
-                    </div>
-                )}
             </div>
         </form>
     );

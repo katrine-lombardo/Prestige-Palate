@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <footer>
+        <footer style={{ position: 'sticky', bottom: 0 }}>
             <div className="footer-content">
                 <section className="mb-3">
                     <ul className="list-unstyled mb-0 d-flex justify-content-center">
