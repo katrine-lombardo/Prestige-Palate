@@ -50,7 +50,7 @@ const DeleteProfile = () => {
                 }, 3000);
             } else {
                 const data = await response.json();
-                if (response.status === 403 && data.detail === "Deleting admin account not allowed.") {
+                if (response.status === 403) {
                     setErrorMessage("Deleting admin account not allowed.");
                 } else {
                     setErrorMessage(data.detail || "Failed to delete account at this time.");
