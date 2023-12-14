@@ -184,6 +184,11 @@ async def delete_account(
     account_id: int,
     accounts: AccountQueries = Depends(),
 ) -> bool:
+    if account_id == 1:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Deleting admin account not allowed.",
+        )
     samesite, secure = authenticator._get_cookie_settings(request)
     response.delete_cookie(
         key=authenticator.cookie_name,

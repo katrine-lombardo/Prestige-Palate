@@ -219,11 +219,6 @@ class AccountQueries:
             return {"message": "Could not get all account information"}
 
     def delete_account(self, account_id: int) -> bool:
-        if account_id == 1:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Deleting admin account not allowed.",
-            )
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(
