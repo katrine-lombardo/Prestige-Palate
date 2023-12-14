@@ -49,3 +49,15 @@ async def get_referrals_given(
 ):
     followers = accounts.get_referrals_given(email)
     return followers
+
+
+@router.get("/api/accounts/all_referrals/", response_model=List[ReferralOut])
+async def get_all_referrals(accounts: ReferralQueries = Depends()):
+    try:
+        referrals = accounts.get_all_referrals()
+        return referrals
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error retrieving all referrals.",
+        )

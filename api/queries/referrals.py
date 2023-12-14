@@ -54,3 +54,20 @@ class ReferralQueries:
                 )
                 referred = [row[0] for row in cur.fetchall()]
                 return referred
+
+    def get_all_referrals(self) -> List[ReferralOut]:
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT existing_user, referred
+                    FROM referrals;
+                    """
+                )
+                referrals = []
+                for row in cur.fetchall():
+                    record = {}
+                    for i, column in enumerate(cur.description):
+                        record[column.name] = row[i]
+                    referrals.append(ReferralOut(**record))
+                return referrals
