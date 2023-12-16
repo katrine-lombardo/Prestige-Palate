@@ -164,9 +164,9 @@ const CreateReview = () => {
                     photo_urls: [],
                 });
                 setIsReviewPosted(true);
-                setFileInputValue(""); // Reset file input value after successful post
+                setFileInputValue("");
                 if (fileInputRef.current) {
-                    fileInputRef.current.value = ""; // Reset the file input value
+                    fileInputRef.current.value = "";
                 }
             } else {
                 console.error("Error posting review:", response.statusText);

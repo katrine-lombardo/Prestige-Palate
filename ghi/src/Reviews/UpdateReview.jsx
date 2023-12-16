@@ -48,7 +48,6 @@ const UpdateReview = () => {
             try {
                 await s3Client.send(new PutObjectCommand(params));
                 const url = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${photo.name}`;
-                console.log("Success", url);
                 return url;
             } catch (err) {
                 console.error("Error", err);
@@ -122,7 +121,6 @@ const UpdateReview = () => {
             );
 
             if (response.ok) {
-                console.log("Review updated successfully");
                 setReviewForm({
                     title: "",
                     text: "",
