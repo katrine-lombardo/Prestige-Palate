@@ -4,6 +4,7 @@ import os
 from authenticator import authenticator
 from routers import accounts, follow, referrals
 from routers import restaurants, photos, reviews, favorites
+from middleware import TrailingSlashMiddleware
 
 
 app = FastAPI()
@@ -33,6 +34,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(TrailingSlashMiddleware)
 
 
 @app.get("/")
